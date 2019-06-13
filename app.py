@@ -88,8 +88,9 @@ def training():
         n_samples = len(utils.get_table('preprocessed_data')[0])
 
         # todo decide
-        full_filename = '/static/pictures/dtree.png'
+        # full_filename = '/static/pictures/dtree.png'
         # full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'dtree.png')
+        full_filename = utils.get_filename()
 
         return render_template('training.html', title='Training', dtree_image=full_filename, training_score=real_training_score, n_samples=n_samples)
 
@@ -109,8 +110,9 @@ def training():
         n_samples = len(utils.get_table('preprocessed_data')[0])
 
         # todo decide
-        full_filename = '/static/pictures/dtree.png'
+        # full_filename = '/static/pictures/dtree.png'
         # full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'dtree.png')
+        full_filename = utils.get_filename()
 
         return render_template('training.html', title='Training', dtree_image=full_filename,
                                training_score=real_training_score, n_samples=n_samples)

@@ -41,11 +41,15 @@ database = {
 }
 
 
+# this id is for naming .png files of dtrees for individual training procedures
+train_id = 0
+
+
 def reset():
     """
-
+    Method will delete all instances in the database and all .png files in the picture subfolder.
     """
-    global database
+    global database, train_id
     # reset all values in the database to None
     for key in database.keys():
         if isinstance(database[key], dict):
@@ -55,9 +59,17 @@ def reset():
             database[key] = None
 
     # also delete all files in the /static/pictures folder
-    files = glob.glob('/static/pictures/*.png')
-    for f in files:
-        os.remove(f)
+    directory = '/static/pictures/'
+    os.chdir(directory)
+    files = glob.glob('*.png')
+    for filename in files:
+        os.unlink(filename)
+
+    # and reset the train_id to 0
+    train_id = 0
+
+    return
+
 
 def get_data(kind):
     """
@@ -112,6 +124,10 @@ def gen_data(n_train, n_test, n_features, effective_rank, noise):
     This method creates the regression dataset with (effective rank) number of singular vectors.
     Some values in some columns will be set to NaN.
     """
+
+    # first reset the database and picture subfolder
+    reset()
+
     X, y, coef = make_regression(n_samples=n_train+n_test, n_features=n_features, effective_rank=effective_rank, noise=noise, coef=True)
 
     # decide on the columns which will hold NaNs
@@ -255,6 +271,12 @@ def preprocess(strategy):
 
 
 def training(max_features, min_samples_leaf, max_depth):
+    """
+    The whole training procedure is done in this method.
+    """
+
+    global train_id
+    train_id += 1
 
     X_train, X_test, y_train, y_test, headers = get_data('preprocessed_data')
 
@@ -265,7 +287,7 @@ def training(max_features, min_samples_leaf, max_depth):
 
     graph = Source(export_graphviz(m, out_file=None, feature_names=headers, filled=True, special_characters=True, rotate=True, precision=3))
     png_bytes = graph.pipe(format='png')
-    with open(f'static/pictures/dtree{set_id}.png', 'wb') as file:
+    with open(f'static/pictures/dtree{train_id}.png', 'wb') as file:
         file.write(png_bytes)
 
     # save the model
@@ -276,3 +298,12 @@ def training(max_features, min_samples_leaf, max_depth):
     database['training_data']['max_depth'] = max_depth
 
     return real_training_score
+
+
+def get_filename():
+    """
+    Return the full filename for the latest .png picture of a dtree
+    """
+
+    return f'/static/pictures/dtree{train_id}.png'
+
