@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+{% block page_content %}
+    <h1> some training. </h1>
+
+    <div class="content-section">
+        <form method="POST" action="{{url_for('training')}}">
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Set hyperparameters for the DecisionTreeRegressor</legend>
+                <div class="slidecontainer">
+                    <p>max_depth</p>
+                    <input type="range" min="1" max="50" class="slider" id="max_depth_slider" name="max_depth">
+                    <p>Value: <span id="max_depth_value"></span></p>
+                </div>
+                <div class="slidecontainer">
+                    <p>min_samples_leaf</p>
+                    <input type="range" min="3" max="30" class="slider" id="min_samples_leaf_slider" name="min_samples_leaf">
+                    <p>Value: <span id="min_samples_leaf_value"></span></p>
+                </div>
+                <div class="slidecontainer">
+                    <p>max_features</p>
+                    <input type="range" min="1" max="5" class="slider" id="max_features_slider" name="max_features">
+                    <p>Value: <span id="max_features_value"></span></p>
+                </div>
+            </fieldset>
+            <input type="submit" value="submit" />
+        </form>
+
+        <!-- JS scripts for all the sliders to display their current value -->
+
+        <script>
+        var slider = document.getElementById("max_depth_slider");
+        var output = document.getElementById("max_depth_value");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+          max_depth_value.innerHTML = this.value;
+        }
+        </script>
+        <script>
+        var slider = document.getElementById("min_samples_leaf_slider");
+        var output = document.getElementById("min_samples_leaf_value");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+          min_samples_leaf_value.innerHTML = this.value;
+        }
+        </script>
+        <script>
+        var slider = document.getElementById("max_features_slider");
+        var output = document.getElementById("max_features_value");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+          max_features_value.innerHTML = this.value;
+        }
+        </script>
+    </div>
+
+    <!-- Some info about the table -->
+
+    <div>
+        <h1>Number of samples: {{ n_samples }}</h1>
+        {% if training_score %}
+            <h1>Score on training (Sklearn DecisionTreeRegressor with default params): {{ training_score }}</h1>
+        {% endif %}
+    </div>
+
+    <!-- Show an Image of the decision tree -->
+
+    <img src="{{ dtree_image }}" alt="DecisionTreeRegressor Image">
+
+
+{% endblock page_content%}

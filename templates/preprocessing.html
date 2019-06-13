@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% block page_content %}
+    <h1> Preprocessing the Raw Data. </h1>
+
+    <!-- the form -->
+
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Which strategy for Preprocessing?</legend>
+                <div class="form-group">
+                    {{ form.strategy.label(class="form-control-label") }}
+                    {% if form.strategy.errors %}
+                        {{ form.strategy(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.strategy.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.strategy(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+
+    <!-- Some info about the table -->
+
+    <div>
+        <h1>Number of samples: {{ n_samples }}</h1>
+        {% if training_score %}
+            <h1>Score on training (Sklearn DecisionTreeRegressor with default params): {{ training_score }}</h1>
+        {% endif %}
+    </div>
+
+
+    <!-- Next comes the part for the table -->
+
+    <table>
+      <thead>
+        <tr>
+          {% for header in headers %}
+          <th> {{ header }} </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table %}
+        <tr>
+          {% for value in row %}
+          <td> {{ value }} </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+       </tbody>
+    </table>
+{% endblock page_content%}
