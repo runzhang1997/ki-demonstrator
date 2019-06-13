@@ -1,4 +1,24 @@
 {% extends 'layout.html' %}
 {% block page_content %}
     <h1> some deployment. </h1>
+
+    <div class="content-section">
+        <form method="POST" action="{{url_for('deployment')}}">
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Set hyperparameters for the DecisionTreeRegressor</legend>
+                {% for slider in sliders %}
+                    <div class="slidecontainer">
+                        <p>{{ slider['name'] }}</p>
+                        <input type="range" min="{{ slider['min'] }}" max="{{ slider['max'] }}" step="{{ slider['step'] }}" class="slider" id="{{ slider['slider_id'] }}" name="{{ slider['name'] }}">
+                        <p>Value: <span id="{{ slider['value_id'] }}"></span></p>
+                    </div>
+                {% endfor %}
+            </fieldset>
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+    {% if prediction %}
+            <h1>Prediction for given sample: {{ prediction }}</h1>
+    {% endif %}
 {% endblock page_content%}

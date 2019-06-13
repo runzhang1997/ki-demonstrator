@@ -59,11 +59,9 @@ def reset():
             database[key] = None
 
     # also delete all files in the /static/pictures folder
-    directory = '/static/pictures/'
-    os.chdir(directory)
-    files = glob.glob('*.png')
-    for filename in files:
-        os.unlink(filename)
+    filelist = [f for f in os.listdir('static/pictures/') if f.endswith(".png")]
+    for f in filelist:
+        os.remove(os.path.join('static/pictures/', f))
 
     # and reset the train_id to 0
     train_id = 0
@@ -85,9 +83,6 @@ def get_data(kind):
         min_samples_leaf = data['min_samples_leaf']
         max_depth = data['max_depth']
 
-        # if regressor is not None:
-        #     real_training_score, regressor, max_features, min_samples_leaf, max_depth = real_training_score.copy(), regressor.copy(), max_features.copy(), min_samples_leaf.copy(), max_depth.copy()
-
         return [real_training_score, regressor, max_features, min_samples_leaf, max_depth]
 
     if kind not in ['raw_data', 'preprocessed_data']:
@@ -102,7 +97,8 @@ def get_data(kind):
 
     # Return copies of the variables in the database!
     if X_train is not None:
-        X_train, X_test, y_train, y_test, headers = X_train.copy(), X_test.copy(), y_train.copy(), y_test.copy(), headers.copy()
+        X_train, X_test, y_train, y_test, headers = X_train.copy(), X_test.copy(), \
+                                                    y_train.copy(), y_test.copy(), headers.copy()
 
     return [X_train, X_test, y_train, y_test, headers]
 
@@ -128,7 +124,8 @@ def gen_data(n_train, n_test, n_features, effective_rank, noise):
     # first reset the database and picture subfolder
     reset()
 
-    X, y, coef = make_regression(n_samples=n_train+n_test, n_features=n_features, effective_rank=effective_rank, noise=noise, coef=True)
+    X, y, coef = make_regression(n_samples=n_train+n_test, n_features=n_features,
+                                 effective_rank=effective_rank, noise=noise, coef=True)
 
     # decide on the columns which will hold NaNs
     col_len = X.shape[1]
@@ -149,7 +146,8 @@ def gen_data(n_train, n_test, n_features, effective_rank, noise):
         headers.append(f'Feature {i}')
 
     # save the data so the database as raw data
-    for set, path in [(X_train, 'X_train'), (X_test, 'X_test'), (y_train, 'y_train'), (y_test, 'y_test'), (headers, 'headers')]:
+    for set, path in [(X_train, 'X_train'), (X_test, 'X_test'), (y_train, 'y_train'),
+                      (y_test, 'y_test'), (headers, 'headers')]:
         database['raw_data'][path] = set
 
     return
@@ -283,9 +281,13 @@ def training(max_features, min_samples_leaf, max_depth):
     # remove label from headers
     headers.pop(0)
 
-    m, real_training_score = build_tree(X_train, y_train, max_features=max_features, min_samples_leaf=min_samples_leaf, max_depth=max_depth)
+    m, real_training_score = build_tree(X_train, y_train, max_features=max_features,
+                                        min_samples_leaf=min_samples_leaf, max_depth=max_depth)
 
-    graph = Source(export_graphviz(m, out_file=None, feature_names=headers, filled=True, special_characters=True, rotate=True, precision=3))
+    real_test_score = m.score(X_test, y_test)
+
+    graph = Source(export_graphviz(m, out_file=None, feature_names=headers, filled=True,
+                                   special_characters=True, rotate=True, precision=3))
     png_bytes = graph.pipe(format='png')
     with open(f'static/pictures/dtree{train_id}.png', 'wb') as file:
         file.write(png_bytes)
@@ -297,7 +299,9 @@ def training(max_features, min_samples_leaf, max_depth):
     database['training_data']['min_samples_leaf'] = min_samples_leaf
     database['training_data']['max_depth'] = max_depth
 
-    return real_training_score
+    database['real_test_score'] = real_test_score
+
+    return real_training_score, real_test_score
 
 
 def get_filename():
@@ -306,4 +310,61 @@ def get_filename():
     """
 
     return f'/static/pictures/dtree{train_id}.png'
+
+
+def get_data_structure():
+    """
+    Find out about the maximum and minimum values for each feature.
+    """
+    [X_train, X_test, y_train, y_test, headers] = get_data('raw_data')
+
+    # slice off the label
+    feature_names = headers[1:]
+
+    X = np.vstack((X_train, X_test))
+
+    mins = list(np.nanmin(X, axis=0))
+    maxs = list(np.nanmax(X, axis=0))
+
+    steps = [abs((maxs[i] - mins[i]) / 10) for i in range(len(mins))]
+
+    if len(mins) != len(maxs) or len(maxs) != len(feature_names):
+        raise Exception(f'Length of mins, {len(mins)} is not equal to length of maxs, '
+                        f'{len(maxs)} or length of feature names, {len(feature_names)}')
+
+    return [[feature_names[i], mins[i], maxs[i], steps[i]] for i in range(len(feature_names))]
+
+
+def get_slider_config():
+    """
+    Create a dictionary which can be looped through in the html template to produce a dynamic number of sliders
+    for the deployment section.
+    """
+    a = get_data_structure()
+
+    config = []
+
+    for [header, min_, max_, step] in a:
+        slider = {
+            'name': header,
+            'slider_id': f'{header}_slider',
+            'value_id': f'{header}_value',
+            'min': min_,
+            'max': max_,
+            'step': step
+        }
+        config.append(slider)
+
+    return config
+
+
+def make_prediction(sample):
+    """
+    Given a single sample as data input return the prediction of the DecisionTreeRegressor.
+    """
+    real_training_score, regressor, max_features, min_samples_leaf, max_depth = get_data('training_data')
+
+    pred = regressor.predict(sample)
+
+    return pred
 
