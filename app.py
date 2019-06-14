@@ -128,14 +128,8 @@ def training():
         return render_template('training.html', title='Training', n_samples=n_samples)
 
 
-# variable to store a prediction
-prediction = 0
-
-
 @app.route('/deployment/', methods=['GET', 'POST'])
 def deployment():
-
-    global prediction
 
     if request.method == 'POST':
         flash('Predicted sample with given feature values.', 'success')
@@ -146,7 +140,7 @@ def deployment():
             feature_val = float(request.form[slider_name])
             sample.append(feature_val)
 
-        prediction = utils.make_prediction(sample)
+        utils.make_prediction(sample)
 
         return redirect(url_for('deployment'))
 
@@ -167,7 +161,9 @@ def deployment():
 
     else:
         sliders = utils.get_slider_config()
-        return render_template('deployment.html', title='Deployment', sliders=sliders, prediction=prediction)
+        sample, prediction = utils.get_sample_pred()
+        return render_template('deployment.html', title='Deployment', sliders=sliders,
+                               sample=sample, prediction=prediction)
 
 
 if __name__ == '__main__':

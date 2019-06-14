@@ -37,7 +37,10 @@ database = {
     # the score before actual training (only shown in preprocessing steps)
     'training_score': None,
     # the score in testing
-    'real_test_score': None
+    'real_test_score': None,
+    # the last sample and predicted value
+    'sample': None,
+    'prediction': None
 }
 
 
@@ -286,7 +289,7 @@ def training(max_features, min_samples_leaf, max_depth):
 
     real_test_score = m.score(X_test, y_test)
 
-    graph = Source(export_graphviz(m, out_file=None, feature_names=headers, filled=True,
+    graph = Source(export_graphviz(m, out_file=None, feature_names=headers, filled=True, rounded=True,
                                    special_characters=True, rotate=True, precision=3))
     png_bytes = graph.pipe(format='png')
     with open(f'static/pictures/dtree{train_id}.png', 'wb') as file:
@@ -326,7 +329,7 @@ def get_data_structure():
     mins = list(np.nanmin(X, axis=0))
     maxs = list(np.nanmax(X, axis=0))
 
-    steps = [abs((maxs[i] - mins[i]) / 10) for i in range(len(mins))]
+    steps = [abs((maxs[i] - mins[i]) / 100) for i in range(len(mins))]
 
     if len(mins) != len(maxs) or len(maxs) != len(feature_names):
         raise Exception(f'Length of mins, {len(mins)} is not equal to length of maxs, '
@@ -364,7 +367,23 @@ def make_prediction(sample):
     """
     real_training_score, regressor, max_features, min_samples_leaf, max_depth = get_data('training_data')
 
-    pred = regressor.predict(sample)
+    # reshape because of single sample
+    x = np.array(sample).reshape(1, -1)
+
+    pred = regressor.predict(x)[0]
+
+    # save the sample and prediction into database
+    database['prediction'] = pred
+    database['sample'] = sample
 
     return pred
+
+
+def get_sample_pred():
+    """
+    For displaying sample and prediction in the deployment section.
+    """
+    return database['sample'], database['prediction']
+
+
 

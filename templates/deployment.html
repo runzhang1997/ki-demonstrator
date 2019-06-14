@@ -5,7 +5,7 @@
     <div class="content-section">
         <form method="POST" action="{{url_for('deployment')}}">
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Set hyperparameters for the DecisionTreeRegressor</legend>
+                <legend class="border-bottom mb-4">Feed the model with a sample and predict the label</legend>
                 {% for slider in sliders %}
                     <div class="slidecontainer">
                         <p>{{ slider['name'] }}</p>
@@ -16,8 +16,26 @@
             </fieldset>
             <input type="submit" value="Submit" />
         </form>
+
+        {% for slider in sliders %}
+            <script>
+            var slider = document.getElementById("{{ slider['slider_id'] }}");
+            var output = document.getElementById("{{ slider['value_id'] }}");
+            output.innerHTML = slider.value;
+
+            slider.oninput = function() {
+              document.getElementById("{{ slider['value_id'] }}").innerHTML = this.value;
+            }
+            </script>
+        {% endfor %}
+
     </div>
 
+    {% if sample %}
+            {% for feature in sample %}
+            <h1>Feature {{ sample.index(feature) }}: {{ feature }}</h1>
+            {% endfor %}
+    {% endif %}
     {% if prediction %}
             <h1>Prediction for given sample: {{ prediction }}</h1>
     {% endif %}
