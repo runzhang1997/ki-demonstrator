@@ -89,14 +89,9 @@ def training():
         min_samples_leaf = int(request.form['min_samples_leaf'])
         max_features = int(request.form['max_features'])
 
-        real_training_score, real_test_score = utils.training(max_features, min_samples_leaf, max_depth)
-        n_samples = len(utils.get_table('preprocessed_data')[0])
+        utils.training(max_features, min_samples_leaf, max_depth)
 
-        full_filename = utils.get_filename()
-
-        return render_template('training.html', title='Training', dtree_image=full_filename,
-                               training_score=real_training_score, test_score=real_test_score, n_samples=n_samples,
-                               max_features=max_features, min_samples_leaf=min_samples_leaf, max_depth=max_depth)
+        return redirect(url_for('training'))
 
     # if data has not been generated before
     if any(i is None for i in utils.get_data('raw_data')):
@@ -116,9 +111,9 @@ def training():
 
         max_features, min_samples_leaf, max_depth = utils.get_data('training_data')[2:]
 
-        full_filename = utils.get_filename()
+        full_filename = utils.get_train_filename()
 
-        return render_template('training.html', title='Training', dtree_image=full_filename,
+        return render_template('training.html', title='Training', full_filename=full_filename,
                                training_score=real_training_score, test_score=real_test_score, n_samples=n_samples,
                                max_features=max_features, min_samples_leaf=min_samples_leaf, max_depth=max_depth)
 
@@ -140,7 +135,7 @@ def deployment():
             feature_val = float(request.form[slider_name])
             sample.append(feature_val)
 
-        utils.make_prediction(sample)
+        utils.deploy(sample)
 
         return redirect(url_for('deployment'))
 
@@ -156,14 +151,15 @@ def deployment():
 
     # if the model has not been trained before
     elif utils.get_data('training_data')[0] is None:
-        flash('You need to train the DecisionTreeRegressor first.')
+        flash('You need to train the DecisionTreeRegressor first.', 'danger')
         return redirect(url_for('training'))
 
     else:
         sliders = utils.get_slider_config()
         sample, prediction = utils.get_sample_pred()
+        filename = utils.get_deploy_filename()
         return render_template('deployment.html', title='Deployment', sliders=sliders,
-                               sample=sample, prediction=prediction)
+                               sample=sample, prediction=prediction, filename=filename)
 
 
 if __name__ == '__main__':

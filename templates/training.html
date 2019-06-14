@@ -76,8 +76,8 @@
     </div>
 
     <!-- Show an Image of the decision tree -->
-
-    <img src="{{ dtree_image }}" alt="DecisionTreeRegressor Image">
-
+    {% if full_filename %}
+        <img src="{{ full_filename }}" alt="DecisionTreeRegressor Image">
+    {% endif %}
 
 {% endblock page_content%}

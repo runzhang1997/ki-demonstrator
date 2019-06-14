@@ -5,9 +5,11 @@ from sklearn.tree import DecisionTreeRegressor, export_graphviz
 import numpy as np
 
 from graphviz import Source
+import pydotplus
 
 import os
-import glob
+import string
+import random
 
 
 # initialize the database with None values
@@ -40,12 +42,11 @@ database = {
     'real_test_score': None,
     # the last sample and predicted value
     'sample': None,
-    'prediction': None
+    'prediction': None,
+    # the last set hashes for the .png in training and deploying
+    'dtree_hash': None,
+    'dtree_path_hash': None
 }
-
-
-# this id is for naming .png files of dtrees for individual training procedures
-train_id = 0
 
 
 def reset():
@@ -66,8 +67,9 @@ def reset():
     for f in filelist:
         os.remove(os.path.join('static/pictures/', f))
 
-    # and reset the train_id to 0
+    # and reset the ids to 0
     train_id = 0
+    deploy_id = 0
 
     return
 
@@ -152,17 +154,6 @@ def gen_data(n_train, n_test, n_features, effective_rank, noise):
     for set, path in [(X_train, 'X_train'), (X_test, 'X_test'), (y_train, 'y_train'),
                       (y_test, 'y_test'), (headers, 'headers')]:
         database['raw_data'][path] = set
-
-    return
-
-
-def set_data(n_train, n_test, n_features, effective_rank, noise):
-    """
-    This method will save the generated dataset into global variables
-    """
-    global X_train, X_test, y_train, y_test, headers
-
-    X_train, X_test, y_train, y_test, headers = gen_data(n_train, n_test, n_features, effective_rank, noise)
 
     return
 
@@ -275,9 +266,9 @@ def training(max_features, min_samples_leaf, max_depth):
     """
     The whole training procedure is done in this method.
     """
-
-    global train_id
-    train_id += 1
+    global database
+    filename = get_hash()
+    database['dtree_hash'] = filename
 
     X_train, X_test, y_train, y_test, headers = get_data('preprocessed_data')
 
@@ -290,9 +281,9 @@ def training(max_features, min_samples_leaf, max_depth):
     real_test_score = m.score(X_test, y_test)
 
     graph = Source(export_graphviz(m, out_file=None, feature_names=headers, filled=True, rounded=True,
-                                   special_characters=True, rotate=True, precision=3))
+                                   special_characters=True, precision=3))
     png_bytes = graph.pipe(format='png')
-    with open(f'static/pictures/dtree{train_id}.png', 'wb') as file:
+    with open(f'static/pictures/{filename}.png', 'wb') as file:
         file.write(png_bytes)
 
     # save the model
@@ -307,19 +298,23 @@ def training(max_features, min_samples_leaf, max_depth):
     return real_training_score, real_test_score
 
 
-def get_filename():
+def get_train_filename():
     """
     Return the full filename for the latest .png picture of a dtree
     """
 
-    return f'/static/pictures/dtree{train_id}.png'
+    return f"/static/pictures/{database['dtree_hash']}.png"
 
 
 def get_data_structure():
     """
     Find out about the maximum and minimum values for each feature.
     """
-    [X_train, X_test, y_train, y_test, headers] = get_data('raw_data')
+    # find out, if features have been dropped
+    if len(database['raw_data']['headers']) != len(database['preprocessed_data']['headers']):
+        [X_train, X_test, y_train, y_test, headers] = get_data('preprocessed_data')
+    else:
+        [X_train, X_test, y_train, y_test, headers] = get_data('raw_data')
 
     # slice off the label
     feature_names = headers[1:]
@@ -386,4 +381,85 @@ def get_sample_pred():
     return database['sample'], database['prediction']
 
 
+def decision_tree_path(sample, regressor, headers):
+    """
+    Save a .png image of the decision tree with a highlighted path for the single trained sample.
+    """
+
+    # make sample array 2D
+    sample = [sample]
+
+    dot_data = export_graphviz(regressor, out_file=None,
+                               feature_names=headers,
+                               filled=True, rounded=True,
+                               special_characters=True)
+    graph = pydotplus.graph_from_dot_data(dot_data)
+
+    # empty all nodes, i.e.set color to white and number of samples to zero
+    # basically change encoding to design preference (white does not fit here)
+    for node in graph.get_node_list():
+        if node.get_attributes().get('label') is None:
+            continue
+        if 'samples = ' in node.get_attributes()['label']:
+            labels = node.get_attributes()['label'].split('<br/>')
+            for i, label in enumerate(labels):
+                if label.startswith('samples = '):
+                    labels[i] = 'samples = 0'
+            node.set('label', '<br/>'.join(labels))
+            # node.set_fillcolor('white')
+
+    decision_paths = regressor.decision_path(sample)
+
+    for decision_path in decision_paths:
+        for n, node_value in enumerate(decision_path.toarray()[0]):
+            if node_value == 0:
+                continue
+            node = graph.get_node(str(n))[0]
+            node.set_fillcolor('green')
+            labels = node.get_attributes()['label'].split('<br/>')
+            for i, label in enumerate(labels):
+                if label.startswith('samples = '):
+                    labels[i] = 'samples = {}'.format(int(label.split('=')[1]) + 1)
+
+            node.set('label', '<br/>'.join(labels))
+
+    return graph
+
+
+def deploy(sample):
+    """
+    The deployment process.
+    """
+    global database
+    filename = get_hash()
+    database['dtree_path_hash'] = filename
+
+    # find out, if features have been dropped
+    if len(database['raw_data']['headers']) != len(database['preprocessed_data']['headers']):
+        headers = get_data('preprocessed_data')[4][1:]
+    else:
+        headers = get_data('raw_data')[4][1:]
+
+    regressor = get_data('training_data')[1]
+    make_prediction(sample)
+
+    graph = decision_tree_path(sample, regressor, headers)
+    full_filename = f'static/pictures/{filename}.png'
+    graph.write_png(full_filename)
+
+    return
+
+
+def get_deploy_filename():
+    """
+    Return the full filename for the latest .png picture of a path of a sample through a dtree.
+    """
+
+    return f"/static/pictures/{database['dtree_path_hash']}.png"
+
+
+def get_hash():
+    """Generate a random string of fixed length """
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(12))
 

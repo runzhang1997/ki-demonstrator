@@ -32,11 +32,16 @@
     </div>
 
     {% if sample %}
-            {% for feature in sample %}
-            <h1>Feature {{ sample.index(feature) }}: {{ feature }}</h1>
-            {% endfor %}
+        {% for feature in sample %}
+        <h1>Feature {{ sample.index(feature) }}: {{ feature }}</h1>
+        {% endfor %}
     {% endif %}
     {% if prediction %}
-            <h1>Prediction for given sample: {{ prediction }}</h1>
+        <h1>Prediction for given sample: {{ prediction }}</h1>
+    {% endif %}
+
+    <!-- section for the picture of a path through a dtree -->
+    {% if filename %}
+        <img src="{{ filename }}" alt="Path of sample through DecisionTreeRegressor Image">
     {% endif %}
 {% endblock page_content%}
