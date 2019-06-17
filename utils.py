@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
 from sklearn.tree import DecisionTreeRegressor, export_graphviz
 import numpy as np
+import pandas as pd
 
 from graphviz import Source
 import pydotplus
@@ -10,20 +11,21 @@ import pydotplus
 import os
 import string
 import random
+from random import shuffle
 
 
 # initialize the database with None values
 database = {
     'raw_data': {
-        'X_train': None,
-        'X_test': None,
+        'df_train': None,
+        'df_test': None,
         'y_train': None,
         'y_test': None,
         'headers': None
     },
     'preprocessed_data': {
-        'X_train': None,
-        'X_test': None,
+        'df_train': None,
+        'df_test': None,
         'y_train': None,
         'y_test': None,
         'headers': None
@@ -49,6 +51,164 @@ database = {
 }
 
 
+class Categorical:
+    def __init__(self, categories, name):
+        self.categories = categories
+        self.category_count = len(categories)
+        self.name = name
+
+
+class Numerical:
+    def __init__(self, MAX, MIN, name, value=None, ):
+        self.MAX = MAX
+        self.MIN = MIN
+        self.value = value
+        self.name = name
+
+    def get_factor(self):
+        return self.MAX - self.MIN
+
+    def get_addend(self):
+        return self.MIN
+
+
+# I attempted to create categorical features here, complicates a lot
+# the data in this dictionary will be a possible layout for the generated X
+# The keys MUST be the name of the feature
+feature_layout = {
+    'Anzahl der Kavitäten': Categorical([1, 2, 3], 'Anzahl der Kavitäten'),
+    'Form der Kavitäten': Categorical(['A31C', 'A32B', 'A34', 'B42', 'B3', 'C'], 'Form der Kavitäten'),
+    'Größe der Kavitäten': Numerical(7, 1, 'Größe der Kavitäten'),
+    'Material': Categorical(['PU', 'PE', 'PVC', 'PUT'], 'Material'),
+    'Entformungskonzept': Categorical(['A', 'B'], 'Entformungskonzept'),
+    'Abmaße Werkzeug': Numerical(31, 4, 'Abmaße Werkzeug'),
+    'Schieberanzahl': Categorical([1, 2, 3, 4, 5, 6, 7], 'Schieberanzahl'),
+    'Kanaltyp': Categorical(['Heißkanal', 'Kaltkanal'], 'Kanaltyp'),
+    'x': Numerical(10, 40, 'x'),
+    'y': Numerical(10, 40, 'y'),
+    'z': Numerical(10, 40, 'z'),
+    'Temp': Numerical(170, 250, 'Temp'),
+    'Time': Numerical(50, 17000, 'Time')
+}
+
+
+def make_realistic(df):
+    """
+    Adjusts the generated datapoints to realistic values with realistic feature_names.
+    df without the label!
+    """
+    global feature_layout
+
+    # make_regression returns X values between -0.01 and +0.01
+    # thus first create value between -1 and +1
+    df.iloc[:, :] *= 100
+
+    # no label in df!
+    n_samples, n_features = df.shape
+
+    # use n_features random features from the layout for the features of this dataset
+    keys = list(feature_layout.keys())
+    shuffle(keys)
+    keys = keys[:n_features]
+
+    # the keys are also the names of the features in the correct order
+    feature_names = keys
+
+    df.columns = feature_names
+
+    # the maxs and mins for each column, find out the absolute interval of the values and divide it into sub_intervals
+    # for each category of a feature
+    maxs = np.nanmax(df.iloc[:, :], axis=0)
+    mins = np.nanmin(df.iloc[:, :], axis=0)
+    interval = abs(maxs - mins)
+
+    num_cols, cat_cols = [], []
+
+    for (row, col), value in np.ndenumerate(df.iloc[:, :]):
+        key = keys[col]
+        feature = feature_layout[key]
+        # if the feature/ this column is numerical -> rescale cols afterwards all together (faster)
+        # ( so just do this for row 0)
+        if row == 0 and isinstance(feature, Numerical):
+            factor = feature.get_factor()
+            addend = feature.get_addend()
+            num_cols.append([col, factor, addend])
+
+        # if the column is categorical create category from number
+        elif isinstance(feature, Categorical):
+            # adding cat to list for later conversion to category type (only once for every col)
+            if row == 0:
+                cat_cols.append(key)
+
+            # divide into sub_intervals and check for the sub_interval in which the points belongs
+            category_count = feature.category_count
+            sub_interval = interval[col] / category_count
+            for cat_index in range(category_count):
+                if value <= mins[col] + sub_interval * (cat_index+1):
+                    # assign the right category
+                    df.iloc[row, col] = feature.categories[cat_index]
+                    break
+                # if the cat value has not been set in the last iteration
+                # (because of rounding errors in the calculation, the max value might be passing)
+                elif cat_index == category_count - 1:
+                    df.iloc[row, col] = feature.categories[cat_index]
+
+    # set all the category types
+    for key in cat_cols:
+        df[key] = df[key].astype('category')
+
+    # now resize all the numerical columns all together
+    for col, factor, addend in num_cols:
+        df.iloc[:, col] *= factor
+        df.iloc[:, col] += addend
+
+    return df, feature_names
+
+
+def gen_data(n_train, n_test, n_features, effective_rank, noise):
+    """
+    This method creates the regression dataset with (effective rank) number of singular vectors.
+    Some values in some columns will be set to NaN.
+    """
+
+    # first reset the database and picture subfolder
+    reset()
+
+    X, y, coef = make_regression(n_samples=n_train+n_test, n_features=n_features,
+                                 effective_rank=effective_rank, noise=noise, coef=True)
+
+    df = pd.DataFrame(X)
+    df, feature_names = make_realistic(df)
+
+    # decide on the columns which will hold NaNs
+    col_len = df.shape[1]
+    to_nan = []
+    for i in range(int(col_len/3)):
+        to_nan.append(np.random.randint(0, col_len))
+
+    # set NaNs
+    for (row, col), value in np.ndenumerate(df.values):
+        if col in to_nan and np.random.random() < 0.1:
+            df.iloc[row, col] = np.nan
+
+    df_train, y_train = df[:n_train], y[:n_train]
+    df_test, y_test = df[n_train:n_test+n_train], y[n_train:n_test+n_train]
+
+    # create headers for the data
+    headers = ['Label']
+    headers.extend(feature_names)
+    # for i in range(X.shape[1]):
+    #     headers.append(f'Feature {i}')
+
+    # save the data so the database as raw data
+    for set, path in [(df_train, 'df_train'), (df_test, 'df_test'), (y_train, 'y_train'),
+                      (y_test, 'y_test'), (headers, 'headers')]:
+        database['raw_data'][path] = set
+
+
+    return
+
+
 def reset():
     """
     Method will delete all instances in the database and all .png files in the picture subfolder.
@@ -67,6 +227,7 @@ def reset():
     for f in filelist:
         os.remove(os.path.join('static/pictures/', f))
 
+    # todo remove
     # and reset the ids to 0
     train_id = 0
     deploy_id = 0
@@ -74,7 +235,7 @@ def reset():
     return
 
 
-def get_data(kind):
+def get_data(kind, unpack=True):
     """
     Read the database and return the datasets inside.
     """
@@ -94,18 +255,21 @@ def get_data(kind):
         raise Exception('This param kind is not known. (Does not point to any data)')
 
     data = database[kind]
-    X_train = data['X_train']
-    X_test = data['X_test']
+    df_train = data['df_train']
+    df_test = data['df_test']
     y_train = data['y_train']
     y_test = data['y_test']
     headers = data['headers']
 
     # Return copies of the variables in the database!
-    if X_train is not None:
-        X_train, X_test, y_train, y_test, headers = X_train.copy(), X_test.copy(), \
+    if df_train is not None:
+        df_train, df_test, y_train, y_test, headers = df_train.copy(), df_test.copy(), \
                                                     y_train.copy(), y_test.copy(), headers.copy()
 
-    return [X_train, X_test, y_train, y_test, headers]
+    if unpack is True and df_train is not None:
+        df_train, df_test = df_train.values, df_test.values
+
+    return [df_train, df_test, y_train, y_test, headers]
 
 
 def get_scores():
@@ -118,44 +282,6 @@ def get_scores():
         'real_training_score': database['training_data']['real_training_score'],
         'real_test_score': database['real_test_score']
     }
-
-
-def gen_data(n_train, n_test, n_features, effective_rank, noise):
-    """
-    This method creates the regression dataset with (effective rank) number of singular vectors.
-    Some values in some columns will be set to NaN.
-    """
-
-    # first reset the database and picture subfolder
-    reset()
-
-    X, y, coef = make_regression(n_samples=n_train+n_test, n_features=n_features,
-                                 effective_rank=effective_rank, noise=noise, coef=True)
-
-    # decide on the columns which will hold NaNs
-    col_len = X.shape[1]
-    to_nan = []
-    for i in range(int(col_len/3)):
-        to_nan.append(np.random.randint(0, col_len))
-
-    # set NaNs
-    for (row, col), value in np.ndenumerate(X):
-        if col in to_nan and np.random.random() < 0.1:
-            X[row, col] = np.nan
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=n_train, test_size=n_test, random_state=42)
-
-    # create headers for the data
-    headers = ['Label']
-    for i in range(X.shape[1]):
-        headers.append(f'Feature {i}')
-
-    # save the data so the database as raw data
-    for set, path in [(X_train, 'X_train'), (X_test, 'X_test'), (y_train, 'y_train'),
-                      (y_test, 'y_test'), (headers, 'headers')]:
-        database['raw_data'][path] = set
-
-    return
 
 
 def get_table(kind):
@@ -177,7 +303,20 @@ def get_table(kind):
     return [table, full_headers]
 
 
-def impute(X, y, strategy, headers=None):
+def numericalize(df):
+    """
+    Convert all the columns with categorical data to numeric data by exchanging the alphanumeric categories with their
+    numeric codes.
+    :param df: pandas dataframe
+    :return: numpy array
+    """
+    cat_columns = df.select_dtypes(['category']).columns
+    df[cat_columns] = df[cat_columns].apply(lambda x: x.cat.codes)
+
+    return df
+
+
+def impute(df, y, strategy, headers=None):
     """
     Perform operations on the data such as dropping rows/columns with missing values or imputation of NaNs.
     """
@@ -187,39 +326,38 @@ def impute(X, y, strategy, headers=None):
     if strategy == 'drop_row':
         # also need to drop some labels in y, thus stack X and y
         # first convert y from list to vertical np array
-        y = np.array(y).reshape(len(y), 1)
-        X = np.hstack((y, X))
-        X = X[~np.isnan(X).any(axis=1)]
-        # seperate X and y
-        y = X[:, :1]
-        X = X[:, 1:]
+        # y = np.array(y).reshape(len(y), 1)
+        df['label'] = y
+        df.dropna(axis=0, inplace=True)
+        y = df['label']
+        df = df.drop('label', axis=1)
 
-        return X, y, headers
+        return df, y, headers
 
     if strategy == 'drop_col':
         if headers is not None:
             seen_cols = []
             to_pop = []
             # remove column with NaNs from headers list
-            for (row, col), value in np.ndenumerate(X):
-                if np.isnan(value) and col not in seen_cols:
+            for (row, col), value in np.ndenumerate(df):
+                # to not drop ints. pandas gotcha
+                if np.isnan(value) and col not in seen_cols and not isinstance(df.iloc[row, col], int):
                     to_pop.append(col + 1)
-                    # headers.pop(col + 1)
                     seen_cols.append(col)
             # sort cols (larger numbers at the end) and reverse list to pop those cols first
             to_pop.sort()
             to_pop.reverse()
-            for i in to_pop:
-                headers.pop(i)
+            for header in to_pop:
+                headers.pop(header)
 
-        X = X[:, ~np.any(np.isnan(X), axis=0)]
+        df.dropna(axis=1, inplace=True)
 
-        return X, y, headers
+        return df, y, headers
 
     imp = SimpleImputer(missing_values=np.nan, strategy=strategy)
-    X = imp.fit_transform(X)
+    df = imp.fit_transform(df)
 
-    return X, y, headers
+    return df, y, headers
 
 
 def build_tree(X_train, y_train, max_features=None, min_samples_leaf=1, max_depth=None):
@@ -242,18 +380,23 @@ def preprocess(strategy):
     Will simulate the entire preprocessing for one chosen strategy.
     :param strategy: must either be 'raw_data' or 'processed_data'
     """
-    X_train, X_test, y_train, y_test, headers = get_data('raw_data')
+    df_train, df_test, y_train, y_test, headers = get_data('raw_data', unpack=False)
+
+    # convert categorical data to their numeric codes for further processing
+    df_train = numericalize(df_train)
+    df_test = numericalize(df_test)
 
     # !!! only process headers once (otherwise certain indexes in list will be dropped again) !!!
-    X_train, y_train, headers = impute(X_train, y_train, strategy, headers)
+    df_train, y_train, headers = impute(df_train, y_train, strategy, headers)
 
-    X_test, y_test, _ = impute(X_test, y_test, strategy)
+    df_test, y_test, _ = impute(df_test, y_test, strategy)
 
+    X_train, X_test = df_train.values, df_test.values
     # try the preprocessed training data with a tree
     m, score = build_tree(X_train, y_train)
 
     # save the data to the database as preprocessed data
-    for set, path in [(X_train, 'X_train'), (X_test, 'X_test'), (y_train, 'y_train'), (y_test, 'y_test'),
+    for set, path in [(df_train, 'df_train'), (df_test, 'df_test'), (y_train, 'y_train'), (y_test, 'y_test'),
                       (headers, 'headers')]:
         database['preprocessed_data'][path] = set
 

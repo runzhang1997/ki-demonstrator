@@ -26,7 +26,7 @@ def acquire_data():
         effective_rank = form.effective_rank.data
         noise = form.noise.data
         # hardcode sample size in training and test set
-        utils.gen_data(3000, 600, feature_count, effective_rank, noise)
+        utils.gen_data(1000, 200, feature_count, effective_rank, noise)
         table, headers = utils.get_table('raw_data')
         n_samples = len(table)
         return render_template('acquire_data.html', title='Acquire Data', table=table,
