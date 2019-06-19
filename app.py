@@ -87,7 +87,7 @@ def training():
         flash('Successfully trained DecisionTreeRegressor.', 'success')
         max_depth = int(request.form['max_depth'])
         min_samples_leaf = int(request.form['min_samples_leaf'])
-        max_features = int(request.form['max_features'])
+        max_features = float(request.form['max_features'])
 
         utils.training(max_features, min_samples_leaf, max_depth)
 
@@ -156,6 +156,7 @@ def deployment():
 
     else:
         sliders = utils.get_slider_config()
+        # sample is a list of tuples
         sample, prediction = utils.get_sample_pred()
         filename = utils.get_deploy_filename()
         return render_template('deployment.html', title='Deployment', sliders=sliders,

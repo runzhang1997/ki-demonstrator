@@ -47,7 +47,9 @@ database = {
     'prediction': None,
     # the last set hashes for the .png in training and deploying
     'dtree_hash': None,
-    'dtree_path_hash': None
+    'dtree_path_hash': None,
+    # for knowing the categories and equivalent codes in the trained model
+    'mapping': None
 }
 
 
@@ -88,8 +90,13 @@ feature_layout = {
     'y': Numerical(10, 40, 'y'),
     'z': Numerical(10, 40, 'z'),
     'Temp': Numerical(170, 250, 'Temp'),
-    'Time': Numerical(50, 17000, 'Time')
+    'Time': Numerical(50, 17000, 'Time'),
+
 }
+
+
+def get_max_features():
+    return len(feature_layout)
 
 
 def make_realistic(df):
@@ -310,7 +317,18 @@ def numericalize(df):
     :param df: pandas dataframe
     :return: numpy array
     """
+    global database
+
     cat_columns = df.select_dtypes(['category']).columns
+
+    # save a dict with the codes and equivalent categories for each cat feature
+    mapping = {}
+    for cat_column in cat_columns:
+        mapping[cat_column] = dict(enumerate(df[cat_column].cat.categories))
+
+    # save mapping to database
+    database['mapping'] = mapping
+
     df[cat_columns] = df[cat_columns].apply(lambda x: x.cat.codes)
 
     return df
@@ -391,7 +409,14 @@ def preprocess(strategy):
 
     df_test, y_test, _ = impute(df_test, y_test, strategy)
 
-    X_train, X_test = df_train.values, df_test.values
+    # something returns an array already
+    if not isinstance(df_train, (np.ndarray, np.generic) ):
+        X_train, X_test = df_train.values, df_test.values
+    # if is np array
+    else:
+        X_train, X_test = df_train, df_test
+        df_train, df_test = pd.DataFrame(df_train), pd.DataFrame(df_test)
+
     # try the preprocessed training data with a tree
     m, score = build_tree(X_train, y_train)
 
@@ -453,11 +478,8 @@ def get_data_structure():
     """
     Find out about the maximum and minimum values for each feature.
     """
-    # find out, if features have been dropped
-    if len(database['raw_data']['headers']) != len(database['preprocessed_data']['headers']):
-        [X_train, X_test, y_train, y_test, headers] = get_data('preprocessed_data')
-    else:
-        [X_train, X_test, y_train, y_test, headers] = get_data('raw_data')
+
+    [X_train, X_test, y_train, y_test, headers] = get_data('preprocessed_data')
 
     # slice off the label
     feature_names = headers[1:]
@@ -476,6 +498,10 @@ def get_data_structure():
     return [[feature_names[i], mins[i], maxs[i], steps[i]] for i in range(len(feature_names))]
 
 
+def get_mapping():
+    return database['mapping']
+
+
 def get_slider_config():
     """
     Create a dictionary which can be looped through in the html template to produce a dynamic number of sliders
@@ -486,8 +512,16 @@ def get_slider_config():
     config = []
 
     for [header, min_, max_, step] in a:
+        is_cat = False
+        codes = None
+        if isinstance(feature_layout[header], Categorical):
+            codes = get_mapping()[header]
+            is_cat = True
+            step = 1
         slider = {
             'name': header,
+            'is_cat': is_cat,
+            'codes': codes,
             'slider_id': f'{header}_slider',
             'value_id': f'{header}_value',
             'min': min_,
@@ -521,7 +555,11 @@ def get_sample_pred():
     """
     For displaying sample and prediction in the deployment section.
     """
-    return database['sample'], database['prediction']
+    feature_names = database['preprocessed_data']['headers'][1:]
+    sample = database['sample']
+    if sample is not None:
+        sample = [(feature_names[i], sample[i]) for i in range(len(feature_names))]
+    return sample, database['prediction']
 
 
 def decision_tree_path(sample, regressor, headers):

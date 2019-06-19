@@ -2,6 +2,8 @@ from flask_wtf import FlaskForm
 from wtforms import SubmitField, IntegerField, FloatField, SelectField, ValidationError
 from wtforms.validators import DataRequired, NumberRange, InputRequired
 
+import utils
+
 
 class LessOrEqualThan(object):
     """
@@ -30,7 +32,8 @@ class LessOrEqualThan(object):
 
 class RequestDataForm(FlaskForm):
 
-    feature_count = IntegerField('Number of features', validators=[DataRequired(), NumberRange(min=1, max=50)])
+    feature_count = IntegerField('Number of features', validators=[DataRequired(),
+                                                                   NumberRange(min=1, max=utils.get_max_features())])
 
     effective_rank = IntegerField('Effective Rank', validators=[DataRequired(), LessOrEqualThan('feature_count')])
 

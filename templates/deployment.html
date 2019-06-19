@@ -8,7 +8,7 @@
                 <legend class="border-bottom mb-4">Feed the model with a sample and predict the label</legend>
                 {% for slider in sliders %}
                     <div class="slidecontainer">
-                        <p>{{ slider['name'] }}</p>
+                        <p>{{ slider['name'] }}</p> {% if slider['is_cat'] %} <p>Category codes: {{ slider['codes'] }}</p> {% endif %}
                         <input type="range" min="{{ slider['min'] }}" max="{{ slider['max'] }}" step="{{ slider['step'] }}" class="slider" id="{{ slider['slider_id'] }}" name="{{ slider['name'] }}">
                         <p>Value: <span id="{{ slider['value_id'] }}"></span></p>
                     </div>
@@ -32,8 +32,8 @@
     </div>
 
     {% if sample %}
-        {% for feature in sample %}
-        <h1>Feature {{ sample.index(feature) }}: {{ feature }}</h1>
+        {% for feature_name, value in sample %}
+        <h1>Feature {{ feature_name }}: {{ value }}</h1>
         {% endfor %}
     {% endif %}
     {% if prediction %}
