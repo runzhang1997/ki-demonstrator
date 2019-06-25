@@ -14,3 +14,13 @@
 ## Start demonstrator
 1. Run app.py
 2. Click on url in console
+
+# Troubleshooting
+
+Problem:
+- ImportError: DLL load failed: The specified module could not be found.
+Solution:
+1. Download numpy-1.16.4+mkl-cp37-cp37m-win_amd64.whl from here: https://www.lfd.uci.edu/~gohlke/pythonlibs/
+2. Open console and go to location of downloaded file
+4. Activate conda environment: conda activate ki-demonstrator_wba_ima
+5. Run: pip install --upgrade --force-reinstall .\numpy-1.16.4+mkl-cp37-cp37m-win_amd64.whl
