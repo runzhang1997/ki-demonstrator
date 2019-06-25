@@ -1,10 +1,5 @@
 # ki-demonstrator_wba_ima
 
-# Setup
-1. Install anaconda: https://www.anaconda.com/
-2. import environment.yml: https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
-3. Install pycharm: https://www.jetbrains.com/pycharm/
-
 ## Setup pycharm
 1. Open pycharm
 2. Go to File/Settings/Project: ki-demonstrator_wba_ima/Project Interpreter
@@ -13,14 +8,7 @@
 
 ## Setup necessary libraries
 1. enter bash and install following libraries
-- Run: pip3 install flask
-- Run: pip3 install flask_wtf
-- Run: pip3 install wtforms
-- Run: pip3 install sklearn
-- Run: pip3 install numpy
-- Run: pip3 install pandas
-- Run: pip3 install graphviz
-- Run: pip3 install pydotplus
+- Run: pip3 install flask flask_wtf wtforms sklearn numpy pandas graphviz pydotplus
 
 ## Start demonstrator
 1. Run app.py
