@@ -11,6 +11,17 @@
 3. Set project interpreter to python.exe of conda environment.
 - For Win10 usually at: C:/Users/<user>/AppData/Local/Continuum/anaconda3/envs/ki-demonstrator_wba_ima/python.exe
 
+## Setup necessary libraries
+1. enter bash and install following libraries
+- Run: pip3 install flask
+- Run: pip3 install flask_wtf
+- Run: pip3 install wtforms
+- Run: pip3 install sklearn
+- Run: pip3 install numpy
+- Run: pip3 install pandas
+- Run: pip3 install graphviz
+- Run: pip3 install pydotplus
+
 ## Start demonstrator
 1. Run app.py
 2. Click on url in console
