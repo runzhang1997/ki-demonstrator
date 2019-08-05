@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bar.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/card.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/slider.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pop_window.css') }}">
 <!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icons/favicon.ico') }}"/>
 <!--===============================================================================================-->
@@ -53,37 +54,37 @@
             <ul class="nav navbar-nav navbar-main" id="main-nav">
                 <li class="navbar-item">
                     <a  href="{{ url_for('introduction') }}">
-                        <span class="icon-arrow-right">Step 1.
-                            <br/><small>Einleitung Use-Case</small>
+                        <span class="icon-arrow-right">
+                           Einleitung Use-Case
                         </span>
                     </a>
                 </li>
                 <li class="navbar-item">
                     <a href="{{ url_for('acquire_data') }}">
                     <!--<a data-toggle="modal" href="#exampleModalCenter">-->
-                        <span class="icon-arrow-right">Step 2.
-                            <br/><small>Daten Selektion</small>
+                        <span class="icon-arrow-right">
+                            Daten Selektion
                         </span>
                     </a>
                 </li>
                 <li class="navbar-item">
                     <a href="{{ url_for('preprocessing') }}">
-                        <span class="icon-arrow-right">Step 3.
-                            <br/><small>Pre-processing</small>
+                        <span class="icon-arrow-right">
+                            Pre-processing
                         </span>
                     </a>
                 </li>
                 <li class="navbar-item">
                     <a href="{{ url_for('training') }}">
-                        <span class="icon-arrow-right">Step 4.
-                            <br/><small>Training</small>
+                        <span class="icon-arrow-right">
+                            Training
                         </span>
                     </a>
                 </li>
                 <li class="navbar-item">
                     <a href="{{ url_for('deployment') }}">
-                        <span class="icon-arrow-right">Step 5.
-                            <br/><small>Evaluation</small>
+                        <span class="icon-arrow-right">
+                            Evaluation
                         </span>
                     </a>
                 </li>

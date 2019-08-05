@@ -67,19 +67,16 @@
 <!-- Next comes the part for the table -->
 <div class="container-table100">
     <div class="wrap-table100">
-        <div class="table100 ver1">
-            <div class="table100-head">
+        <div class="table100">
+
                 <table>
                     <thead><tr>
                         {% for header in headers %}
                         <th> {{ header }} </th>
                         {% endfor %}
                     </tr></thead>
-                </table>
-            </div>
-            <div class="table100-body js-pscroll">
-                <table>
-                    <tbody>
+
+                    <tbody class="table100-body js-pscroll">
                     {% for row in table %}
                     <tr>
                         {% for value in row %}
@@ -92,8 +89,9 @@
                     </tr>
                     {% endfor %}
                     </tbody>
+
                 </table>
-            </div>
+
         </div>
     </div>
     <div class="information">

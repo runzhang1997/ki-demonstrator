@@ -86,7 +86,7 @@ iframe {
 .wrap-table100 {
   float:left;
   width:70%;
-  height: 100%
+  height: 100%;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -94,8 +94,8 @@ iframe {
 }
 .information {
   float: left;
-  width: 30%
-  height: 100%
+  width: 30%;
+  height: 100%;
   //align-items: center;
   justify-content: center;
   flex-wrap: wrap;
