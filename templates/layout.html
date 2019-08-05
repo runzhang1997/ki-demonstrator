@@ -91,19 +91,18 @@
         </div>
     </nav>
 
-    <div class="row">
-        <div class="limiter">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-              {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                  {{ message }}
-                </div>
-              {% endfor %}
-            {% endif %}
-            {% endwith %}
-            {% block page_content %}{% endblock %}
+
+    <div class="limiter">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
         </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% block page_content %}{% endblock %}
     </div>
 
 	<script>
@@ -116,7 +115,6 @@
 	</script>
 
     <script>
-
     const settings={
       fill: '#1abc9c',
       background: '#d7dcdf'
@@ -125,7 +123,7 @@
     const sliders = document.querySelectorAll('.range-slider');
     Array.prototype.forEach.call(sliders,(slider)=>{
       slider.querySelector('input').addEventListener('input', (event)=>{
-        slider.querySelector('span').innerHTML = event.target.value;
+        slider.querySelector('span').innerHTML = event.target.value % 1 === 0 ? event.target.value: Number.parseFloat(event.target.value).toPrecision(4);
         applyFill(event.target);
       });
       applyFill(slider.querySelector('input'));

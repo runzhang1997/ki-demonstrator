@@ -58,13 +58,23 @@
         <div class="card chart-wrap bg list">
             <h3>List</h3>
             <div class="chart">
-                <ul>
-                    <li class="list-item">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-                    <li class="list-item">Aliquam tincidunt mauris eu risus.</li>
-                    <li class="list-item">Vestibulum auctor dapibus neque.</li>
-                    <li class="list-item">Aliquam tincidunt mauris eu risus.</li>
-                    <li class="list-item">Vestibulum auctor dapibus neque.</li>
-                </ul>
+                <form method="POST" action="{{url_for('deployment')}}">
+                        <fieldset class="form-group">
+                            <ul class="slidecontainer">
+                                {% for slider in sliders %}
+                                <li>{{ slider['name'] }}</li>
+                                {% if slider['is_cat'] %}
+                                    <li>Category codes: {{ slider['codes'] }}</li>
+                                {% endif %}
+                                <div class="range-slider">
+                                    <input type="range" min="{{ slider['min'] }}" max="{{ slider['max'] }}" step="{{ slider['step'] }}" class="range-slider__range" id="{{ slider['slider_id'] }}" name="{{ slider['name'] }}">
+                                    <span id="{{ slider['value_id'] }}" class="range-slider__value"></span>
+                                </div>
+                                {% endfor %}
+                                </ul>
+                        </fieldset>
+                        <input type="submit" value="Submit" />
+                </form>
             </div>
         </div>
     </div>

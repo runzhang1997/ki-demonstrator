@@ -4,7 +4,7 @@
 }
 
 .range-slider {
-  width: 100%;
+  width: 90%;
 }
 
 .range-slider__range {
@@ -53,7 +53,6 @@
 }
 
 .range-slider__value {
-  display: inline-block;
   position: relative;
   width: 60px;
   color: #fff;
@@ -81,7 +80,4 @@
   border: 0;
 }
 
-input::-moz-focus-inner,
-input::-moz-focus-outer {
-  border: 0;
-}
+

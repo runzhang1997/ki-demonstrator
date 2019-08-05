@@ -43,45 +43,6 @@
 }
 /*[ Table ]*/
 
-.limiter {
-  width: 1700px;
-  margin: 0 auto;
-}
-
-.container-table100 {
-  width: 100%;
-  background: #fff;
-
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 33px 30px;
-}
-
-.wrap-table100 {
-  //width: 1170px;
-  float:left;
-  width:70%;
-  height: 100%
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 33px 30px;
-}
-.information {
-  float: left;
-  width: 30%
-  height: 100%
-  //align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 33px 30px;
-}
 /*[ Table ]*/
 .table100 {
   background-color: #fff;
