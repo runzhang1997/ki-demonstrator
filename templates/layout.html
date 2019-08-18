@@ -4,10 +4,15 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="KI demonstrator, price prediction" />
+    <meta name="keywords" content="decision tree, price predication" />
+    <meta name="author" content="WBA"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css'>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/alert.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/table.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bar.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/card.css') }}">
@@ -32,12 +37,14 @@
     {% endif %}
 </head>
 <body>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
 	<script src="{{ url_for('static', filename='vendor/select2/select2.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.stickyheader.js') }}"></script>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js'></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
 
     <header class="site-header">
         <div class="container">
@@ -106,36 +113,28 @@
         {% block page_content %}{% endblock %}
     </div>
 
-	<script>
-		$('.js-pscroll').each(function(){
-			var ps = new PerfectScrollbar(this);
-			$(window).on('resize', function(){
-				ps.update();
-			})
-		});
-	</script>
-
     <script>
-    const settings={
-      fill: '#1abc9c',
-      background: '#d7dcdf'
-    }
+        const settings={
+          fill: '#1abc9c',
+          background: '#d7dcdf'
+        }
 
-    const sliders = document.querySelectorAll('.range-slider');
-    Array.prototype.forEach.call(sliders,(slider)=>{
-      slider.querySelector('input').addEventListener('input', (event)=>{
-        slider.querySelector('span').innerHTML = event.target.value % 1 === 0 ? event.target.value: Number.parseFloat(event.target.value).toPrecision(4);
-        applyFill(event.target);
-      });
-      applyFill(slider.querySelector('input'));
-    });
+        const sliders = document.querySelectorAll('.range-slider');
+        Array.prototype.forEach.call(sliders,(slider)=>{
+          slider.querySelector('input').addEventListener('input', (event)=>{
+            slider.querySelector('span').innerHTML = event.target.value % 1 === 0 ? event.target.value: Number.parseFloat(event.target.value).toPrecision(2);
+            applyFill(event.target);
+          });
+         applyFill(slider.querySelector('input'));
+        });
 
-    function applyFill(slider) {
-      const percentage = 100*(slider.value-slider.min)/(slider.max-slider.min);
-      const bg = `linear-gradient(90deg, ${settings.fill} ${percentage}%, ${settings.background} ${percentage+0.1}%)`;
-      slider.style.background = bg;
-    }
+        function applyFill(slider) {
+          const percentage = 100*(slider.value-slider.min)/(slider.max-slider.min);
+          const bg = `linear-gradient(90deg, ${settings.fill} ${percentage}%, ${settings.background} ${percentage+0.1}%)`;
+         slider.style.background = bg;
+        }
     </script>
+
 </body>
 </html>
 

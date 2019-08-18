@@ -2,7 +2,6 @@ from flask import Flask, render_template, flash, url_for, redirect, request
 import utils
 from forms import RequestDataForm, PreprocessingForm
 import os
-import numpy as np
 
 PICTURE_FOLDER = os.path.join('static', 'pictures')
 
@@ -10,8 +9,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['UPLOAD_FOLDER'] = PICTURE_FOLDER
 
-
-data_generator = utils.DataGenerator()
 
 @app.route('/')
 @app.route('/intro/')
@@ -23,35 +20,62 @@ def introduction():
 def acquire_data():
     form = RequestDataForm()
 
-    df_X, df_y = data_generator.get_raw_data()
+    if form.validate_on_submit():
+        flash('Successfully created dataset.', 'success')
+        feature_count = form.feature_count.data
+        effective_rank = form.effective_rank.data
+        noise = form.noise.data
+        # hardcode sample size in training and test set
+        utils.gen_data(1000, 200, feature_count, effective_rank, noise)
+        table, headers = utils.get_table('raw_data')
+        n_samples = len(table)
+        return render_template('acquire_data.html', title='Acquire Data', table=table,
+                               headers=headers, form=form, n_samples=n_samples)
 
-    headers = df_X.columns + df_y.columns
+    # if data has been generated before, show the data
+    if not any(i is None for i in utils.get_data('raw_data')):
+        table, headers = utils.get_table('raw_data')
+        n_samples = len(table)
+        return render_template('acquire_data.html', title='Acquire Data', table=table,
+                               headers=headers, form=form, n_samples=n_samples)
+    # if data has not been generated before
+    else:
+        return render_template('acquire_data.html', title='Acquire Data', form=form)
 
-    table = np.hstack((df_X.values, df_y.values))
-
-    print(table.shape)
-
-    n_samples = table.shape[0]
-
-    return render_template('acquire_data.html', title='Acquire Data', table=table,
-                           headers=headers, form=form, n_samples=n_samples)
 
 @app.route('/preprocessing/', methods=['GET', 'POST'])
 def preprocessing():
     form = PreprocessingForm()
 
-    df_X, df_y = data_generator.get_preprocessed_data()
+    if form.validate_on_submit():
+        flash('Applied preprocessing strategy to dataset.', 'success')
+        strategy = form.strategy.data
+        utils.preprocess(strategy)
+        training_score = utils.get_scores()['training_score']
+        # get processed data
+        table, headers = utils.get_table('preprocessed_data')
+        n_samples = len(table)
+        return render_template('preprocessing.html', title='Preprocessing', table=table,
+                               headers=headers, form=form, training_score=training_score, n_samples=n_samples)
 
-    headers = df_X.columns + df_y.columns
-
-    table = np.hstack((df_X.values, df_y.values))
-
-    print(table.shape)
-
-    n_samples = table.shape[0]
-
-    return render_template('preprocessing.html', title='Preprocessing', table=table,
-                           headers=headers, form=form, n_samples=n_samples)
+    # if data has not been generated before
+    if any(i is None for i in utils.get_data('raw_data')):
+        flash('Please get dataset before continuing.', 'danger')
+        return redirect(url_for('acquire_data'))
+    # if data has not been preprocessed before
+    elif any(i is None for i in utils.get_data('preprocessed_data')):
+        # show raw data
+        table, headers = utils.get_table('raw_data')
+        n_samples = len(table)
+        return render_template('preprocessing.html', title='Preprocessing', table=table,
+                               headers=headers, form=form, n_samples=n_samples)
+    # if data has been preprocessed before
+    else:
+        table, headers = utils.get_table('preprocessed_data')
+        n_samples = len(table)
+        training_score = utils.get_scores()['training_score']
+        return render_template('preprocessing.html', title='Preprocessing', table=table,
+                               headers=headers, form=form, training_score=training_score, n_samples=n_samples)
 
 
 @app.route('/training/', methods=['GET', 'POST'])
@@ -60,7 +84,7 @@ def training():
     sliders is being used for the inputs here."""
 
     if request.method == 'POST':
-        # flash('Successfully trained DecisionTreeRegressor.', 'success')
+        flash('Successfully trained DecisionTreeRegressor.', 'success')
         max_depth = int(request.form['max_depth'])
         min_samples_leaf = int(request.form['min_samples_leaf'])
         max_features = float(request.form['max_features'])
@@ -71,7 +95,7 @@ def training():
 
     # if data has not been generated before
     if any(i is None for i in utils.get_data('raw_data')):
-        # flash('Please get dataset before continuing.', 'danger')
+        flash('Please get dataset before continuing.', 'danger')
         return redirect(url_for('acquire_data'))
 
     # if data has not been preprocessed before

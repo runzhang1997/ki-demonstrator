@@ -1,24 +1,19 @@
 {% extends 'layout.html' %}
 {% block page_content %}
-
-<!-- Some info about the table -->
-
 <!-- Next comes the part for the table -->
 <div class="container-table100">
     <div class="wrap-table100">
-        <div class="table100 ver1">
-            <div class="table100-head">
-                <table>
-                    <thead><tr>
+        <div class="component ">
+            <table class="overflow-y">
+                <thead>
+                    <tr>
                         {% for header in headers %}
                         <th> {{ header }} </th>
                         {% endfor %}
-                    </tr></thead>
-                </table>
-            </div>
-            <div class="table100-body js-pscroll">
-                <table>
-                    <tbody>
+                    </tr>
+                </thead>
+
+                <tbody>
                     {% for row in table %}
                     <tr>
                         {% for value in row %}
@@ -30,9 +25,8 @@
                         {% endfor %}
                     </tr>
                     {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="information">
@@ -46,10 +40,12 @@
                     <li class="list-item">...</li>
                 </ul>
             </div>
+
         </div>
     </div>
 </div>
 
+<!--
 <script>
      $(window).on('load', function(){
      if (sessionStorage.getItem('#exampleModalCenter') !== 'true'){
@@ -58,25 +54,81 @@
         }
      });
 </script>
+-->
 
+<!--
 <div class="container">
     <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
-              <h3 class="pad-bt15">Number of samples</h3><h1>{{ n_samples }}</h1>
+                <h3 class="pad-bt15">Number of samples</h3>
+                <h1>{{ n_samples }}</h1>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
-              <h3 class="pad-bt15">Zeitlicher Fortschritt</h3><p>15%</p>
+                <h3 class="pad-bt15">Number of features</h3>
+                <h1>{{ n_samples }}.</h1>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
-              <h3 class="pad-bt15">Verantwortlichkeit</h3>
+                <h3 class="pad-bt15">Number of effective ranks</h3>
+                <p>1000</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <h3 class="pad-bt15">Noise</h3>
+                <p>1000</p>
             </div>
         </div>
     </div>
 </div>
+-->
 
+<form class="pure-form" method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+
+        {{ form.feature_count.label(class="form-control-label") }}
+        {% if form.feature_count.errors %}
+        {{ form.feature_count(class="form-control form-control-lg is-invalid")}}
+        <div class="invalid-feedback">
+            {% for error in form.feature_count.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% else %}
+        {{ form.feature_count(class="form-control form-control-lg") }}
+        {% endif %}
+
+
+        {{ form.effective_rank.label(class="form-control-label") }}
+        {% if form.effective_rank.errors %}
+        {{ form.effective_rank(class="form-control form-control-lg is-invalid")}}
+        <div class="invalid-feedback">
+            {% for error in form.effective_rank.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% else %}
+        {{ form.effective_rank(class="form-control form-control-lg") }}
+        {% endif %}
+
+
+        {{ form.noise.label(class="form-control-label") }}
+        {% if form.noise.errors %}
+        {{ form.noise(class="form-control form-control-lg is-invalid")}}
+        <div class="invalid-feedback">
+            {% for error in form.noise.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+        {% else %}
+        {{ form.noise(class="form-control form-control-lg") }}
+        {% endif %}
+        {{ form.submit(class="btn btn-outline-info") }}
+    </fieldset>
+</form>
 {% endblock page_content%}

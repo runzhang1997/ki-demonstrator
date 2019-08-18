@@ -16,6 +16,9 @@
   outline: none;
   padding: 0;
   margin: 0;
+
+  float: left;
+  width: 70% !important;
 }
 .range-slider__range::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -52,6 +55,13 @@
   box-shadow: 0 0 0 3px #fff, 0 0 0 6px #1abc9c;
 }
 
+input {
+    display: inline-block !important;
+    outline: none;
+    //float: left;
+    width: auto !important;
+    border: none !important;
+}
 .range-slider__value {
   position: relative;
   width: 60px;
