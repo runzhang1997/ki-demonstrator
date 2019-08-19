@@ -38,37 +38,23 @@ def acquire_data():
 
 @app.route('/preprocessing/', methods=['GET', 'POST'])
 def preprocessing():
-    form = PreprocessingForm()
+    df_X, df_y = data_generator.get_raw_data()
 
-    if form.validate_on_submit():
-        flash('Applied preprocessing strategy to dataset.', 'success')
-        strategy = form.strategy.data
-        utils.preprocess(strategy)
-        training_score = utils.get_scores()['training_score']
-        # get processed data
-        table, headers = utils.get_table('preprocessed_data')
-        n_samples = len(table)
-        return render_template('preprocessing.html', title='Preprocessing', table=table,
-                               headers=headers, form=form, training_score=training_score, n_samples=n_samples)
+    headers = df_X.columns + df_y.columns
 
-    # if data has not been generated before
-    if any(i is None for i in utils.get_data('raw_data')):
-        flash('Please get dataset before continuing.', 'danger')
-        return redirect(url_for('acquire_data'))
-    # if data has not been preprocessed before
-    elif any(i is None for i in utils.get_data('preprocessed_data')):
-        # show raw data
-        table, headers = utils.get_table('raw_data')
-        n_samples = len(table)
-        return render_template('preprocessing.html', title='Preprocessing', table=table,
-                               headers=headers, form=form, n_samples=n_samples)
-    # if data has been preprocessed before
-    else:
-        table, headers = utils.get_table('preprocessed_data')
-        n_samples = len(table)
-        training_score = utils.get_scores()['training_score']
-        return render_template('preprocessing.html', title='Preprocessing', table=table,
-                               headers=headers, form=form, training_score=training_score, n_samples=n_samples)
+    table = np.hstack((df_X.values, df_y.values))
+
+    # print(table.shape)
+
+    strategy = data_generator.preprocessing_stategy
+
+    means = df_X.mean()
+
+    n_samples, n_features = df_X.shape
+
+    return render_template('preprocessing.html', table=table,
+                           headers=headers, n_samples=n_samples,
+                           n_features=n_features, strategy=strategy, means=means)
 
 
 @app.route('/training/', methods=['GET', 'POST'])
