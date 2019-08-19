@@ -87,48 +87,33 @@
 </div>
 -->
 
-<form class="pure-form" method="POST" action="">
-    {{ form.hidden_tag() }}
-    <fieldset class="form-group">
-
-        {{ form.feature_count.label(class="form-control-label") }}
-        {% if form.feature_count.errors %}
-        {{ form.feature_count(class="form-control form-control-lg is-invalid")}}
-        <div class="invalid-feedback">
-            {% for error in form.feature_count.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <h3 class="pad-bt15">Number of samples</h3>
+                <h1>{{ n_samples }}</h1>
+            </div>
         </div>
-        {% else %}
-        {{ form.feature_count(class="form-control form-control-lg") }}
-        {% endif %}
-
-
-        {{ form.effective_rank.label(class="form-control-label") }}
-        {% if form.effective_rank.errors %}
-        {{ form.effective_rank(class="form-control form-control-lg is-invalid")}}
-        <div class="invalid-feedback">
-            {% for error in form.effective_rank.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <h3 class="pad-bt15">Number of Features</h3>
+                <h1>{{ n_features }}</h1>
+            </div>
         </div>
-        {% else %}
-        {{ form.effective_rank(class="form-control form-control-lg") }}
-        {% endif %}
-
-
-        {{ form.noise.label(class="form-control-label") }}
-        {% if form.noise.errors %}
-        {{ form.noise(class="form-control form-control-lg is-invalid")}}
-        <div class="invalid-feedback">
-            {% for error in form.noise.errors %}
-            <span>{{ error }}</span>
-            {% endfor %}
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <h3 class="pad-bt15">Zeitlicher Fortschritt</h3>
+                <h1>15%</h1>
+            </div>
         </div>
-        {% else %}
-        {{ form.noise(class="form-control form-control-lg") }}
-        {% endif %}
-        {{ form.submit(class="btn btn-outline-info") }}
-    </fieldset>
-</form>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <h3 class="pad-bt15">Verantwortlichkeit</h3>
+                <h1>Domänenexperte</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock page_content%}
