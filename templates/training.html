@@ -1,31 +1,39 @@
 {% extends 'layout.html' %}
 {% block page_content %}
-    <h1> some training. </h1>
 
-    <div class="content-section">
-        <form method="POST" action="{{url_for('training')}}">
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Set hyperparameters for the DecisionTreeRegressor</legend>
-                <div class="slidecontainer">
+<!--
+<div class="modal fade-scale" id="trainingModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Training the decision tree.</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{url_for('training')}}">
+                    <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Set hyperparameters for the DecisionTreeRegressor</legend>
+                    <div class="slidecontainer">
                     <p>max_depth</p>
                     <input type="range" min="1" max="30" class="slider" id="max_depth_slider" name="max_depth">
                     <p>Value: <span id="max_depth_value"></span></p>
-                </div>
-                <div class="slidecontainer">
+                    </div>
+                    <div class="slidecontainer">
                     <p>min_samples_leaf</p>
                     <input type="range" min="3" max="30" class="slider" id="min_samples_leaf_slider" name="min_samples_leaf">
                     <p>Value: <span id="min_samples_leaf_value"></span></p>
-                </div>
-                <div class="slidecontainer">
+                    </div>
+                    <div class="slidecontainer">
                     <p>max_features</p>
                     <input type="range" min="0.2" max="1" step="0.2" class="slider" id="max_features_slider" name="max_features">
                     <p>Value: <span id="max_features_value"></span></p>
+                    </div>
+                    </fieldset>
+                        <div class="modal-footer">
+                    <input type="submit" value="Submit" />
+                        </div>
+                    </form>
                 </div>
-            </fieldset>
-            <input type="submit" value="Submit" />
-        </form>
-
-        <!-- JS scripts for all the sliders to display their current value -->
 
         <script>
         var slider = document.getElementById("max_depth_slider");
@@ -55,29 +63,99 @@
         }
         </script>
     </div>
+    </div>
+</div>
 
-    <!-- Some info about the table -->
-
-    <div>
-        <h1>Number of samples: {{ n_samples }}</h1>
-        {% if max_features %}
-            <h1>New params:</h1>
-            <p>Max. Depth (max_depth): {{ max_depth }}</p>
-            <p>Min. samples in end leaf nodes (min_samples_leaf): {{ min_samples_leaf }}</p>
-            <p>Max. available features at each split (max_features): {{ max_features }}</p>
-
-        {% endif %}
-        {% if training_score %}
-            <h1>Score on training set: {{ training_score }}</h1>
-        {% endif %}
-        {% if test_score %}
-            <h1>Score on holdout test set: {{ test_score }}</h1>
+<script>
+        $(window).on('load', function(){
+          if (sessionStorage.getItem('#trainingModal') !== 'true'){
+        $('#trainingModal').modal('show');
+        sessionStorage.setItem('#trainingModal','true');
+        }
+     });
+</script>
+-->
+<div class="container-table100">
+    <div class="wrap-table100">
+        {% if full_filename %}
+        <img src="{{ full_filename }}" alt="DecisionTreeRegressor Image" style='height: 100%; width: 100%; object-fit: contain'>
         {% endif %}
     </div>
+    <div class="information">
+        <div class="card chart-wrap bg list">
+            <h3>Auswahl von Trainingsbedingungen​</h3>
+            <div class="chart">
+                <form method="POST" action="{{url_for('training')}}">
+                    <fieldset class="form-group">
+                        <ul class="slidecontainer">
+                            <li><p>max_depth</p></li>
+                            <div class="range-slider">
+                                <input type="range" min="1" max="30" class="range-slider__range" id="max_depth_slider" name="max_depth">
+                                <span id="max_depth_value" class="range-slider__value"></span>
+                            </div>
 
-    <!-- Show an Image of the decision tree -->
-    {% if full_filename %}
-        <img src="{{ full_filename }}" alt="DecisionTreeRegressor Image">
-    {% endif %}
+                            <li><p>min_samples_leaf</p></li>
+                            <div class="range-slider">
+                                <input type="range" min="3" max="30" class="range-slider__range" id="min_samples_leaf_slider" name="min_samples_leaf">
+                                <span id="min_samples_leaf_value" class="range-slider__value"></span>
+                            </div>
 
+                            <li><p>max_features</p></li>
+                            <div class="range-slider">
+                                <input type="range" min="0.2" max="1" step="0.2" class="range-slider__range" id="max_features_slider" name="max_features">
+                                <span id="max_features_value" class="range-slider__value"></span>
+                            </div>
+                        </ul>
+                    </fieldset>
+                    <button type="submit" class="pure-button pure-button-primary" value="Submit"> Start train </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!--<section id="feature" class="section-padding wow fadeIn delay-05s">-->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+              <div class="item-img">
+                <img src="/static/images/ser01.png">
+              </div>
+              <h3 class="pad-bt15">Training data</h3>
+                <p>Number of samples: {{ n_samples }}</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+              <div class="item-img">
+                <img src="/static/images/ser02.png">
+              </div>
+              <h3 class="pad-bt15">Decision tree</h3>
+               <p>Max. Depth (max_depth): {{ max_depth }}
+            Min. samples in end leaf nodes (min_samples_leaf): {{ min_samples_leaf }}
+            Max. available features at each split (max_features): {{ max_features }}</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+              <div class="item-img">
+                <img src="/static/images/ser03.png">
+              </div>
+              <h3 class="pad-bt15">Training score</h3>
+              <p>Score on training set: {{ training_score }}</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+              <div class="item-img">
+                <img src="/static/images/ser04.png">
+              </div>
+              <h3 class="pad-bt15">Test score</h3>
+              <p>Score on holdout test set: {{ test_score }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!--</section>-->
 {% endblock page_content%}

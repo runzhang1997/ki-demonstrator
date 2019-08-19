@@ -49,4 +49,3 @@ class PreprocessingForm(FlaskForm):
                                                 ('median', 'Impute with median')], validators=[InputRequired()])
 
     submit = SubmitField('Submit')
-
