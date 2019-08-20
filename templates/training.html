@@ -1,85 +1,12 @@
 {% extends 'layout.html' %}
 {% block page_content %}
 
-<!--
-<div class="modal fade-scale" id="trainingModal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Training the decision tree.</h4>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{url_for('training')}}">
-                    <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Set hyperparameters for the DecisionTreeRegressor</legend>
-                    <div class="slidecontainer">
-                    <p>max_depth</p>
-                    <input type="range" min="1" max="30" class="slider" id="max_depth_slider" name="max_depth">
-                    <p>Value: <span id="max_depth_value"></span></p>
-                    </div>
-                    <div class="slidecontainer">
-                    <p>min_samples_leaf</p>
-                    <input type="range" min="3" max="30" class="slider" id="min_samples_leaf_slider" name="min_samples_leaf">
-                    <p>Value: <span id="min_samples_leaf_value"></span></p>
-                    </div>
-                    <div class="slidecontainer">
-                    <p>max_features</p>
-                    <input type="range" min="0.2" max="1" step="0.2" class="slider" id="max_features_slider" name="max_features">
-                    <p>Value: <span id="max_features_value"></span></p>
-                    </div>
-                    </fieldset>
-                        <div class="modal-footer">
-                    <input type="submit" value="Submit" />
-                        </div>
-                    </form>
-                </div>
+<script type="text/javascript"
+        src="http://mbostock.github.com/d3/d3.js?2.9.0"></script>
 
-        <script>
-        var slider = document.getElementById("max_depth_slider");
-        var output = document.getElementById("max_depth_value");
-        output.innerHTML = slider.value;
-
-        slider.oninput = function() {
-          max_depth_value.innerHTML = this.value;
-        }
-        </script>
-        <script>
-        var slider = document.getElementById("min_samples_leaf_slider");
-        var output = document.getElementById("min_samples_leaf_value");
-        output.innerHTML = slider.value;
-
-        slider.oninput = function() {
-          min_samples_leaf_value.innerHTML = this.value;
-        }
-        </script>
-        <script>
-        var slider = document.getElementById("max_features_slider");
-        var output = document.getElementById("max_features_value");
-        output.innerHTML = slider.value;
-
-        slider.oninput = function() {
-          max_features_value.innerHTML = this.value;
-        }
-        </script>
-    </div>
-    </div>
-</div>
-
-<script>
-        $(window).on('load', function(){
-          if (sessionStorage.getItem('#trainingModal') !== 'true'){
-        $('#trainingModal').modal('show');
-        sessionStorage.setItem('#trainingModal','true');
-        }
-     });
-</script>
--->
 <div class="container-table100">
     <div class="wrap-table100">
-        {% if full_filename %}
-        <img src="{{ full_filename }}" alt="DecisionTreeRegressor Image" style='height: 100%; width: 100%; object-fit: contain'>
-        {% endif %}
+        <div id="tree-view"></div>
     </div>
     <div class="information">
         <div class="card chart-wrap bg list">
@@ -90,72 +17,407 @@
                         <ul class="slidecontainer">
                             <li><p>max_depth</p></li>
                             <div class="range-slider">
-                                <input type="range" min="1" max="30" class="range-slider__range" id="max_depth_slider" name="max_depth">
-                                <span id="max_depth_value" class="range-slider__value"></span>
+                                <input type="range" min="1" max="30"
+                                       class="range-slider__range"
+                                       id="max_depth_slider" name="max_depth">
+                                <span id="max_depth_value"
+                                      class="range-slider__value"></span>
                             </div>
 
                             <li><p>min_samples_leaf</p></li>
                             <div class="range-slider">
-                                <input type="range" min="3" max="30" class="range-slider__range" id="min_samples_leaf_slider" name="min_samples_leaf">
-                                <span id="min_samples_leaf_value" class="range-slider__value"></span>
+                                <input type="range" min="3" max="30"
+                                       class="range-slider__range"
+                                       id="min_samples_leaf_slider"
+                                       name="min_samples_leaf">
+                                <span id="min_samples_leaf_value"
+                                      class="range-slider__value"></span>
                             </div>
 
                             <li><p>max_features</p></li>
                             <div class="range-slider">
-                                <input type="range" min="0.2" max="1" step="0.2" class="range-slider__range" id="max_features_slider" name="max_features">
-                                <span id="max_features_value" class="range-slider__value"></span>
+                                <input type="range" min="0.2" max="1" step="0.2"
+                                       class="range-slider__range"
+                                       id="max_features_slider"
+                                       name="max_features">
+                                <span id="max_features_value"
+                                      class="range-slider__value"></span>
                             </div>
                         </ul>
                     </fieldset>
-                    <button type="submit" class="pure-button pure-button-primary" value="Submit"> Start train </button>
+                    <button type="submit"
+                            class="pure-button pure-button-primary"
+                            value="Submit"> Start train
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-    <!--<section id="feature" class="section-padding wow fadeIn delay-05s">-->
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3 col-sm-6 col-xs-12">
+<!--<section id="feature" class="section-padding wow fadeIn delay-05s">-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
-              <div class="item-img">
-                <img src="/static/images/ser01.png">
-              </div>
-              <h3 class="pad-bt15">Training data</h3>
+                <div class="item-img">
+                    <img src="/static/images/ser01.png">
+                </div>
+                <h3 class="pad-bt15">Training data</h3>
                 <p>Number of samples: {{ n_samples }}</p>
             </div>
-          </div>
-          <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-              <div class="item-img">
-                <img src="/static/images/ser02.png">
-              </div>
-              <h3 class="pad-bt15">Decision tree</h3>
-               <p>Max. Depth (max_depth): {{ max_depth }}
-            Min. samples in end leaf nodes (min_samples_leaf): {{ min_samples_leaf }}
-            Max. available features at each split (max_features): {{ max_features }}</p>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-              <div class="item-img">
-                <img src="/static/images/ser03.png">
-              </div>
-              <h3 class="pad-bt15">Training score</h3>
-              <p>Score on training set: {{ training_score }}</p>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-              <div class="item-img">
-                <img src="/static/images/ser04.png">
-              </div>
-              <h3 class="pad-bt15">Test score</h3>
-              <p>Score on holdout test set: {{ test_score }}</p>
-            </div>
-          </div>
         </div>
-      </div>
-    <!--</section>-->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <div class="item-img">
+                    <img src="/static/images/ser02.png">
+                </div>
+                <h3 class="pad-bt15">Decision tree</h3>
+                <p>Max. Depth (max_depth): {{ max_depth }}
+                    Min. samples in end leaf nodes (min_samples_leaf): {{
+                    min_samples_leaf }}
+                    Max. available features at each split (max_features): {{
+                    max_features }}</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <div class="item-img">
+                    <img src="/static/images/ser03.png">
+                </div>
+                <h3 class="pad-bt15">Training score</h3>
+                <p>Score on training set: {{ training_score }}</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <div class="item-img">
+                    <img src="/static/images/ser04.png">
+                </div>
+                <h3 class="pad-bt15">Test score</h3>
+                <p>Score on holdout test set: {{ test_score }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <h3 class="pad-bt15">Number of samples</h3>
+                <h1>{{ n_samples }}</h1>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <h3 class="pad-bt15">Number of Features</h3>
+                <h1>{{ n_features }}</h1>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <h3 class="pad-bt15">Zeitlicher Fortschritt</h3>
+                <h1>90%</h1>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="wrap-item text-center">
+                <h3 class="pad-bt15">Verantwortlichkeit</h3>
+                <h1>KI-Experte</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var m = [0, 120, 20, 120],
+        w = document.getElementById("tree-view").getAttribute("width"),
+        h = document.getElementById("tree-view").getAttribute("height"),
+        i = 0,
+        rect_width = 100,
+        rect_height = 30,
+        max_link_width = 20,
+        min_link_width = 1.5,
+        char_to_pxl = 6,
+        root = JSON.parse('{{ tree_data | tojson | safe}}');
+
+    // Add datasets dropdown
+
+    var tree = d3.layout.tree()
+        .size([h, w]);
+
+    var diagonal = d3.svg.diagonal()
+        .projection(function (d) {
+            return [d.x, d.y];
+        });
+
+    var vis = d3.select("#tree-view").append("svg:svg").append("svg:g");
+
+    // global scale for link width
+    var link_stoke_scale = d3.scale.linear();
+
+    var color_map = d3.scale.category10();
+
+    // stroke style of link - either color or function
+    var stroke_callback = "#ccc";
+
+    function load_dataset(json) {
+        root = json;
+        root.x0 = 0;
+        root.y0 = 0;
+
+        var n_samples = root.samples;
+        var n_labels = root.value.length;
+
+        if (n_labels >= 2) {
+            stroke_callback = mix_colors;
+        } else if (n_labels === 1) {
+            stroke_callback = mean_interpolation(root);
+        }
+
+        link_stoke_scale = d3.scale.linear()
+            .domain([0, n_samples])
+            .range([min_link_width, max_link_width]);
+
+        function toggleAll(d) {
+            if (d && d.children) {
+                d.children.forEach(toggleAll);
+                toggle(d);
+            }
+        }
+
+        // Initialize the display to show a few nodes.
+        root.children.forEach(toggleAll);
+
+        update(root);
+    }
+
+    function update(source) {
+        var duration = d3.event && d3.event.altKey ? 5000 : 500;
+
+        // Compute the new tree layout.
+        var nodes = tree.nodes(root).reverse();
+
+        // Normalize for fixed-depth.
+        nodes.forEach(function (d) {
+            d.y = d.depth * 180;
+        });
+
+        // Update the nodes…
+        var node = vis.selectAll("g.node")
+            .data(nodes, function (d) {
+                return d.id || (d.id = ++i);
+            });
+
+        // Enter any new nodes at the parent's previous position.
+        var nodeEnter = node.enter().append("svg:g")
+            .attr("class", "node")
+            .attr("transform", function (d) {
+                return "translate(" + source.x0 + "," + source.y0 + ")";
+            })
+            .on("click", function (d) {
+                toggle(d);
+                update(d);
+            });
+
+        nodeEnter.append("svg:rect")
+            .attr("x", function (d) {
+                var label = node_label(d);
+                var text_len = label.length * char_to_pxl;
+                var width = d3.max([rect_width, text_len])
+                return -width / 2;
+            })
+            .attr("width", 1e-6)
+            .attr("height", 1e-6)
+            .attr("rx", function (d) {
+                return d.type === "split" ? 2 : 0;
+            })
+            .attr("ry", function (d) {
+                return d.type === "split" ? 2 : 0;
+            })
+            .style("stroke", function (d) {
+                return d.type === "split" ? "steelblue" : "olivedrab";
+            })
+            .style("fill", function (d) {
+                return d._children ? "lightsteelblue" : "#fff";
+            });
+
+        nodeEnter.append("svg:text")
+            .attr("dy", "12px")
+            .attr("text-anchor", "middle")
+            .text(node_label)
+            .style("fill-opacity", 1e-6);
+
+        // Transition nodes to their new position.
+        var nodeUpdate = node.transition()
+            .duration(duration)
+            .attr("transform", function (d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            });
+
+        nodeUpdate.select("rect")
+            .attr("width", function (d) {
+                var label = node_label(d);
+                var text_len = label.length * char_to_pxl;
+                var width = d3.max([rect_width, text_len])
+                return width;
+            })
+            .attr("height", rect_height)
+            .style("fill", function (d) {
+                return d._children ? "lightsteelblue" : "#fff";
+            });
+
+        nodeUpdate.select("text")
+            .style("fill-opacity", 1);
+
+        // Transition exiting nodes to the parent's new position.
+        var nodeExit = node.exit().transition()
+            .duration(duration)
+            .attr("transform", function (d) {
+                return "translate(" + source.x + "," + source.y + ")";
+            })
+            .remove();
+
+        nodeExit.select("rect")
+            .attr("width", 1e-6)
+            .attr("height", 1e-6);
+
+        nodeExit.select("text")
+            .style("fill-opacity", 1e-6);
+
+        // Update the links
+        var link = vis.selectAll("path.link")
+            .data(tree.links(nodes), function (d) {
+                return d.target.id;
+            });
+
+        // Enter any new links at the parent's previous position.
+        link.enter().insert("svg:path", "g")
+            .attr("class", "link")
+            .attr("d", function (d) {
+                var o = {x: source.x0, y: source.y0};
+                return diagonal({source: o, target: o});
+            })
+            .transition()
+            .duration(duration)
+            .attr("d", diagonal)
+            .style("stroke-width", function (d) {
+                return link_stoke_scale(d.target.samples);
+            })
+            .style("stroke", stroke_callback);
+
+        // Transition links to their new position.
+        link.transition()
+            .duration(duration)
+            .attr("d", diagonal)
+            .style("stroke-width", function (d) {
+                return link_stoke_scale(d.target.samples);
+            })
+            .style("stroke", stroke_callback);
+
+        // Transition exiting nodes to the parent's new position.
+        link.exit().transition()
+            .duration(duration)
+            .attr("d", function (d) {
+                var o = {x: source.x, y: source.y};
+                return diagonal({source: o, target: o});
+            })
+            .remove();
+
+        // Stash the old positions for transition.
+        nodes.forEach(function (d) {
+            d.x0 = d.x;
+            d.y0 = d.y;
+        });
+    }
+
+    // Toggle children.
+    function toggle(d) {
+        if (d.children) {
+            d._children = d.children;
+            d.children = null;
+        } else {
+            d.children = d._children;
+            d._children = null;
+        }
+    }
+
+    // Node labels
+    function node_label(d) {
+        if (d.type === "leaf") {
+            // leaf
+            var formatter = d3.format(".2f");
+            var vals = [];
+            d.value.forEach(function (v) {
+                vals.push(formatter(v));
+            });
+            return "[" + vals.join(", ") + "]";
+        } else {
+            // split node
+            return d.label;
+        }
+    }
+
+    /**
+     * Mixes colors according to the relative frequency of classes.
+     */
+    function mix_colors(d) {
+        var value = d.target.value;
+        var sum = d3.sum(value);
+        var col = d3.rgb(0, 0, 0);
+        value.forEach(function (val, i) {
+            var label_color = d3.rgb(color_map(i));
+            var mix_coef = val / sum;
+            col.r += mix_coef * label_color.r;
+            col.g += mix_coef * label_color.g;
+            col.b += mix_coef * label_color.b;
+        });
+        return col;
+    }
+
+
+    /**
+     * A linear interpolator for value[0].
+     *
+     * Useful for link coloring in regression trees.
+     */
+    function mean_interpolation(root) {
+
+        var max = 1e-9,
+            min = 1e9;
+
+        function recurse(node) {
+            if (node.value[0] > max) {
+                max = node.value[0];
+            }
+
+            if (node.value[0] < min) {
+                min = node.value[0];
+            }
+
+            if (node.children) {
+                node.children.forEach(recurse);
+            }
+        }
+
+        recurse(root);
+
+        var scale = d3.scale.linear().domain([min, max])
+            .range(["#2166AC", "#B2182B"]);
+
+        function interpolator(d) {
+            return scale(d.target.value[0]);
+        }
+
+        return interpolator;
+    }
+
+    update(root);
+
+
+</script>
+<!--</section>-->
 {% endblock page_content%}
