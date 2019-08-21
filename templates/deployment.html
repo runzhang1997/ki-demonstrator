@@ -33,61 +33,14 @@
                         </ul>
                     </fieldset>
                     <button type="submit"
-                            class="pure-button pure-button-primary"
-                            value="Submit"> Start train
+                             class="btn btn-primary"
+                            value="Submit"> ...
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<section id="feature" class="section-padding wow fadeIn delay-05s">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="wrap-item text-center">
-                    <div class="item-img">
-                        <img src="/static/images/ser01.png">
-                    </div>
-                    <h3 class="pad-bt15">Training data</h3>
-                    <p>Number of samples: {{ n_samples }}</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="wrap-item text-center">
-                    <div class="item-img">
-                        <img src="/static/images/ser02.png">
-                    </div>
-                    <h3 class="pad-bt15">Decision tree</h3>
-                    <p>Max. Depth (max_depth): {{ max_depth }}
-                        Min. samples in end leaf nodes (min_samples_leaf): {{
-                        min_samples_leaf }}
-                        Max. available features at each split (max_features): {{
-                        max_features }}</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="wrap-item text-center">
-                    <div class="item-img">
-                        <img src="/static/images/ser03.png">
-                    </div>
-                    <h3 class="pad-bt15">Prediction result</h3>
-                    <p>Prediction for given sample: {{ prediction }}</p>
-
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="wrap-item text-center">
-                    <div class="item-img">
-                        <img src="/static/images/ser04.png">
-                    </div>
-                    <h3 class="pad-bt15">Training score</h3>
-                    <p>Score on training set: {{ training_score }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <div class="container">
     <div class="row">
