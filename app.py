@@ -25,41 +25,36 @@ def introduction():
 
 @app.route('/acquire_data/', methods=['GET', 'POST'])
 def acquire_data():
-    df_X, df_y = data_generator.get_raw_data()
-
-    # print(df_X.shape, df_y.shape)
+    df_X, df_y = data_generator.get_data(0)
 
     headers = np.hstack((df_X.columns, df_y.columns))
 
     table = np.hstack((df_X.values, df_y.values))
 
-    n_samples, n_features = df_X.shape
+    n_samples = df_X.shape[0]
 
     return render_template('acquire_data.html', table=table,
-                           headers=headers, n_samples=n_samples,
-                           n_features=n_features)
+                           headers=headers, n_samples=n_samples)
 
 
 @app.route('/preprocessing/', methods=['GET', 'POST'])
 def preprocessing():
-    df_X, df_y = data_generator.get_raw_data()
 
-    headers = df_X.columns + df_y.columns
+    preprocessing_step = 0
+
+    if preprocessing_step in request.form:
+        preprocessing_step = int(request.form["preprocessing_step"])
+
+    df_X, df_y = data_generator.get_data(preprocessing_step)
+
+    headers = np.hstack((df_X.columns, df_y.columns))
 
     table = np.hstack((df_X.values, df_y.values))
 
-    # print(table.shape)
-
-    strategy = data_generator.preprocessing_stategy
-
-    means = df_X.mean()
-
-    n_samples, n_features = df_X.shape
+    n_samples = df_X.shape[0]
 
     return render_template('preprocessing.html', table=table,
-                           headers=headers, n_samples=n_samples,
-                           n_features=n_features, strategy=strategy,
-                           means=means)
+                           headers=headers, n_samples=n_samples)
 
 
 @app.route('/training/', methods=['GET', 'POST'])
@@ -80,9 +75,7 @@ def training():
                               min_samples_leaf=min_samples_leaf,
                               max_depth=max_depth)
 
-
-
-    df_X, df_y = data_generator.get_preprocessed_data()
+    df_X, df_y = data_generator.get_data(2)
 
     # regressor = regressor.fit(df_X, df_y)
 
@@ -95,9 +88,9 @@ def training():
             {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
              "label": "RM <= 7.44", "type": "leaf"}]}
 
-    import json
+    n_samples = df_X.shape[0]
 
-    return render_template('training.html', tree_data=json_data)
+    return render_template('training.html', tree_data=json_data, n_samples=n_samples)
 
 
 @app.route('/deployment/', methods=['GET', 'POST'])
