@@ -1,21 +1,73 @@
 {% extends 'layout.html' %}
 {% block page_content %}
 
+<nav class="navbar navbar-menu" role="navigation">
+    <div class="navbar-main-container">
+        <ul class="nav navbar-nav navbar-main" id="main-nav">
+            <li class="navbar-item">
+                <a  href="{{ url_for('introduction') }}">
+                        <span class="icon-arrow-right">
+                           Einleitung Use-Case
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a href="{{ url_for('acquire_data') }}">
+                    <!--<a data-toggle="modal" href="#exampleModalCenter">-->
+                    <span class="icon-arrow-right">
+                            Daten Selektion
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a href="{{ url_for('preprocessing') }}">
+                        <span class="icon-arrow-right">
+                            Pre-processing
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a class="current" href="{{ url_for('training') }}">
+                        <span class="icon-arrow-right">
+                            Training
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a href="{{ url_for('deployment') }}">
+                        <span class="icon-arrow-right">
+                            Deployment
+                        </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 <script type="text/javascript"
         src="http://mbostock.github.com/d3/d3.js?2.9.0"></script>
 
+<div class="limiter">
 <div class="container-table100">
     <div class="wrap-table100">
         <div id="tree-view"></div>
     </div>
+
     <div class="information">
         <div class="card chart-wrap bg list">
-            <h3>Auswahl von Trainingsbedingungen​</h3>
+            <h3>Erläuterung Prozessschritt​</h3>
             <div class="chart">
+                <ul>
+                    <li class="list-item">Aufteilung der Daten in Training- und Testdaten</li>
+                    <li class="list-item">Auswahl und Training eines Models auf Trainingsdaten</li>
+                    <li class="list-item">Evaluation durch Testdatensatz</li>
+                </ul>
+<h3>Trainingsparameter​</h3>
                 <form method="POST" action="{{url_for('training')}}">
+                    <ul class="slidecontainer">
                     <fieldset class="form-group">
-                        <ul class="slidecontainer">
-                            <li><p>max_depth</p></li>
+
+                            <li><p>Training/Test-Verhältnis</p></li>
                             <div class="range-slider">
                                 <input type="range" min="1" max="30"
                                        class="range-slider__range"
@@ -24,7 +76,7 @@
                                       class="range-slider__value"></span>
                             </div>
 
-                            <li><p>min_samples_leaf</p></li>
+                            <li><p>Min. Samples in Blättern</p></li>
                             <div class="range-slider">
                                 <input type="range" min="3" max="30"
                                        class="range-slider__range"
@@ -34,7 +86,7 @@
                                       class="range-slider__value"></span>
                             </div>
 
-                            <li><p>max_features</p></li>
+                            <li><p>Max. Tiefe</p></li>
                             <div class="range-slider">
                                 <input type="range" min="0.2" max="1" step="0.2"
                                        class="range-slider__range"
@@ -43,11 +95,12 @@
                                 <span id="max_features_value"
                                       class="range-slider__value"></span>
                             </div>
-                        </ul>
+
                     </fieldset>
+                    </ul>
                     <button type="submit"
-                            class="pure-button pure-button-primary"
-                            value="Submit"> Start train
+                            class="btn btn-primary"
+                            value="Submit"> Trainieren
                     </button>
                 </form>
             </div>
@@ -60,76 +113,53 @@
     <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
+                <!--
                 <div class="item-img">
                     <img src="/static/images/ser01.png">
                 </div>
-                <h3 class="pad-bt15">Training data</h3>
+                -->
+                <h3 class="pad-bt15">Number of samples</h3>
                 <p>Number of samples: {{ n_samples }}</p>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
+                <!--
                 <div class="item-img">
                     <img src="/static/images/ser02.png">
                 </div>
-                <h3 class="pad-bt15">Decision tree</h3>
-                <p>Max. Depth (max_depth): {{ max_depth }}
-                    Min. samples in end leaf nodes (min_samples_leaf): {{
-                    min_samples_leaf }}
-                    Max. available features at each split (max_features): {{
-                    max_features }}</p>
+                -->
+                <h3 class="pad-bt15">Number of Features</h3>
+                <p></p>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
+            <!--
                 <div class="item-img">
                     <img src="/static/images/ser03.png">
                 </div>
-                <h3 class="pad-bt15">Training score</h3>
-                <p>Score on training set: {{ training_score }}</p>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <div class="item-img">
-                    <img src="/static/images/ser04.png">
-                </div>
-                <h3 class="pad-bt15">Test score</h3>
-                <p>Score on holdout test set: {{ test_score }}</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Number of samples</h3>
-                <h1>{{ n_samples }}</h1>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Number of Features</h3>
-                <h1>{{ n_features }}</h1>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
+                -->
                 <h3 class="pad-bt15">Zeitlicher Fortschritt</h3>
                 <h1>90%</h1>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
+                <!--
+                <div class="item-img">
+                    <img src="/static/images/ser04.png">
+                </div>
+                -->
                 <h3 class="pad-bt15">Verantwortlichkeit</h3>
                 <h1>KI-Experte</h1>
+                <!--<p>Score on holdout test set: {{ test_score }}</p>-->
             </div>
         </div>
     </div>
 </div>
 
+</div>
 
 <script type="text/javascript">
 

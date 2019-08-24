@@ -10,8 +10,6 @@
 }
 .component {
 	line-height: 1.5em;
-	margin: 0 auto;
-	padding: 2em 0 3em;
 	width: 100%;
 	max-width: 1000px;
 	overflow: hidden;
@@ -27,8 +25,8 @@ table {
     background: #fff;
 }
 td, th {
-    padding: 0.75em 1.5em;
-    text-align: left;
+    padding: 0.75em 1em;
+    text-align: center;
 }
 	td.err {
 		background-color: #e992b9;

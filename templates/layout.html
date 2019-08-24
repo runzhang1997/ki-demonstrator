@@ -71,62 +71,17 @@
     </div>
 </header>
 
-<nav class="navbar navbar-menu" role="navigation">
-    <div class="navbar-main-container">
-        <ul class="nav navbar-nav navbar-main" id="main-nav">
-            <li class="navbar-item">
-                <a href="{{ url_for('introduction') }}">
-                        <span class="icon-arrow-right">
-                           Einleitung Use-Case
-                        </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('acquire_data') }}">
-                    <!--<a data-toggle="modal" href="#exampleModalCenter">-->
-                    <span class="icon-arrow-right">
-                            Daten Selektion
-                        </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('preprocessing') }}">
-                        <span class="icon-arrow-right">
-                            Pre-processing
-                        </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('training') }}">
-                        <span class="icon-arrow-right">
-                            Training
-                        </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('deployment') }}">
-                        <span class="icon-arrow-right">
-                            Evaluation
-                        </span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</nav>
-
-
-<div class="limiter">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }}">
-        {{ message }}
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-    {% block page_content %}{% endblock %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }}">
+    {{ message }}
 </div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+{% block page_content %}{% endblock %}
+
 
 <script>
     const settings = {
@@ -135,12 +90,12 @@
     }
 
     const sliders = document.querySelectorAll('.range-slider');
-    Array.prototype.forEach.call(sliders, (slider) = > {
-        slider.querySelector('input').addEventListener('input', (event) = > {
-        slider.querySelector('span').innerHTML = event.target.value % 1 === 0 ? event.target.value : Number.parseFloat(event.target.value).toPrecision(2);
-    applyFill(event.target);
-    })
-    ;
+    Array.prototype.forEach.call(sliders,(slider)=>{
+      slider.querySelector('input').addEventListener('input', (event)=>{
+        slider.querySelector('span').innerHTML = event.target.value % 1 === 0 ? event.target.value: Number.parseFloat(event.target.value).toPrecision(4);
+        applyFill(event.target);
+      });
+
     applyFill(slider.querySelector('input'));
     })
     ;

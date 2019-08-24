@@ -34,15 +34,6 @@ a:hover {
 	text-decoration: none;
 }
 
-
-textarea {
-  display: block;
-  outline: none;
-}
-
-textarea:focus, input:focus {
-  border-color: transparent !important;
-}
 /* ------------------------------------ */
 button {
 	outline: none !important;
@@ -64,36 +55,19 @@ iframe {
 }
 
 .container-table100 {
-  width: 100%;
   background: #fff;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-wrap: wrap;
 }
 
 .wrap-table100 {
-  float:left;
-  width:70%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
+  flex:70%;
   flex-wrap: wrap;
-  border-radius: 10px;
-  padding: 33px 30px;
 }
 .information {
-  float: left;
-  width: 30%;
-  height: 100%;
-  //align-items: center;
-  justify-content: center;
+  flex: 30%;
   flex-wrap: wrap;
-  padding: 33px 30px;
+  padding: 0px 30px;
 }
 
 .introimg{

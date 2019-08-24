@@ -25,31 +25,27 @@
   -webkit-transition: 0.2s background ease-in-out;
   transition: 0.2s background ease-in-out;
 }
-.navbar-main > li > a small {
-  color: #fff;
-  font-size: 15px;
-  font-weight: 300;
-  text-transform: none;
-}
+
 .navbar-main > li > a:hover,
 .navbar-main > li > a:focus,
 .navbar-main > li > a.active {
   background-color: #ffffff;
   color: #0069b4;
 }
-.navbar-main > li > a:hover small,
-.navbar-main > li > a:focus small,
-.navbar-main > li > a.active small {
-  color: #000;
-}
+
+.navbar-item .current{
+    background-color: #ffffff;
+    color: #0069b4;
+ }
+ .navbar-item .current:after{
+    border-left-color: #ffffff;
+ }
 @media (min-width: 768px) {
   .navbar-main-container {
     background-color: #5c9ee8;
     background-repeat: repeat-x;
     background-image: -webkit-gradient(linear, 50% top, 50% top, from(#5c9ee8), to(#0069b4));
     background-image: -webkit-linear-gradient(left, color-stop(#5c9ee8 50%), color-stop(#0069b4 50%));
-    /*background-image: -moz-linear-gradient(left, #5c9ee8 50%, #0069b4 50%);
-    background-image: linear-gradient(to right, #5c9ee8 50%, #0069b4 50%);*/
     background-image: -moz-linear-gradient(left, #5c9ee8 50%, #0069b4 50%);
     background-image: linear-gradient(to right, #5c9ee8 50%, #0069b4 50%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#5c9ee8', endColorstr='#0069b4', GradientType=1);

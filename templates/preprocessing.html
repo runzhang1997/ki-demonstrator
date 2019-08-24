@@ -1,7 +1,48 @@
 {% extends 'layout.html' %}
 {% block page_content %}
-
-
+<nav class="navbar navbar-menu" role="navigation">
+    <div class="navbar-main-container">
+        <ul class="nav navbar-nav navbar-main" id="main-nav">
+            <li class="navbar-item">
+                <a  href="{{ url_for('introduction') }}">
+                        <span class="icon-arrow-right">
+                           Einleitung Use-Case
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a href="{{ url_for('acquire_data') }}">
+                    <!--<a data-toggle="modal" href="#exampleModalCenter">-->
+                    <span class="icon-arrow-right">
+                            Daten Selektion
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a class="current" href="{{ url_for('preprocessing') }}">
+                        <span class="icon-arrow-right">
+                            Pre-processing
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a href="{{ url_for('training') }}">
+                        <span class="icon-arrow-right">
+                            Training
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a href="{{ url_for('deployment') }}">
+                        <span class="icon-arrow-right">
+                            Deployment
+                        </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="limiter">
 <div class="container-table100">
     <div class="wrap-table100">
         <div class="component">
@@ -31,25 +72,21 @@
     </div>
     <div class="information">
         <div class="card chart-wrap bg list">
-            <h3>List</h3>
+            <h3>Erläuterung Prozessschritt</h3>
             <div class="chart">
                 <ul>
-                   <li class="list-item">Aus verschiedenen Datenquellen werden die notwendigen Informationen zusammengeführt.</li>
-                    <li class="list-item">Die Zusammenführung der Daten erfolgt über sogenannte Features.</li>
-                    <li class="list-item">Zunächst müssen Feature definiert werden, sodass Daten aus verschiedenen Quellen einander zugeordnet werden können</li>
-                    <li class="list-item">...</li>
+                   <li class="list-item">Für die KI erfolgreich zu trainieren müssen Daten zunächst aufbereitet werden</li>
                 </ul>
 
-                <h4>Kategorische Spalten</h4>
-
-                <button type="button" class="btn btn-primary">One-Hot Encoding</button>
-
-                <h4>NaN</h4>
-
-                <button type="button" class="btn btn-primary">Entferne Reihen</button><br>
-                <button type="button" class="btn btn-primary">Entferne Spalten</button><br>
-                <button type="button" class="btn btn-primary">Mit Mittelwert auffüllen</button>
-
+                <h3>Pre-Processing Schritte</h3>
+                <ul>
+                    <li class="list-item">Feature Extraktion: Textinformationen in numerische Werte übersetzen</li>
+                    <button type="button" class="btn btn-primary">One-Hot Encoding</button>
+                    <li class="list-item">Datenbereinigung: Auffüllen von leeren Einträgen, Aussortieren von (unrealistischen) Ausreißern</li>
+                    <button type="button" class="btn btn-primary">Entferne Reihen</button><br>
+                    <button type="button" class="btn btn-primary">Entferne Spalten</button><br>
+                    <button type="button" class="btn btn-primary">Mit Mittelwert auffüllen</button>
+                </ul>
             </div>
         </div>
     </div>
@@ -82,5 +119,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 {% endblock page_content%}

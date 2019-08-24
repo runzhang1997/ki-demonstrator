@@ -1,6 +1,50 @@
 {% extends 'layout.html' %}
 {% block page_content %}
 
+<nav class="navbar navbar-menu" role="navigation">
+    <div class="navbar-main-container">
+        <ul class="nav navbar-nav navbar-main" id="main-nav">
+            <li class="navbar-item">
+                <a  href="{{ url_for('introduction') }}">
+                        <span class="icon-arrow-right">
+                           Einleitung Use-Case
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a href="{{ url_for('acquire_data') }}">
+                    <!--<a data-toggle="modal" href="#exampleModalCenter">-->
+                    <span class="icon-arrow-right">
+                            Daten Selektion
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a href="{{ url_for('preprocessing') }}">
+                        <span class="icon-arrow-right">
+                            Pre-processing
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a href="{{ url_for('training') }}">
+                        <span class="icon-arrow-right">
+                            Training
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a class="current" href="{{ url_for('deployment') }}">
+                        <span class="icon-arrow-right">
+                            Deployment
+                        </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="limiter">
+
 <div class="container-table100">
     <div class="wrap-table100">
         Todo: Tree visualization
@@ -16,8 +60,8 @@
                             <div class="range-slider">
                                 <input type="range" min="1" max="30"
                                        class="range-slider__range"
-                                       id="max_depth_slider" name="max_depth">
-                                <span id="max_depth_value"
+                                       id="max_Anzahl_slider" name="max_Anzahl">
+                                <span id="max_Anzahl_value"
                                       class="range-slider__value"></span>
                             </div>
 
@@ -30,91 +74,93 @@
                                 <span id="min_samples_leaf_value"
                                       class="range-slider__value"></span>
                             </div>
-                        </ul>
+                            <li><p>Größe der Kavitäten</p></li>
+                            <div class="range-slider">
+                                <input type="range" min="1" max="30"
+                                       class="range-slider__range"
+                                       id="max_depth_slider" name="max_depth">
+                                <span id="max_depth_value"
+                                      class="range-slider__value"></span>
+                            </div>
+
+                            <li><p>Material Bauteil</p></li>
+                            <div class="range-slider">
+                                <input type="range" min="3" max="30"
+                                       class="range-slider__range"
+                                       id="min_Material_leaf_slider"
+                                       name="min_Material_leaf">
+                                <span id="min_Material_leaf_value"
+                                      class="range-slider__value"></span>
+                            </div>
+                            <li><p>Abmaße des Werkzeugs</p></li>
+                            <div class="range-slider">
+                                <input type="range" min="1" max="30"
+                                       class="range-slider__range"
+                                       id="max_Werkzeugs_slider" name="max_Werkzeugs">
+                                <span id="max_Werkzeugs_value"
+                                      class="range-slider__value"></span>
+                            </div>
                     </fieldset>
+                    </ul>
                     <button type="submit"
-                            class="pure-button pure-button-primary"
-                            value="Submit"> Start train
+                            class="btn btn-primary"
+                            value="Submit"> Predict
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<section id="feature" class="section-padding wow fadeIn delay-05s">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="wrap-item text-center">
-                    <div class="item-img">
-                        <img src="/static/images/ser01.png">
-                    </div>
-                    <h3 class="pad-bt15">Training data</h3>
-                    <p>Number of samples: {{ n_samples }}</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="wrap-item text-center">
-                    <div class="item-img">
-                        <img src="/static/images/ser02.png">
-                    </div>
-                    <h3 class="pad-bt15">Decision tree</h3>
-                    <p>Max. Depth (max_depth): {{ max_depth }}
-                        Min. samples in end leaf nodes (min_samples_leaf): {{
-                        min_samples_leaf }}
-                        Max. available features at each split (max_features): {{
-                        max_features }}</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="wrap-item text-center">
-                    <div class="item-img">
-                        <img src="/static/images/ser03.png">
-                    </div>
-                    <h3 class="pad-bt15">Prediction result</h3>
-                    <p>Prediction for given sample: {{ prediction }}</p>
-
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="wrap-item text-center">
-                    <div class="item-img">
-                        <img src="/static/images/ser04.png">
-                    </div>
-                    <h3 class="pad-bt15">Training score</h3>
-                    <p>Score on training set: {{ training_score }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <div class="container">
     <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
+                <!--
+                <div class="item-img">
+                    <img src="/static/images/ser01.png">
+                </div>
+                -->
                 <h3 class="pad-bt15">Number of samples</h3>
-                <h1>{{ n_samples }}</h1>
+                <p>Number of samples: {{ n_samples }}</p>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
+                <!--
+                <div class="item-img">
+                    <img src="/static/images/ser02.png">
+                </div>
+                -->
                 <h3 class="pad-bt15">Number of Features</h3>
-                <h1>{{ n_features }}</h1>
+                <p></p>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
+                <!--
+                <div class="item-img">
+                    <img src="/static/images/ser03.png">
+                </div>
+                -->
                 <h3 class="pad-bt15">Zeitlicher Fortschritt</h3>
-                <h1>100%</h1>
+                <h1>90%</h1>
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="wrap-item text-center">
+                <!--
+                <div class="item-img">
+                    <img src="/static/images/ser04.png">
+                </div>
+                -->
                 <h3 class="pad-bt15">Verantwortlichkeit</h3>
                 <h1>Domänenexperte</h1>
+                <!--<p>Score on holdout test set: {{ test_score }}</p>-->
             </div>
         </div>
     </div>
+</div>
+    
 </div>
 {% endblock page_content%}
