@@ -31,11 +31,10 @@ def acquire_data():
 
     table = np.hstack((df_X.values, df_y.values))
 
-    n_samples, n_features = df_X.shape
+    n_samples = df_X.shape[0]
 
     return render_template('acquire_data.html', table=table,
-                           headers=headers, n_samples=n_samples,
-                           n_features=n_features)
+                           headers=headers, n_samples=n_samples)
 
 
 @app.route('/preprocessing/', methods=['GET', 'POST'])
@@ -52,11 +51,10 @@ def preprocessing():
 
     table = np.hstack((df_X.values, df_y.values))
 
-    n_samples, n_features = df_X.shape
+    n_samples = df_X.shape[0]
 
     return render_template('preprocessing.html', table=table,
-                           headers=headers, n_samples=n_samples,
-                           n_features=n_features)
+                           headers=headers, n_samples=n_samples)
 
 
 @app.route('/training/', methods=['GET', 'POST'])
@@ -90,9 +88,9 @@ def training():
             {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
              "label": "RM <= 7.44", "type": "leaf"}]}
 
-    import json
+    n_samples = df_X.shape[0]
 
-    return render_template('training.html', tree_data=json_data)
+    return render_template('training.html', tree_data=json_data, n_samples=n_samples)
 
 
 @app.route('/deployment/', methods=['GET', 'POST'])
