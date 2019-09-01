@@ -59,11 +59,7 @@
                 <tr>
                     {% for value in row %}
                     {% if value is number %}
-                        {% if value == nan %}
-                        <td class="err" > {{ value}}</td>
-                        {% else %}
-                        <td> {{ "%.2f"|format(value)}}</td>
-                        {% endif %}
+                    <td> {{ "%.2f"|format(value)}}</td>
                     {% else %}
                     <td> {{ value }}</td>
                     {% endif %}
@@ -84,8 +80,7 @@
 
                 <h3>Pre-Processing Schritte</h3>
                 <ul>
-                    <li class="list-item">Datenbereinigung: Auffüllen von leeren Einträgen, Aussortieren von (unrealistischen) Ausreißern</li>
-                    <a href="{{ url_for('preprocessing') }}?step=1"><button type="button" class="btn btn-primary">Entferne Reihen</button></a>
+                    <li class="list-item">Feature Extraktion: Textinformationen in numerische Werte übersetzen</li>
                 </ul>
             </div>
         </div>
@@ -121,13 +116,4 @@
     </div>
 </div>
 </div>
-
-<script>
-function checkNaN(x) {
-  if (isNaN(x)) {
-    return 1;
-  }
-  return 0;
-}
-</script>
 {% endblock page_content%}

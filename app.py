@@ -2,11 +2,49 @@ from flask import Flask, render_template, flash, url_for, redirect, request, \
     jsonify
 from utils.generator import DataGenerator
 import os
+import json
 import numpy as np
 import time
 from sklearn.tree import DecisionTreeRegressor
 from utils.tree_export import tree_to_json
 
+
+def rules(clf, features, labels, node_index=0):
+    node = {}
+    if clf.tree_.children_left[node_index] == -1:  # indicates leaf
+        # count_labels = zip(clf.tree_.value[node_index, 0], labels)
+        # node['name'] = ', '.join(('{} of {}'.format(int(count), label)
+        #                          for count, label in count_labels))
+        node['type'] = 'leaf'
+        node['value'] = clf.tree_.value[node_index, 0].tolist()
+        node['error'] = np.float64(clf.tree_.impurity[node_index]).item()
+        node['samples'] = clf.tree_.n_node_samples[node_index]
+    else:
+        feature = features[clf.tree_.feature[node_index]]
+        threshold = clf.tree_.threshold[node_index]
+        node['type'] = 'split'
+        node['label'] = '{} > {}'.format(feature, threshold)
+        node['error'] = np.float64(clf.tree_.impurity[node_index]).item()
+        node['samples'] = clf.tree_.n_node_samples[node_index]
+        node['value'] = clf.tree_.value[node_index, 0].tolist()
+        left_index = clf.tree_.children_left[node_index]
+        right_index = clf.tree_.children_right[node_index]
+        node['children'] = [rules(clf, features, labels, right_index),
+                            rules(clf, features, labels, left_index)]
+
+    return node
+
+
+class MyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        else:
+            return super(MyEncoder, self).default(obj)
 
 PICTURE_FOLDER = os.path.join('static', 'pictures')
 
@@ -39,12 +77,12 @@ def acquire_data():
 
 @app.route('/preprocessing/', methods=['GET', 'POST'])
 def preprocessing():
-
     preprocessing_step = 0
 
-    if preprocessing_step in request.form:
-        preprocessing_step = int(request.form["preprocessing_step"])
+    if request.args.get("step") != None:
+        preprocessing_step = int(request.args.get("step"))
 
+    print (preprocessing_step)
     df_X, df_y = data_generator.get_data(preprocessing_step)
 
     headers = np.hstack((df_X.columns, df_y.columns))
@@ -53,9 +91,15 @@ def preprocessing():
 
     n_samples = df_X.shape[0]
 
-    return render_template('preprocessing.html', table=table,
+    if preprocessing_step == 0:
+        return render_template('preprocessing.html', table=table,
                            headers=headers, n_samples=n_samples)
-
+    elif preprocessing_step ==1:
+        return render_template('preprocessing_nan_hidden.html', table=table,
+                               headers=headers, n_samples=n_samples)
+    elif preprocessing_step ==2:
+        return render_template('preprocessing_one_hot.html', table=table,
+                               headers=headers, n_samples=n_samples)
 
 @app.route('/training/', methods=['GET', 'POST'])
 def training():
@@ -77,16 +121,21 @@ def training():
 
     df_X, df_y = data_generator.get_data(2)
 
-    # regressor = regressor.fit(df_X, df_y)
+    regressor = regressor.fit(df_X, df_y)
 
-    # json_data = tree_to_json(regressor)
+    json_data = tree_to_json(regressor)
 
-    json_data = {"error": 42716.2954, "samples": 506, "value": [22.532806324110698],
-            "label": "RM <= 6.94", "type": "split", "children": [
-            {"error": 17317.3210, "samples": 430, "value": [19.93372093023257],
-             "label": "LSTAT <= 14.40", "type": "leaf"},
-            {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
-             "label": "RM <= 7.44", "type": "leaf"}]}
+    #json_data = {"error": 42716.2954, "samples": 506, "value": [22.532806324110698],
+    #        "label": "RM <= 6.94", "type": "split", "children": [
+    #        {"error": 17317.3210, "samples": 430, "value": [19.93372093023257],
+    #         "label": "LSTAT <= 14.40", "type": "leaf"},
+    #        {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
+    #         "label": "RM <= 7.44", "type": "leaf"}]}
+    try:
+        with open('static/output.json', 'w') as outfile:
+            json.dump(json_data, outfile)
+    except IOError:
+        print ("succ")
 
     n_samples = df_X.shape[0]
 
@@ -95,8 +144,16 @@ def training():
 
 @app.route('/deployment/', methods=['GET', 'POST'])
 def deployment():
+    df_X, df_y = data_generator.get_data(2)
+    n_samples = df_X.shape[0]
+    json_data = {"error": 42716.2954, "samples": 506, "value": [22.532806324110698],
+           "label": "RM <= 6.94", "type": "split", "children": [
+            {"error": 17317.3210, "samples": 430, "value": [19.93372093023257],
+             "label": "LSTAT <= 14.40", "type": "leaf"},
+            {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
+            "label": "RM <= 7.44", "type": "leaf"}]}
 
-    return render_template('deployment.html')
+    return render_template('deployment.html', tree_data=json_data, n_samples=n_samples)
 
 
 if __name__ == '__main__':
