@@ -31,10 +31,10 @@ def acquire_data():
 
     table = np.hstack((df_X.values, df_y.values))
 
-    n_samples = df_X.shape[0]
+    n_samples, n_features = df_X.shape
 
     return render_template('acquire_data.html', table=table,
-                           headers=headers, n_samples=n_samples)
+                           headers=headers, n_samples=n_samples, n_features=n_features, progress=25, responsibility=["Domänenexperte"])
 
 
 @app.route('/preprocessing/', methods=['GET', 'POST'])
@@ -51,10 +51,11 @@ def preprocessing():
 
     table = np.hstack((df_X.values, df_y.values))
 
-    n_samples = df_X.shape[0]
+    n_samples, n_features = df_X.shape
+
 
     return render_template('preprocessing.html', table=table,
-                           headers=headers, n_samples=n_samples)
+                           headers=headers, n_samples=n_samples, n_features=n_features, progress=75, responsibility=["Domänenexperte", "KI-Experte"])
 
 
 @app.route('/training/', methods=['GET', 'POST'])
@@ -88,15 +89,26 @@ def training():
             {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
              "label": "RM <= 7.44", "type": "leaf"}]}
 
-    n_samples = df_X.shape[0]
+    n_samples, n_features = df_X.shape
 
-    return render_template('training.html', tree_data=json_data, n_samples=n_samples)
+    return render_template('training.html', tree_data=json_data, n_samples=n_samples, n_features=n_features, progress=90, responsibility=["KI-Experte"])
 
 
 @app.route('/deployment/', methods=['GET', 'POST'])
 def deployment():
 
-    return render_template('deployment.html')
+    df_X, _ = data_generator.get_data(2)
+    _, n_features = df_X.shape
+
+    json_data = {"error": 42716.2954, "samples": 506,
+                 "value": [22.532806324110698],
+                 "label": "RM <= 6.94", "type": "split", "children": [
+            {"error": 17317.3210, "samples": 430, "value": [19.93372093023257],
+             "label": "LSTAT <= 14.40", "type": "leaf"},
+            {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
+             "label": "RM <= 7.44", "type": "leaf"}]}
+
+    return render_template('deployment.html', tree_data=json_data, n_samples=None, n_features=n_features, progress=90, responsibility=["Domänenexperte"])
 
 
 if __name__ == '__main__':

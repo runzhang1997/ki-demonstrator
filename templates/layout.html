@@ -45,18 +45,20 @@
 
     <!--===============================================================================================-->
 
+    <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    <script src="{{ url_for('static', filename='vendor/select2/select2.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.stickyheader.js') }}"></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js'></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+
+
     <title>KI-Demonstrator</title>
 
 </head>
 <body>
-<!--<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script src="{{ url_for('static', filename='vendor/select2/select2.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/jquery.stickyheader.js') }}"></script>
-<script src='http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js'></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
 
 <header class="site-header">
     <div class="container">
@@ -71,17 +73,9 @@
     </div>
 </header>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-{% for category, message in messages %}
-<div class="alert alert-{{ category }}">
-    {{ message }}
-</div>
-{% endfor %}
-{% endif %}
-{% endwith %}
-{% block page_content %}{% endblock %}
-
+<main>
+    {% block page_content %}{% endblock %}
+</main>
 
 <script>
     const settings = {
@@ -90,13 +84,13 @@
     }
 
     const sliders = document.querySelectorAll('.range-slider');
-    Array.prototype.forEach.call(sliders,(slider)=>{
-      slider.querySelector('input').addEventListener('input', (event)=>{
-        slider.querySelector('span').innerHTML = event.target.value % 1 === 0 ? event.target.value: Number.parseFloat(event.target.value).toPrecision(4);
-        applyFill(event.target);
-      });
+    Array.prototype.forEach.call(sliders, (slider) => {
+        slider.querySelector('input').addEventListener('input', (event) => {
+            slider.querySelector('span').innerHTML = event.target.value % 1 === 0 ? event.target.value : Number.parseFloat(event.target.value).toPrecision(4);
+            applyFill(event.target);
+        });
 
-    applyFill(slider.querySelector('input'));
+        applyFill(slider.querySelector('input'));
     })
     ;
 

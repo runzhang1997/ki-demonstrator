@@ -1,124 +1,111 @@
 {% extends 'layout.html' %}
 {% block page_content %}
-<nav class="navbar navbar-menu" role="navigation">
-    <div class="navbar-main-container">
-        <ul class="nav navbar-nav navbar-main" id="main-nav">
-            <li class="navbar-item">
-                <a  href="{{ url_for('introduction') }}">
+    <nav class="navbar navbar-menu" role="navigation">
+        <div class="navbar-main-container">
+            <ul class="nav navbar-nav navbar-main" id="main-nav">
+                <li class="navbar-item">
+                    <a href="{{ url_for('introduction') }}">
                         <span class="icon-arrow-right">
                            Einleitung Use-Case
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('acquire_data') }}">
-                    <!--<a data-toggle="modal" href="#exampleModalCenter">-->
-                    <span class="icon-arrow-right">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('acquire_data') }}">
+                        <!--<a data-toggle="modal" href="#exampleModalCenter">-->
+                        <span class="icon-arrow-right">
                             Daten Selektion
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a class="current" href="{{ url_for('preprocessing') }}">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a class="current" href="{{ url_for('preprocessing') }}">
                         <span class="icon-arrow-right">
                             Pre-processing
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('training') }}">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('training') }}">
                         <span class="icon-arrow-right">
                             Training
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('deployment') }}">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('deployment') }}">
                         <span class="icon-arrow-right">
                             Deployment
                         </span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</nav>
-<div class="limiter">
-<div class="container-table100">
-    <div class="wrap-table100">
-        <div class="component">
-            <table class="overflow-y">
-                <thead>
-                <tr>
-                    {% for header in headers %}
-                    <th> {{ header }} </th>
-                    {% endfor %}
-                </tr>
-                </thead>
-                <tbody>
-                {% for row in table %}
-                <tr>
-                    {% for value in row %}
-                    {% if value is number %}
-                    <td> {{ "%.2f"|format(value)}}</td>
-                    {% else %}
-                    <td> {{ value }}</td>
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </a>
+                </li>
+            </ul>
         </div>
-    </div>
-    <div class="information">
-        <div class="card chart-wrap bg list">
-            <h3>Erläuterung Prozessschritt</h3>
-            <div class="chart">
-                <ul>
-                   <li class="list-item">Für die KI erfolgreich zu trainieren müssen Daten zunächst aufbereitet werden</li>
-                </ul>
+    </nav>
+    <div class="limiter">
+        <div class="container-table100">
+            <div class="wrap-table100">
+                <div class="component">
+                    <table class="overflow-y">
+                        <thead>
+                        <tr>
+                            {% for header in headers %}
+                                <th> {{ header }} </th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for row in table %}
+                            <tr>
+                                {% for value in row %}
+                                    {% if value is number %}
+                                        <td> {{ "%.2f"|format(value) }}</td>
+                                    {% else %}
+                                        <td> {{ value }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="information">
+                <div class="card chart-wrap bg list">
+                    <h3>Erläuterung Prozessschritt</h3>
+                    <div class="chart">
+                        <ul>
+                            <li class="list-item">Für die KI erfolgreich zu
+                                trainieren müssen Daten zunächst aufbereitet
+                                werden
+                            </li>
+                        </ul>
 
-                <h3>Pre-Processing Schritte</h3>
-                <ul>
-                    <li class="list-item">Feature Extraktion: Textinformationen in numerische Werte übersetzen</li>
-                    <button type="button" class="btn btn-primary">One-Hot Encoding</button>
-                    <li class="list-item">Datenbereinigung: Auffüllen von leeren Einträgen, Aussortieren von (unrealistischen) Ausreißern</li>
-                    <button type="button" class="btn btn-primary">Entferne Reihen</button><br>
-                    <button type="button" class="btn btn-primary">Entferne Spalten</button><br>
-                    <button type="button" class="btn btn-primary">Mit Mittelwert auffüllen</button>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+                        <h3>Pre-Processing Schritte</h3>
+                        <ul>
+                            <li class="list-item">Datenbereinigung: Auffüllen
+                                von leeren Einträgen, Aussortieren von
+                                (unrealistischen) Ausreißern
+                            </li>
+                            <button type="button" class="btn btn-primary">
+                                Entferne Reihen
+                            </button>
+                            <br>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Number of samples</h3>
-                <h1>{{ n_samples }}</h1>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Number of Features</h3>
-                <h1>{{ n_features }}</h1>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Zeitlicher Fortschritt</h3>
-                <h1>75%</h1>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Verantwortlichkeit</h3>
-                <h1>Domänenexperte<br>KI-Experte</h1>
+                            <li class="list-item">Feature Extraktion:
+                                Textinformationen in numerische Werte übersetzen
+                            </li>
+                            <button type="button" class="btn btn-primary">
+                                One-Hot Encoding
+                            </button>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</div>
-{% endblock page_content%}
+
+    {% include "footer.html" %}
+
+
+{% endblock page_content %}
