@@ -1,40 +1,39 @@
 {% extends 'layout.html' %}
 {% block page_content %}
 
-<nav class="navbar navbar-menu" role="navigation">
-    <div class="navbar-main-container">
-        <ul class="nav navbar-nav navbar-main" id="main-nav">
-            <li class="navbar-item">
-                <a  href="{{ url_for('introduction') }}">
+    <nav class="navbar navbar-menu" role="navigation">
+        <div class="navbar-main-container">
+            <ul class="nav navbar-nav navbar-main" id="main-nav">
+                <li class="navbar-item">
+                    <a href="{{ url_for('introduction') }}">
                         <span class="icon-arrow-right">
                            Einleitung Use-Case
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('acquire_data') }}">
-                    <!--<a data-toggle="modal" href="#exampleModalCenter">-->
-                    <span class="icon-arrow-right">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('acquire_data') }}">
+                        <span class="icon-arrow-right">
                             Daten Selektion
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('preprocessing') }}">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('preprocessing') }}">
                         <span class="icon-arrow-right">
                             Pre-processing
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a class="current" href="{{ url_for('training') }}">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a class="current" href="{{ url_for('training') }}">
                         <span class="icon-arrow-right">
                             Training
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('deployment') }}">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('deployment') }}">
                         <span class="icon-arrow-right">
                             Deployment
                         </span>
@@ -138,23 +137,73 @@
                 <h3 class="pad-bt15">Zeitlicher Fortschritt</h3>
                 <h1>90%</h1>
             </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <!--
-                <div class="item-img">
-                    <img src="/static/images/ser04.png">
+
+            <div class="information">
+                <div class="card chart-wrap bg list">
+                    <h3>Erläuterung Prozessschritt​</h3>
+                    <div class="chart">
+                        <ul>
+                            <li class="list-item">Aufteilung der Daten in
+                                Training- und Testdaten
+                            </li>
+                            <li class="list-item">Auswahl und Training eines
+                                Models auf Trainingsdaten
+                            </li>
+                            <li class="list-item">Evaluation durch
+                                Testdatensatz
+                            </li>
+                        </ul>
+                        <h3>Trainingsparameter​</h3>
+                        <form method="POST" action="{{ url_for('training') }}">
+                            <ul class="slidecontainer">
+                                <fieldset class="form-group">
+
+                                    <li><p>Training/Test-Verhältnis</p></li>
+                                    <div class="range-slider">
+                                        <input type="range" min="1" max="30"
+                                               class="range-slider__range"
+                                               id="max_depth_slider"
+                                               name="max_depth">
+                                        <span id="max_depth_value"
+                                              class="range-slider__value"></span>
+                                    </div>
+
+                                    <li><p>Min. Samples in Blättern</p></li>
+                                    <div class="range-slider">
+                                        <input type="range" min="3" max="30"
+                                               class="range-slider__range"
+                                               id="min_samples_leaf_slider"
+                                               name="min_samples_leaf">
+                                        <span id="min_samples_leaf_value"
+                                              class="range-slider__value"></span>
+                                    </div>
+
+                                    <li><p>Max. Tiefe</p></li>
+                                    <div class="range-slider">
+                                        <input type="range" min="0.2" max="1"
+                                               step="0.2"
+                                               class="range-slider__range"
+                                               id="max_features_slider"
+                                               name="max_features">
+                                        <span id="max_features_value"
+                                              class="range-slider__value"></span>
+                                    </div>
+
+                                </fieldset>
+                            </ul>
+                            <button type="submit"
+                                    class="btn btn-primary"
+                                    value="Submit"> Trainieren
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                -->
-                <h3 class="pad-bt15">Verantwortlichkeit</h3>
-                <h1>KI-Experte</h1>
-                <!--<p>Score on holdout test set: {{ test_score }}</p>-->
             </div>
         </div>
-    </div>
-</div>
 
-</div>
+    </div>
+
+    {% include "footer.html" %}
 
 <script type="text/javascript">
     var m = [10, 120, 10, 120],

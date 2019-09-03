@@ -69,10 +69,10 @@ def acquire_data():
 
     table = np.hstack((df_X.values, df_y.values))
 
-    n_samples = df_X.shape[0]
+    n_samples, n_features = df_X.shape
 
     return render_template('acquire_data.html', table=table,
-                           headers=headers, n_samples=n_samples)
+                           headers=headers, n_samples=n_samples, n_features=n_features, progress=25, responsibility=["Domänenexperte"])
 
 
 @app.route('/preprocessing/', methods=['GET', 'POST'])
@@ -89,7 +89,8 @@ def preprocessing():
 
     table = np.hstack((df_X.values, df_y.values))
 
-    n_samples = df_X.shape[0]
+    n_samples, n_features = df_X.shape
+
 
     if preprocessing_step == 0:
         return render_template('preprocessing.html', table=table,
@@ -137,9 +138,9 @@ def training():
     except IOError:
         print ("succ")
 
-    n_samples = df_X.shape[0]
+    n_samples, n_features = df_X.shape
 
-    return render_template('training.html', tree_data=json_data, n_samples=n_samples)
+    return render_template('training.html', tree_data=json_data, n_samples=n_samples, n_features=n_features, progress=90, responsibility=["KI-Experte"])
 
 
 @app.route('/deployment/', methods=['GET', 'POST'])

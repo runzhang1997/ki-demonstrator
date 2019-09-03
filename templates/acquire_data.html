@@ -1,163 +1,104 @@
 {% extends 'layout.html' %}
 {% block page_content %}
-<!-- Next comes the part for the table -->
+    <!-- Next comes the part for the table -->
 
-<nav class="navbar navbar-menu" role="navigation">
-    <div class="navbar-main-container">
-        <ul class="nav navbar-nav navbar-main" id="main-nav">
-            <li class="navbar-item">
-                <a href="{{ url_for('introduction') }}">
+    <nav class="navbar navbar-menu" role="navigation">
+        <div class="navbar-main-container">
+            <ul class="nav navbar-nav navbar-main" id="main-nav">
+                <li class="navbar-item">
+                    <a href="{{ url_for('introduction') }}">
                         <span class="icon-arrow-right">
                            Einleitung Use-Case
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a class="current" href="{{ url_for('acquire_data') }}">
-                    <!--<a data-toggle="modal" href="#exampleModalCenter">-->
-                    <span class="icon-arrow-right">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a class="current" href="{{ url_for('acquire_data') }}">
+                        <!--<a data-toggle="modal" href="#exampleModalCenter">-->
+                        <span class="icon-arrow-right">
                             Daten Selektion
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('preprocessing') }}">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('preprocessing') }}">
                         <span class="icon-arrow-right">
                             Pre-processing
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('training') }}">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('training') }}">
                         <span class="icon-arrow-right">
                             Training
                         </span>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="{{ url_for('deployment') }}">
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('deployment') }}">
                         <span class="icon-arrow-right">
                             Deployment
                         </span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</nav>
-<div class="limiter">
-<div class="container-table100">
-    <div class="wrap-table100">
-        <div class="component ">
-            <table class="overflow-y">
-                <thead>
-                    <tr>
-                        {% for header in headers %}
-                        <th> {{ header }} </th>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="limiter">
+        <div class="container-table100">
+            <div class="wrap-table100">
+                <div class="component ">
+                    <table class="overflow-y">
+                        <thead>
+                        <tr>
+                            {% for header in headers %}
+                                <th> {{ header }} </th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for row in table %}
+                            <tr>
+                                {% for value in row %}
+                                    {% if value is number %}
+                                        <td> {{ "%.2f"|format(value) }}</td>
+                                    {% else %}
+                                        <td> {{ value }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
                         {% endfor %}
-                    </tr>
-                </thead>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="information">
+                <div class="card chart-wrap bg list">
+                    <h3>Erläuterung Prozessschritt</h3>
+                    <div class="chart">
+                        <ul>
+                            <li class="list-item">Aus verschiedenen Datenquellen
+                                werden die notwendigen Informationen
+                                zusammengeführt.
+                            </li>
+                            <li class="list-item">Die Zusammenführung der Daten
+                                erfolgt über sogenannte Features.
+                            </li>
+                            <li class="list-item">Zunächst müssen Feature
+                                definiert werden, sodass Daten aus verschiedenen
+                                Quellen einander zugeordnet werden können
+                            </li>
 
-                <tbody>
-                    {% for row in table %}
-                    <tr>
-                        {% for value in row %}
-                        {% if value is number %}
-                        <td> {{ "%.2f"|format(value)}}</td>
-                        {% else %}
-                        <td> {{ value }}</td>
-                        {% endif %}
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
         </div>
+
     </div>
-    <div class="information">
-        <div class="card chart-wrap bg list">
-            <h3>Erläuterung Prozessschritt</h3>
-            <div class="chart">
-                <ul>
-                    <li class="list-item">Aus verschiedenen Datenquellen werden die notwendigen Informationen zusammengeführt.</li>
-                    <li class="list-item">Die Zusammenführung der Daten erfolgt über sogenannte Features.</li>
-                    <li class="list-item">Zunächst müssen Feature definiert werden, sodass Daten aus verschiedenen Quellen einander zugeordnet werden können</li>
 
-                </ul>
-            </div>
+    {% include "footer.html" %}
 
-        </div>
-    </div>
-</div>
-
-<!--
-<script>
-     $(window).on('load', function(){
-     if (sessionStorage.getItem('#exampleModalCenter') !== 'true'){
-        $('#exampleModalCenter').modal('show');
-        sessionStorage.setItem('#exampleModalCenter','true');
-        }
-     });
-</script>
--->
-
-<!--
-<div class="container">
-    <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Number of samples</h3>
-                <h1>{{ n_samples }}</h1>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Number of features</h3>
-                <h1>{{ n_samples }}.</h1>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Number of effective ranks</h3>
-                <p>1000</p>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Noise</h3>
-                <p>1000</p>
-            </div>
-        </div>
-    </div>
-</div>
--->
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Number of samples</h3>
-                <h1>{{ n_samples }}</h1>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Number of Features</h3>
-                <h1>{{ n_features }}</h1>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Zeitlicher Fortschritt</h3>
-                <h1>15%</h1>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Verantwortlichkeit</h3>
-                <h1>Domänenexperte</h1>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-{% endblock page_content%}
+{% endblock page_content %}
