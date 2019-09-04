@@ -46,6 +46,7 @@ class MyEncoder(json.JSONEncoder):
         else:
             return super(MyEncoder, self).default(obj)
 
+
 PICTURE_FOLDER = os.path.join('static', 'pictures')
 
 app = Flask(__name__)
@@ -53,6 +54,11 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['UPLOAD_FOLDER'] = PICTURE_FOLDER
 
 data_generator = DataGenerator()
+
+
+@app.route('/dummy/')
+def dummy():
+    return render_template('dummy.html', current_page='introduction')
 
 
 @app.route('/')
@@ -71,13 +77,15 @@ def acquire_data():
 
     n_samples, n_features = df_X.shape
 
-    return render_template('acquire_data.html', current_page='aquisition', table=table,
-                           headers=headers, n_samples=n_samples, n_features=n_features, progress=25, responsibility=["Domänenexperte"])
+    return render_template('acquire_data.html', current_page='aquisition',
+                           table=table,
+                           headers=headers, n_samples=n_samples,
+                           n_features=n_features, progress=25,
+                           responsibility=["Domänenexperte"])
 
 
 @app.route('/preprocessing/', methods=['GET', 'POST'])
 def preprocessing():
-
     preprocessing_step = 0
 
     if request.args.get("step") != None:
@@ -92,19 +100,29 @@ def preprocessing():
     n_samples, n_features = df_X.shape
 
     if preprocessing_step == 0:
-        return render_template('preprocessing.html', current_page='preprocessing', table=table,
-                           headers=headers, n_samples=n_samples, n_features=n_features, progress=40, responsibility=["Domänenexperte", "KI-Experte"])
-    elif preprocessing_step ==1:
-        return render_template('preprocessing_nan_hidden.html', current_page='preprocessing', table=table,
-                               headers=headers, n_samples=n_samples, n_features=n_features, progress=60, responsibility=["Domänenexperte", "KI-Experte"])
-    elif preprocessing_step ==2:
-        return render_template('preprocessing_one_hot.html', current_page='preprocessing', table=table,
-                               headers=headers, n_samples=n_samples, n_features=n_features, progress=75, responsibility=["Domänenexperte", "KI-Experte"])
+        return render_template('preprocessing.html',
+                               current_page='preprocessing', table=table,
+                               headers=headers, n_samples=n_samples,
+                               n_features=n_features, progress=40,
+                               responsibility=["Domänenexperte", "KI-Experte"])
+    elif preprocessing_step == 1:
+        return render_template('preprocessing_nan_hidden.html',
+                               current_page='preprocessing', table=table,
+                               headers=headers, n_samples=n_samples,
+                               n_features=n_features, progress=60,
+                               responsibility=["Domänenexperte", "KI-Experte"])
+    elif preprocessing_step == 2:
+        return render_template('preprocessing_one_hot.html',
+                               current_page='preprocessing', table=table,
+                               headers=headers, n_samples=n_samples,
+                               n_features=n_features, progress=75,
+                               responsibility=["Domänenexperte", "KI-Experte"])
+
 
 @app.route('/training/', methods=['GET', 'POST'])
 def training():
-
-    if all(k in request.form for k in ['max_depth', 'min_samples_leaf', 'max_features']):
+    if all(k in request.form for k in
+           ['max_depth', 'min_samples_leaf', 'max_features']):
 
         max_depth = int(request.form['max_depth'])
         max_features = float(request.form['max_features'])
@@ -116,8 +134,8 @@ def training():
         min_samples_leaf = 1
 
     regressor = DecisionTreeRegressor(max_features=max_features,
-                              min_samples_leaf=min_samples_leaf,
-                              max_depth=max_depth)
+                                      min_samples_leaf=min_samples_leaf,
+                                      max_depth=max_depth)
 
     df_X, df_y = data_generator.get_data(2)
 
@@ -125,7 +143,7 @@ def training():
 
     json_data = tree_to_json(regressor)
 
-    #json_data = {"error": 42716.2954, "samples": 506, "value": [22.532806324110698],
+    # json_data = {"error": 42716.2954, "samples": 506, "value": [22.532806324110698],
     #        "label": "RM <= 6.94", "type": "split", "children": [
     #        {"error": 17317.3210, "samples": 430, "value": [19.93372093023257],
     #         "label": "LSTAT <= 14.40", "type": "leaf"},
@@ -135,26 +153,31 @@ def training():
         with open('static/output.json', 'w') as outfile:
             json.dump(json_data, outfile)
     except IOError:
-        print ("succ")
+        print("succ")
 
     n_samples, n_features = df_X.shape
 
-    return render_template('training.html', current_page='training', tree_data=json_data, n_samples=n_samples, n_features=n_features, progress=90, responsibility=["KI-Experte"])
+    return render_template('training.html', current_page='training',
+                           tree_data=json_data, n_samples=n_samples,
+                           n_features=n_features, progress=90,
+                           responsibility=["KI-Experte"])
 
 
 @app.route('/deployment/', methods=['GET', 'POST'])
 def deployment():
     df_X, df_y = data_generator.get_data(2)
     _, n_features = df_X.shape
-    json_data = {"error": 42716.2954, "samples": 506, "value": [22.532806324110698],
-           "label": "RM <= 6.94", "type": "split", "children": [
+    json_data = {"error": 42716.2954, "samples": 506,
+                 "value": [22.532806324110698],
+                 "label": "RM <= 6.94", "type": "split", "children": [
             {"error": 17317.3210, "samples": 430, "value": [19.93372093023257],
              "label": "LSTAT <= 14.40", "type": "leaf"},
             {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
-            "label": "RM <= 7.44", "type": "leaf"}]}
+             "label": "RM <= 7.44", "type": "leaf"}]}
 
-    return render_template('deployment.html', current_page='deployment', tree_data=json_data, n_samples=None, n_features=None, progress=100, responsibility=["Domänenexperte"])
-
+    return render_template('deployment.html', current_page='deployment',
+                           tree_data=json_data, n_samples=None, n_features=None,
+                           progress=100, responsibility=["Domänenexperte"])
 
 
 if __name__ == '__main__':
