@@ -58,7 +58,7 @@ data_generator = DataGenerator()
 @app.route('/')
 @app.route('/intro/')
 def introduction():
-    return render_template('intro.html', title='Intro')
+    return render_template('intro.html', current_page='introduction')
 
 
 @app.route('/acquire_data/', methods=['GET', 'POST'])
@@ -71,18 +71,18 @@ def acquire_data():
 
     n_samples, n_features = df_X.shape
 
-    return render_template('acquire_data.html', table=table,
+    return render_template('acquire_data.html', current_page='aquisition', table=table,
                            headers=headers, n_samples=n_samples, n_features=n_features, progress=25, responsibility=["Domänenexperte"])
 
 
 @app.route('/preprocessing/', methods=['GET', 'POST'])
 def preprocessing():
+
     preprocessing_step = 0
 
     if request.args.get("step") != None:
         preprocessing_step = int(request.args.get("step"))
 
-    print (preprocessing_step)
     df_X, df_y = data_generator.get_data(preprocessing_step)
 
     headers = np.hstack((df_X.columns, df_y.columns))
@@ -93,14 +93,14 @@ def preprocessing():
 
 
     if preprocessing_step == 0:
-        return render_template('preprocessing.html', table=table,
-                           headers=headers, n_samples=n_samples)
+        return render_template('preprocessing.html', current_page='preprocessing', table=table,
+                           headers=headers, n_samples=n_samples, n_features=n_features, progress=40, responsibility=["Domänenexperte", "KI-Experte"])
     elif preprocessing_step ==1:
-        return render_template('preprocessing_nan_hidden.html', table=table,
-                               headers=headers, n_samples=n_samples)
+        return render_template('preprocessing_nan_hidden.html', current_page='preprocessing', table=table,
+                               headers=headers, n_samples=n_samples, n_features=n_features, progress=60, responsibility=["Domänenexperte", "KI-Experte"])
     elif preprocessing_step ==2:
-        return render_template('preprocessing_one_hot.html', table=table,
-                               headers=headers, n_samples=n_samples)
+        return render_template('preprocessing_one_hot.html', current_page='preprocessing', table=table,
+                               headers=headers, n_samples=n_samples, n_features=n_features, progress=75, responsibility=["Domänenexperte", "KI-Experte"])
 
 @app.route('/training/', methods=['GET', 'POST'])
 def training():
@@ -140,13 +140,13 @@ def training():
 
     n_samples, n_features = df_X.shape
 
-    return render_template('training.html', tree_data=json_data, n_samples=n_samples, n_features=n_features, progress=90, responsibility=["KI-Experte"])
+    return render_template('training.html', current_page='training', tree_data=json_data, n_samples=n_samples, n_features=n_features, progress=90, responsibility=["KI-Experte"])
 
 
 @app.route('/deployment/', methods=['GET', 'POST'])
 def deployment():
     df_X, df_y = data_generator.get_data(2)
-    n_samples = df_X.shape[0]
+    _, n_features = df_X.shape
     json_data = {"error": 42716.2954, "samples": 506, "value": [22.532806324110698],
            "label": "RM <= 6.94", "type": "split", "children": [
             {"error": 17317.3210, "samples": 430, "value": [19.93372093023257],
@@ -154,7 +154,8 @@ def deployment():
             {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
             "label": "RM <= 7.44", "type": "leaf"}]}
 
-    return render_template('deployment.html', tree_data=json_data, n_samples=n_samples)
+    return render_template('deployment.html', current_page='deployment', tree_data=json_data, n_samples=None, n_features=n_features, progress=90, responsibility=["Domänenexperte"])
+
 
 
 if __name__ == '__main__':
