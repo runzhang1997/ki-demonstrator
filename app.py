@@ -91,7 +91,6 @@ def preprocessing():
 
     n_samples, n_features = df_X.shape
 
-
     if preprocessing_step == 0:
         return render_template('preprocessing.html', current_page='preprocessing', table=table,
                            headers=headers, n_samples=n_samples, n_features=n_features, progress=40, responsibility=["Domänenexperte", "KI-Experte"])
@@ -154,7 +153,7 @@ def deployment():
             {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
             "label": "RM <= 7.44", "type": "leaf"}]}
 
-    return render_template('deployment.html', current_page='deployment', tree_data=json_data, n_samples=None, n_features=n_features, progress=90, responsibility=["Domänenexperte"])
+    return render_template('deployment.html', current_page='deployment', tree_data=json_data, n_samples=None, n_features=None, progress=100, responsibility=["Domänenexperte"])
 
 
 
