@@ -73,6 +73,51 @@
     </div>
 </header>
 
+
+<nav class="navbar navbar-menu" role="navigation">
+    <div class="navbar-main-container">
+        <ul class="nav navbar-nav navbar-main" id="main-nav">
+            <li class="navbar-item">
+                <a class="{{ 'current' if current_page == 'introduction' }}" href="{{ url_for('introduction') }}">
+                        <span class="icon-arrow-right">
+                           Use-Case
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a class="{{ 'current' if current_page == 'aquisition' }}"
+                   href="{{ url_for('acquire_data') }}">
+                    <span class="icon-arrow-right">
+                            Datenselektion
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a class="{{ 'current' if current_page == 'preprocessing' }}" href="{{ url_for('preprocessing') }}">
+                        <span class="icon-arrow-right">
+                            Preprocessing
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a class="{{ 'current' if current_page == 'training' }}" href="{{ url_for('training') }}">
+                        <span class="icon-arrow-right">
+                            Training
+                        </span>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a class="{{ 'current' if current_page == 'deployment' }}" href="{{ url_for('deployment') }}">
+                        <span class="icon-arrow-right">
+                            Deployment
+                        </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
 <main>
     {% block page_content %}{% endblock %}
 </main>

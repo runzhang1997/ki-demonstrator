@@ -1,47 +1,6 @@
 {% extends 'layout.html' %}
 {% block page_content %}
-    <nav class="navbar navbar-menu" role="navigation">
-        <div class="navbar-main-container">
-            <ul class="nav navbar-nav navbar-main" id="main-nav">
-                <li class="navbar-item">
-                    <a href="{{ url_for('introduction') }}">
-                        <span class="icon-arrow-right">
-                           Einleitung Use-Case
-                        </span>
-                    </a>
-                </li>
-                <li class="navbar-item">
-                    <a href="{{ url_for('acquire_data') }}">
-                        <!--<a data-toggle="modal" href="#exampleModalCenter">-->
-                        <span class="icon-arrow-right">
-                            Daten Selektion
-                        </span>
-                    </a>
-                </li>
-                <li class="navbar-item">
-                    <a class="current" href="{{ url_for('preprocessing') }}">
-                        <span class="icon-arrow-right">
-                            Pre-processing
-                        </span>
-                    </a>
-                </li>
-                <li class="navbar-item">
-                    <a href="{{ url_for('training') }}">
-                        <span class="icon-arrow-right">
-                            Training
-                        </span>
-                    </a>
-                </li>
-                <li class="navbar-item">
-                    <a href="{{ url_for('deployment') }}">
-                        <span class="icon-arrow-right">
-                            Deployment
-                        </span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+
     <div class="limiter">
         <div class="container-table100">
             <div class="wrap-table100">

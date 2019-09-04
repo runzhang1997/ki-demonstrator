@@ -20,7 +20,7 @@ data_generator = DataGenerator()
 @app.route('/')
 @app.route('/intro/')
 def introduction():
-    return render_template('intro.html', title='Intro')
+    return render_template('intro.html', current_page='introduction')
 
 
 @app.route('/acquire_data/', methods=['GET', 'POST'])
@@ -33,7 +33,7 @@ def acquire_data():
 
     n_samples, n_features = df_X.shape
 
-    return render_template('acquire_data.html', table=table,
+    return render_template('acquire_data.html', current_page='aquisition', table=table,
                            headers=headers, n_samples=n_samples, n_features=n_features, progress=25, responsibility=["Domänenexperte"])
 
 
@@ -54,7 +54,7 @@ def preprocessing():
     n_samples, n_features = df_X.shape
 
 
-    return render_template('preprocessing.html', table=table,
+    return render_template('preprocessing.html', current_page='preprocessing', table=table,
                            headers=headers, n_samples=n_samples, n_features=n_features, progress=75, responsibility=["Domänenexperte", "KI-Experte"])
 
 
@@ -91,7 +91,7 @@ def training():
 
     n_samples, n_features = df_X.shape
 
-    return render_template('training.html', tree_data=json_data, n_samples=n_samples, n_features=n_features, progress=90, responsibility=["KI-Experte"])
+    return render_template('training.html', current_page='training', tree_data=json_data, n_samples=n_samples, n_features=n_features, progress=90, responsibility=["KI-Experte"])
 
 
 @app.route('/deployment/', methods=['GET', 'POST'])
@@ -108,7 +108,7 @@ def deployment():
             {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
              "label": "RM <= 7.44", "type": "leaf"}]}
 
-    return render_template('deployment.html', tree_data=json_data, n_samples=None, n_features=n_features, progress=90, responsibility=["Domänenexperte"])
+    return render_template('deployment.html', current_page='deployment', tree_data=json_data, n_samples=None, n_features=n_features, progress=90, responsibility=["Domänenexperte"])
 
 
 if __name__ == '__main__':
