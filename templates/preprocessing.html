@@ -18,9 +18,13 @@
                             <tr>
                                 {% for value in row %}
                                     {% if value is number %}
-                                        <td> {{ "%.2f"|format(value) }}</td>
+                                        <td> {{ "%.2f"|format(value) }} </td>
                                     {% else %}
-                                        <td> {{ value }}</td>
+                                        {% if value == "-" %}
+                                            <td> null </td>
+                                        {% else %}
+                                            <td> {{ value }}</td>
+                                        {% endif %}
                                     {% endif %}
                                 {% endfor %}
                             </tr>

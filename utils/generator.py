@@ -142,7 +142,7 @@ class DataGenerator(object):
 
         nan_mask = np.random.random(df_X.shape) < .1
 
-        df_X = df_X.mask(nan_mask)
+        df_X = df_X.mask(nan_mask, other="-")
 
         self.raw_data = df_X, df_y
 
