@@ -1,10 +1,9 @@
-{% extends 'layout.html' %}
-{% block page_content %}
+{% extends 'layout_footer.html' %}
 
-    <div class="limiter">
-        <div class="container-table100">
-            <div class="wrap-table100">
-                <div class="component">
+{% block content_left %}
+
+    <div class="h-100 w-100 bg-primary">
+       <div class="component">
                     <table class="overflow-y">
                         <thead>
                         <tr>
@@ -28,50 +27,38 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class="information">
-                <div class="card chart-wrap bg list">
-                    <h3>Erläuterung Prozessschritt</h3>
-                    <div class="chart">
-                        <ul>
+    </div>
+
+{% endblock content_left %}
+
+
+{% block content_right %}
+
+    <div class="card flex-grow-1">
+        <div class="card-header">
+            <h3>Erläuterung</h3>
+        </div>
+        <div class="card-body bg-secondary">
+           <ul>
                             <li class="list-item">Für die KI erfolgreich zu
                                 trainieren müssen Daten zunächst aufbereitet
                                 werden
                             </li>
                         </ul>
-
-                        <h3>Pre-Processing Schritte</h3>
-                        <ul>
-                            <li class="list-item">Datenbereinigung: Auffüllen
-                                von leeren Einträgen, Aussortieren von
-                                (unrealistischen) Ausreißern
-                            </li>
-                            <button type="button" class="btn btn-primary">
-                                Entferne Reihen
-                            </button>
-                            <br>
-
-                            <li class="list-item">Feature Extraktion:
-                                Textinformationen in numerische Werte übersetzen
-                            </li>
-                            <button type="button" class="btn btn-primary">
-                                One-Hot Encoding
-                            </button>
-                        </ul>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
-    {% include "footer.html" %}
+    <div class="card flex-grow-1">
+        <div class="card-header">
+            <h3>Pre-Processing Schritte</h3>
+        </div>
+        <div class="card-body  bg-success">
+           <ul>
+                            <li class="list-item">Feature Extraktion:
+                                Textinformationen in numerische Werte übersetzen
+                            </li>
+                        </ul>
+        </div>
+    </div>
 
-    <script>
-        function checkNaN(x) {
-            if (isNaN(x)) {
-                return 1;
-            }
-            return 0;
-        }
-    </script>
-{% endblock page_content %}
+{% endblock content_right %}

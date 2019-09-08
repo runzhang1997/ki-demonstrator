@@ -1,10 +1,9 @@
-{% extends 'layout.html' %}
-{% block page_content %}
+{% extends 'layout_footer.html' %}
 
-    <div class="limiter">
-        <div class="container-table100">
-            <div class="wrap-table100">
-                <div class="component">
+{% block content_left %}
+
+    <div class="h-100 w-100 bg-primary">
+       <div class="component">
                     <table class="overflow-y">
                         <thead>
                         <tr>
@@ -28,35 +27,43 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class="information">
-                <div class="card chart-wrap bg list">
-                    <h3>Erläuterung Prozessschritt</h3>
-                    <div class="chart">
-                        <ul>
+    </div>
+
+{% endblock content_left %}
+
+
+{% block content_right %}
+
+    <div class="card flex-grow-1">
+        <div class="card-header">
+            <h3>Erläuterung</h3>
+        </div>
+        <div class="card-body bg-secondary">
+             <ul>
                             <li class="list-item">Für die KI erfolgreich zu
                                 trainieren müssen Daten zunächst aufbereitet
                                 werden
                             </li>
                         </ul>
+        </div>
+    </div>
 
-                        <h3>Pre-Processing Schritte</h3>
-                        <ul>
+    <div class="card flex-grow-1">
+        <div class="card-header">
+            <h3>Pre-Processing Schritte</h3>
+        </div>
+        <div class="card-body  bg-success">
+           <ul>
                             <li class="list-item">Feature Extraktion:
                                 Textinformationen in numerische Werte übersetzen
                             </li>
-                            <a href="{{ url_for('preprocessing') }}?step=2">
+                            <a href="{{ url_for('dummy_preprocessing') }}?step=2">
                                 <button type="button" class="btn btn-primary">
                                     One-Hot Encoding
                                 </button>
                             </a>
                         </ul>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
-    {% include "footer.html" %}
-
-{% endblock page_content %}
+{% endblock content_right %}

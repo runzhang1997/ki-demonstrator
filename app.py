@@ -55,20 +55,14 @@ app.config['UPLOAD_FOLDER'] = PICTURE_FOLDER
 
 data_generator = DataGenerator()
 
-
-@app.route('/dummy/')
-def dummy():
-    return render_template('dummy.html', current_page='introduction')
-
-
 @app.route('/')
 @app.route('/intro/')
 def introduction():
     return render_template('intro.html', current_page='introduction')
 
 
-@app.route('/acquire_data/', methods=['GET', 'POST'])
-def acquire_data():
+@app.route('/dummy_acquire_data/', methods=['GET', 'POST'])
+def dummy_acquire_data():
     df_X, df_y = data_generator.get_data(0)
 
     headers = np.hstack((df_X.columns, df_y.columns))
@@ -77,15 +71,15 @@ def acquire_data():
 
     n_samples, n_features = df_X.shape
 
-    return render_template('acquire_data.html', current_page='aquisition',
+    return render_template('dummy_acquire_data.html', current_page='aquisition',
                            table=table,
                            headers=headers, n_samples=n_samples,
                            n_features=n_features, progress=25,
                            responsibility=["Domänenexperte"])
 
 
-@app.route('/preprocessing/', methods=['GET', 'POST'])
-def preprocessing():
+@app.route('/dummy_preprocessing/', methods=['GET', 'POST'])
+def dummy_preprocessing():
     preprocessing_step = 0
 
     if request.args.get("step") != None:
@@ -100,27 +94,27 @@ def preprocessing():
     n_samples, n_features = df_X.shape
 
     if preprocessing_step == 0:
-        return render_template('preprocessing.html',
+        return render_template('dummy_preprocessing.html',
                                current_page='preprocessing', table=table,
                                headers=headers, n_samples=n_samples,
                                n_features=n_features, progress=40,
                                responsibility=["Domänenexperte", "KI-Experte"])
     elif preprocessing_step == 1:
-        return render_template('preprocessing_nan_hidden.html',
+        return render_template('dummy_preprocessing_nan_hidden.html',
                                current_page='preprocessing', table=table,
                                headers=headers, n_samples=n_samples,
                                n_features=n_features, progress=60,
                                responsibility=["Domänenexperte", "KI-Experte"])
     elif preprocessing_step == 2:
-        return render_template('preprocessing_one_hot.html',
+        return render_template('dummy_preprocessing_one_hot.html',
                                current_page='preprocessing', table=table,
                                headers=headers, n_samples=n_samples,
                                n_features=n_features, progress=75,
                                responsibility=["Domänenexperte", "KI-Experte"])
 
 
-@app.route('/training/', methods=['GET', 'POST'])
-def training():
+@app.route('/dummy_training/', methods=['GET', 'POST'])
+def dummy_training():
     if all(k in request.form for k in
            ['max_depth', 'min_samples_leaf', 'max_features']):
 
@@ -157,14 +151,14 @@ def training():
 
     n_samples, n_features = df_X.shape
 
-    return render_template('training.html', current_page='training',
+    return render_template('dummy_training.html', current_page='training',
                            tree_data=json_data, n_samples=n_samples,
                            n_features=n_features, progress=90,
                            responsibility=["KI-Experte"])
 
 
-@app.route('/deployment/', methods=['GET', 'POST'])
-def deployment():
+@app.route('/dummy_deployment/', methods=['GET', 'POST'])
+def dummy_deployment():
     df_X, df_y = data_generator.get_data(2)
     _, n_features = df_X.shape
     json_data = {"error": 42716.2954, "samples": 506,
@@ -175,7 +169,7 @@ def deployment():
             {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
              "label": "RM <= 7.44", "type": "leaf"}]}
 
-    return render_template('deployment.html', current_page='deployment',
+    return render_template('dummy_deployment.html', current_page='deployment',
                            tree_data=json_data, n_samples=None, n_features=None,
                            progress=100, responsibility=["Domänenexperte"])
 

@@ -1,16 +1,23 @@
-{% extends 'layout.html' %}
-{% block page_content %}
+{% extends 'layout_footer.html' %}
 
+{% block content_left %}
 
-    <div class="limiter">
-        <div class="container-table100">
-            <div class="wrap-tree" id="tree-div">
+    <div class="h-100 w-100 bg-primary">
+        <div class="wrap-tree" id="tree-div">
             </div>
-            <div class="information">
-                <div class="card chart-wrap bg list">
-                    <h3>Erläuterung Prozessschritt​</h3>
-                    <div class="chart">
-                        <ul>
+    </div>
+
+{% endblock content_left %}
+
+
+{% block content_right %}
+
+    <div class="card flex-grow-1">
+        <div class="card-header">
+            <h3>Erläuterung</h3>
+        </div>
+        <div class="card-body bg-secondary">
+            <ul>
                             <li class="list-item">Aufteilung der Daten in
                                 Training- und Testdaten
                             </li>
@@ -21,8 +28,15 @@
                                 Testdatensatz
                             </li>
                         </ul>
-                        <h3>Trainingsparameter​</h3>
-                        <form method="POST" action="{{ url_for('training') }}">
+        </div>
+    </div>
+
+    <div class="card flex-grow-1">
+        <div class="card-header">
+            <h3>Trainingsparameter</h3>
+        </div>
+        <div class="card-body  bg-success">
+            <form method="POST" action="{{ url_for('dummy_training') }}">
                             <ul class="slidecontainer">
                                 <fieldset class="form-group">
 
@@ -64,16 +78,9 @@
                                     value="Submit"> Trainieren
                             </button>
                         </form>
-                    </div>
-                </div>
-            </div>
         </div>
-
     </div>
-
-    {% include "footer.html" %}
-
-    <script type="text/javascript">
+<script type="text/javascript">
         var m = [10, 120, 10, 120],
             w = 1000 - m[1] - m[3],
             h = 800 - m[0] - m[2],
@@ -329,5 +336,4 @@
             return interpolator;
         }
     </script>
-    <!--</section>-->
-{% endblock page_content %}
+{% endblock content_right %}
