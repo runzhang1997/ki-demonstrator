@@ -2,12 +2,17 @@ from sklearn.datasets import make_regression
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
+from utils.tree_export import tree_to_json
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error
 
 
-class DataGenerator(object):
+class Backend(object):
     raw_data = None
     preprocessed_data_nan = None
     preprocessed_data_nan_onehot = None
+    model = None
 
     def __init__(self, config=None):
 
@@ -142,14 +147,17 @@ class DataGenerator(object):
 
         nan_mask = np.random.random(df_X.shape) < .1
 
+        # replace NaN with "-" for easier visualization
         df_X = df_X.mask(nan_mask, other="-")
-
         self.raw_data = df_X, df_y
 
-        df_X_nan = df_X.dropna()
+        # drop NaN as first preprocessing step
+        df_X_nan = df_X.mask(nan_mask).dropna()
         df_y_nan = df_y.loc[df_X_nan.index]
 
         self.preprocessed_data_nan = df_X_nan, df_y_nan
+
+        # one-hot encoding of categorical features
 
         df_X_nan_onehot = df_X_nan
         df_y_nan_onehot = df_y_nan
@@ -176,6 +184,81 @@ class DataGenerator(object):
 
         self.preprocessed_data_nan_onehot = df_X_nan_onehot, df_y_nan_onehot
 
+        self.feature_names = df_X_nan_onehot.columns
+
+    def generate_model(self, train_size, min_samples_leaf, max_depth):
+        self.model = DecisionTreeRegressor(min_samples_leaf=min_samples_leaf,
+                                           max_depth=max_depth)
+
+        df_X, df_y = self.get_data(2)
+
+        X_train, X_test, y_train, y_test = train_test_split(df_X, df_y,
+                                                            train_size=train_size)
+
+        self.model.fit(X_train, y_train)
+
+        score = mean_absolute_error(y_test, self.model.predict(X_test))
+
+        return tree_to_json(self.model, feature_names=self.feature_names), score
+
+    def highlight_path(self, model_json, path_ids):
+
+        model_json["path_node"] = model_json["node_id"] in path_ids
+
+        del model_json["node_id"]
+
+        if model_json["path_node"]:
+            print(model_json["label"])
+
+        if "children" in model_json:
+            model_json["children"] = [self.highlight_path(child, path_ids) for child
+                                      in model_json["children"]]
+
+        return model_json
+
+    def evaluate_model(self, feature_dict):
+
+        X = []
+
+        for feature in self.feature_names:
+            if feature in feature_dict:
+                X.append(feature_dict[feature])
+            else:
+                X.append(0)
+
+        X = np.array(X).reshape(1, -1)
+
+        prediction = self.model.predict(X)[0]
+
+        model_json = tree_to_json(self.model, feature_names=self.feature_names)
+
+        decision_path = self.model.decision_path(X)
+
+        path_ids = decision_path.indices
+
+        model_json = self.highlight_path(model_json, path_ids)
+
+        return prediction, model_json
+
 
 if __name__ == "__main__":
-    generator = DataGenerator()
+    backend = Backend()
+
+    backend.generate_model(10, 1, 5)
+
+    backend.get_data()
+
+    X = {
+        'Anzahl der Kavitäten': 4,
+        'Form der Kavitäten_A31C': 1,
+        'Kanaltyp_Kaltkanal': 0,
+        'x': 1000,
+        'y': 1000,
+        'z': 1000,
+        'Time': 100000,
+    }
+
+    prediction, model_json, decision_path = backend.evaluate_model(X)
+
+    print(prediction)
+    print(model_json)
