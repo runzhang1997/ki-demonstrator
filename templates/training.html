@@ -88,12 +88,12 @@
             max_link_width = 20,
             min_link_width = 1.5,
             char_to_pxl = 6,
-            root = JSON.parse('{{ tree_data | tojson | safe}}');
-
-        d3.json("{{ url_for('static', filename='output.json') }}", load_dataset);
-
+            root;
 
         var tree = d3.layout.tree().size([h, w]);
+        {#d3.json("{{ url_for('static', filename='output.json') }}", load_dataset);#}
+
+
         var diagonal = d3.svg.diagonal().projection(function (d) {
             return [d.x, d.y];
         });
@@ -109,8 +109,12 @@
         // stroke style of link - either color or function
         var stroke_callback = "#ccc";
 
+        var tree_json = JSON.parse('{{ tree_data | tojson | safe}}')
+        load_dataset(tree_json)
+
         function load_dataset(json) {
             root = json;
+
             root.x0 = 0;
             root.y0 = 0;
             var n_samples = root.samples;
@@ -271,6 +275,7 @@
 
         // Node labels
         function node_label(d) {
+
             if (d.type === "leaf") {
                 // leaf
                 var formatter = d3.format(".2f");

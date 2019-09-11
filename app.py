@@ -1,12 +1,10 @@
 from flask import Flask, render_template, flash, url_for, redirect, request, \
     jsonify
-from utils.generator import DataGenerator
+from utils.backend import Backend
 import os
 import json
 import numpy as np
 import time
-from sklearn.tree import DecisionTreeRegressor
-from utils.tree_export import tree_to_json
 
 
 def rules(clf, features, labels, node_index=0):
@@ -53,7 +51,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['UPLOAD_FOLDER'] = PICTURE_FOLDER
 
-data_generator = DataGenerator()
+backend = Backend()
+
 
 @app.route('/')
 @app.route('/introduction/')
@@ -63,13 +62,11 @@ def introduction():
 
 @app.route('/acquisition/', methods=['GET', 'POST'])
 def acquisition():
-    df_X, df_y = data_generator.get_data(0)
+    df_X, df_y = backend.get_data(0)
 
     headers = np.hstack((df_X.columns, df_y.columns))
 
     table = np.hstack((df_X.values, df_y.values))
-
-    table = table[:100]
 
     n_samples, n_features = df_X.shape
 
@@ -82,18 +79,13 @@ def acquisition():
 
 @app.route('/preprocessing/', methods=['GET', 'POST'])
 def preprocessing():
-    preprocessing_step = 0
+    preprocessing_step = int(request.args.get("step", 0))
 
-    if request.args.get("step") != None:
-        preprocessing_step = int(request.args.get("step"))
-
-    df_X, df_y = data_generator.get_data(preprocessing_step)
+    df_X, df_y = backend.get_data(preprocessing_step)
 
     headers = np.hstack((df_X.columns, df_y.columns))
 
     table = np.hstack((df_X.values, df_y.values))
-
-    table = table[:100]
 
     n_samples, n_features = df_X.shape
 
@@ -119,60 +111,38 @@ def preprocessing():
 
 @app.route('/training/', methods=['GET', 'POST'])
 def training():
-    if all(k in request.form for k in
-           ['max_depth', 'min_samples_leaf', 'max_features']):
+    train_size = request.form.get("train_size", 0.8)
+    min_samples_leaf = request.form.get("min_samples_leaf", 1)
+    max_depth = request.form.get("max_depth", None)
 
-        max_depth = int(request.form['max_depth'])
-        max_features = float(request.form['max_features'])
-        min_samples_leaf = int(request.form['min_samples_leaf'])
+    json_data, mean_absolute_error = backend.generate_model(train_size, min_samples_leaf, max_depth)
 
-    else:
-        max_depth = None
-        max_features = None
-        min_samples_leaf = 1
+    # with open('static/output.json', 'w') as outfile:
+    #     json.dump(json_data, outfile)
+    #
 
-    regressor = DecisionTreeRegressor(max_features=max_features,
-                                      min_samples_leaf=min_samples_leaf,
-                                      max_depth=max_depth)
+    print(json_data)
 
-    df_X, df_y = data_generator.get_data(2)
-
-    regressor = regressor.fit(df_X, df_y)
-
-    json_data = tree_to_json(regressor)
-
-    try:
-        with open('static/output.json', 'w') as outfile:
-            json.dump(json_data, outfile)
-    except IOError:
-        print("succ")
-
+    df_X, _ = backend.get_data(2)
     n_samples, n_features = df_X.shape
 
     return render_template('training.html', current_page='training',
-                           tree_data=json_data,
-
-                           n_samples=n_samples,
+                           tree_data=json_data, mean_absolute_error=mean_absolute_error, n_samples=n_samples,
                            n_features=n_features, progress=90,
                            responsibility=["KI-Experte"])
 
 
 @app.route('/deployment/', methods=['GET', 'POST'])
 def deployment():
-    df_X, df_y = data_generator.get_data(2)
-    _, n_features = df_X.shape
-    json_data = {"error": 42716.2954, "samples": 506,
-                 "value": [22.532806324110698],
-                 "label": "RM <= 6.94", "type": "split", "children": [
-            {"error": 17317.3210, "samples": 430, "value": [19.93372093023257],
-             "label": "LSTAT <= 14.40", "type": "leaf"},
-            {"error": 6059.4193, "samples": 76, "value": [37.23815789473684],
-             "label": "RM <= 7.44", "type": "leaf"}]}
+    feature_dict = request.form["feature_dict"]
+
+    prediction, model_json = backend.evaluate_model(feature_dict)
 
     return render_template('deployment.html', current_page='deployment',
-                           tree_data=json_data, n_samples=None, n_features=None,
+                           tree_data=model_json, prediction=prediction,
+                           n_samples=None, n_features=None,
                            progress=100, responsibility=["Domänenexperte"])
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=50000)
+    app.run(debug=True)

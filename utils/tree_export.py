@@ -55,10 +55,10 @@ def export_json(decision_tree, out_file=None, feature_names=None):
 
     def node_to_str(tree, node_id):
 
-        node_repr = '"error": %.4f, "samples": %d, "value": %s' \
+        node_repr = '"error": %.4f, "samples": %d, "value": %s, "node_id": %s' \
                     % (tree.impurity[node_id],
                        tree.n_node_samples[node_id],
-                       arr_to_py(tree.value[node_id]))
+                       arr_to_py(tree.value[node_id])[0], node_id)
         if tree.children_left[node_id] != _tree.TREE_LEAF:
             if feature_names is not None:
                 feature = feature_names[tree.feature[node_id]]
@@ -108,8 +108,8 @@ def export_json(decision_tree, out_file=None, feature_names=None):
     return out_file
 
 
-def tree_to_json(tree):
-    out_file = export_json(tree, "tree.json")
+def tree_to_json(tree, feature_names):
+    out_file = export_json(tree, "tree.json", feature_names)
     out_file.close()
 
     with open('tree.json', 'r') as f:
