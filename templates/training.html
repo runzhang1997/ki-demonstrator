@@ -2,9 +2,21 @@
 
 {% block content_left %}
 
-    <div class="wrap-tree" id="tree-div">
-    </div>
+    <div class="container d-flex flex-column w-100 h-100">
+        <div class="row flex-grow-1" style="overflow: scroll">
+            <div class="col">
+                <div class="wrap-tree w-100 h-100" id="tree-div">
+                </div>
+            </div>
 
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2>Durchschnittliche
+                    Abweichung: {{ "%.2f€"|format(mean_absolute_error) }}</h2>
+            </div>
+        </div>
+    </div>
 {% endblock content_left %}
 
 
@@ -18,18 +30,14 @@
 
         <div class="card-body">
             <ul class="list-group">
-                <li class="list-group-item">Auswahl eines KI-Algorithmus
-                    abhängig von Anforderungen hinsichtlich der Aufgabenstellung
-                    (z.B. benötigte Performanz, Modelltransparenz, ...)
-                </li>
+
                 <li class="list-group-item">Aufteilung der Daten in Training-
                     und Testdaten.
                 </li>
-                <li class="list-group-item">Training eines Modells auf
-                    Trainingsdaten
+                <li class="list-group-item">Auswahl und Training eines Models
+                    auf Trainingsdaten
                 </li>
-                <li class="list-group-item">Evaluation des Modells auf
-                    Testdaten
+                <li class="list-group-item">Evaluation durch Testdatensatz
                 </li>
             </ul>
         </div>
@@ -43,38 +51,41 @@
 
             <ul class="list-group">
                 <li class="list-group-item">
-                    <h4>
+                    <h5>
                         Verhältnis Training-/Testdaten
-                    </h4>
+                    </h5>
                     <div class="range-slider">
-                        <input class="range-slider__range" type="range"
-                               value="{{ ratio_train_test }}" min="0" max="500">
-                        <span class="range-slider__value">%</span>
+                        <input id="range_train_size" class="range-slider__range" type="range"
+                               value="{{ "%.0f"|format(train_size * 100) }}"
+                               min="10" max="90" step="10">
+                        <span class="range-slider__value"></span>
                     </div>
                 </li>
                 <li class="list-group-item">
-                    <h4>
+                    <h5>
                         Maximale Baumtiefe
-                    </h4>
+                    </h5>
                     <div class="range-slider">
-                        <input class="range-slider__range" type="range"
-                               value="100" min="0" max="500">
+                        <input id="range_max_depth" class="range-slider__range" type="range"
+                               value="{{ "%.0f"|format(max_depth) }}" min="0"
+                               max="100" step="10">
                         <span class="range-slider__value">0</span>
                     </div>
                 </li>
-                <li class="list-group-item">
-                    <h4>
-                        Maximale Blattgröße
-                    </h4>
-                    <div class="range-slider">
-                        <input class="range-slider__range" type="range"
-                               value="100" min="0" max="500">
-                        <span class="range-slider__value">0</span>
-                    </div>
-                </li>
+                {#                <li class="list-group-item">#}
+                {#                    <h5>#}
+                {#                        Maximale Blattgröße#}
+                {#                    </h5>#}
+                {#                    <div class="range-slider">#}
+                {#                        <input class="range-slider__range" type="range"#}
+                {#                               value="{{ "%.0f"|format(min_samples_leaf) }}" min="1" max="50" step="1">#}
+                {#                        <span class="range-slider__value">0</span>#}
+                {#                    </div>#}
+                {#                </li>#}
             </ul>
 
-            <button type="button" class="btn btn-primary w-100">Trainieren
+            <button type="button" onclick="train()"
+                    class="btn btn-primary w-100">Trainieren
             </button>
         </div>
     </div>
@@ -341,12 +352,25 @@
     </script>
 
     <script>
-        var rangeSlider = function(){
+
+        function train() {
+            var max_depth = document.getElementById("range_max_depth").value
+            var train_size = document.getElementById("range_train_size").value / 100
+
+            window.location = '{{ url_for('training') }}?max_depth=' + max_depth + '&train_size=' + train_size;
+
+            console.log(max_depth, train_size)
+        }
+
+        var rangeSlider = function () {
             var slider = $('.range-slider'),
                 range = $('.range-slider__range'),
                 value = $('.range-slider__value');
 
+            console.log(slider)
+
             slider.each(function () {
+
 
                 value.each(function () {
                     var value = $(this).prev().attr('value');
@@ -359,6 +383,6 @@
             });
         };
 
-rangeSlider();
+        rangeSlider();
     </script>
 {% endblock content_right %}

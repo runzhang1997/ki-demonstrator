@@ -15,7 +15,11 @@
                         {% if value is number %}
                             <td> {{ "%.2f"|format(value) }}</td>
                         {% else %}
-                            <td> {{ value }}</td>
+                            {% if value == "" %}
+                                <td class="err"> {{ value }}</td>
+                            {% else %}
+                                <td> {{ value }}</td>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -38,12 +42,12 @@
                 <li class="list-group-item">Um die KI erfolgreich zu trainieren
                     müssen Daten zunächst aufbereitet werden.
                 </li>
-                <li class="list-group-item">Allgemein erwarten KI Algorithmen
-                    Daten in einem numerischen Format.
-                </li>
-                <li class="list-group-item">Die nötigen Vorverarbeitungsschritte
-                    sind abhängig von dem verwendeten KI Algorithmus.
-                </li>
+{#                <li class="list-group-item">Allgemein erwarten KI Algorithmen#}
+{#                    Daten in einem numerischen Format.#}
+{#                </li>#}
+{#                <li class="list-group-item">Die nötigen Vorverarbeitungsschritte#}
+{#                    sind abhängig von dem verwendeten KI Algorithmus.#}
+{#                </li>#}
             </ul>
         </div>
     </div>
@@ -67,7 +71,7 @@
                 </li>
                 <li class="list-group-item">
                     <h4>
-                        Umwandlung kategorischer Werte
+                        Feature Extraktion
                     </h4>
                     Textinformationen in numerische Werte übersetzen
                     <button type="button" class="btn btn-secondary w-100"

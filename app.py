@@ -68,6 +68,8 @@ def acquisition():
 
     table = np.hstack((df_X.values, df_y.values))
 
+    table = table[:100]
+
     n_samples, n_features = df_X.shape
 
     return render_template('acquisition.html', current_page='aquisition',
@@ -86,6 +88,8 @@ def preprocessing():
     headers = np.hstack((df_X.columns, df_y.columns))
 
     table = np.hstack((df_X.values, df_y.values))
+
+    table = table[:100]
 
     n_samples, n_features = df_X.shape
 
@@ -111,15 +115,13 @@ def preprocessing():
 
 @app.route('/training/', methods=['GET', 'POST'])
 def training():
-    train_size = request.form.get("train_size", 0.8)
-    min_samples_leaf = request.form.get("min_samples_leaf", 1)
-    max_depth = request.form.get("max_depth", None)
+    train_size = float(request.args.get("train_size", 0.8))
+    # min_samples_leaf = request.form.get("min_samples_leaf", 1)
+    max_depth = int(request.args.get("max_depth", 100))
 
-    json_data, mean_absolute_error = backend.generate_model(train_size, min_samples_leaf, max_depth)
+    print(train_size, max_depth)
 
-    # with open('static/output.json', 'w') as outfile:
-    #     json.dump(json_data, outfile)
-    #
+    json_data, mean_absolute_error = backend.generate_model(train_size, max_depth)
 
     print(json_data)
 
@@ -127,14 +129,17 @@ def training():
     n_samples, n_features = df_X.shape
 
     return render_template('training.html', current_page='training',
-                           tree_data=json_data, mean_absolute_error=mean_absolute_error, n_samples=n_samples,
+                           tree_data=json_data, train_size=train_size, max_depth=max_depth,
+                           mean_absolute_error=mean_absolute_error, n_samples=n_samples,
                            n_features=n_features, progress=90,
                            responsibility=["KI-Experte"])
 
 
 @app.route('/deployment/', methods=['GET', 'POST'])
 def deployment():
-    feature_dict = request.form["feature_dict"]
+    # feature_dict = request.form["feature_dict"]
+
+    feature_dict = {"x": 0, "y": 0}
 
     prediction, model_json = backend.evaluate_model(feature_dict)
 
@@ -145,4 +150,4 @@ def deployment():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

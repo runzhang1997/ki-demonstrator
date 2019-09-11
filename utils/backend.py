@@ -20,6 +20,7 @@ class Backend(object):
             config = self.get_default_config()
 
         self.generate_data(config)
+        self.generate_model(0.8, 100)
 
     def get_default_config(self):
         config = {
@@ -147,8 +148,8 @@ class Backend(object):
 
         nan_mask = np.random.random(df_X.shape) < .1
 
-        # replace NaN with "-" for easier visualization
-        df_X = df_X.mask(nan_mask, other="-")
+        # replace NaN with "" for easier visualization
+        df_X = df_X.mask(nan_mask, other="")
         self.raw_data = df_X, df_y
 
         # drop NaN as first preprocessing step
@@ -186,9 +187,8 @@ class Backend(object):
 
         self.feature_names = df_X_nan_onehot.columns
 
-    def generate_model(self, train_size, min_samples_leaf, max_depth):
-        self.model = DecisionTreeRegressor(min_samples_leaf=min_samples_leaf,
-                                           max_depth=max_depth)
+    def generate_model(self, train_size, max_depth):
+        self.model = DecisionTreeRegressor(max_depth=max_depth)
 
         df_X, df_y = self.get_data(2)
 
