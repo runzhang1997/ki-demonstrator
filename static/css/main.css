@@ -64,7 +64,6 @@ iframe {
 .wrap-tree{
     flex:70%;
     flex-wrap: wrap;
-    overflow-y: scroll;
 }
 .information {
     flex: 30%;
