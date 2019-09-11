@@ -3,19 +3,24 @@
 
     <style>
         #content-container {
-            flex-grow: 1
+            flex: 1 1 auto;
+            height: 0
         }
+
+    #content-left {
+        overflow: hidden;
+    }
     </style>
 
     <div id="content-container" class="container-fluid">
         <div class="row h-100">
-            <div class="col-7">
-                <div class="card h-100">
+            <div class="col-8 h-100">
+                <div id="content-left" class="card h-100">
                     {% block content_left %}{% endblock %}
                 </div>
 
             </div>
-            <div class="col-5">
+            <div class="col-4">
                 <div class="card h-100">
                     {% block content_right %}{% endblock %}
                 </div>
@@ -26,7 +31,7 @@
 
     <div class="container-fluid">
         <div class="row h-100">
-            <div class="col">
+            <div class="col h-100">
                 <div class="card h-100 w-100">
                     {% include "footer.html" %}
                 </div>

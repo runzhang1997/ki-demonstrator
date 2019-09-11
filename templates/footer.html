@@ -1,52 +1,52 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col">
             <div class="wrap-item text-center">
 
-                <h2 class="pad-bt15">Number of samples</h2>
+                <h3 class="pad-bt15">Anzahl Samples</h3>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col">
             <div class="wrap-item text-center">
 
-                <h2 class="pad-bt15">Number of Features</h2>
+                <h3 class="pad-bt15">Anzahl Features</h3>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col">
             <div class="wrap-item text-center">
-                <h2 class="pad-bt15">Zeitlicher Fortschritt</h2>
+                <h3 class="pad-bt15">Fortschritt</h3>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col">
             <div class="wrap-item text-center">
-                <h2 class="pad-bt15">Verantwortlichkeit</h2>
+                <h3 class="pad-bt15">Verantwortlichkeit</h3>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col">
             <div class="wrap-item text-center">
 
-                <h1>{{ n_samples }}</h1>
+                <h2>{{ n_samples }}</h2>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col">
             <div class="wrap-item text-center">
 
-                <h1> {{ n_features }} </h1>
+                <h2> {{ n_features }} </h2>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col">
             <div class="wrap-item text-center">
-                <h1> {{ progress }}%</h1>
+                <h2> {{ progress }}%</h2>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col">
             <div class="wrap-item text-center">
 
                 {% for item in responsibility %}
-                    <h1> {{ item }} </h1>
+                    <h2> {{ item }} </h2>
                 {% endfor %}
 
             </div>

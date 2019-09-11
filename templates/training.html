@@ -2,9 +2,7 @@
 
 {% block content_left %}
 
-    <div class="h-100 w-100 bg-primary">
-        <div class="wrap-tree" id="tree-div">
-            </div>
+    <div class="wrap-tree" id="tree-div">
     </div>
 
 {% endblock content_left %}
@@ -16,18 +14,24 @@
         <div class="card-header">
             <h3>Erläuterung</h3>
         </div>
-        <div class="card-body bg-secondary">
-            <ul>
-                            <li class="list-item">Aufteilung der Daten in
-                                Training- und Testdaten
-                            </li>
-                            <li class="list-item">Auswahl und Training eines
-                                Models auf Trainingsdaten
-                            </li>
-                            <li class="list-item">Evaluation durch
-                                Testdatensatz
-                            </li>
-                        </ul>
+
+
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">Auswahl eines KI-Algorithmus
+                    abhängig von Anforderungen hinsichtlich der Aufgabenstellung
+                    (z.B. benötigte Performanz, Modelltransparenz, ...)
+                </li>
+                <li class="list-group-item">Aufteilung der Daten in Training-
+                    und Testdaten.
+                </li>
+                <li class="list-group-item">Training eines Modells auf
+                    Trainingsdaten
+                </li>
+                <li class="list-group-item">Evaluation des Modells auf
+                    Testdaten
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -35,52 +39,46 @@
         <div class="card-header">
             <h3>Trainingsparameter</h3>
         </div>
-        <div class="card-body  bg-success">
-            <form method="POST" action="{{ url_for('dummy_training') }}">
-                            <ul class="slidecontainer">
-                                <fieldset class="form-group">
+        <div class="card-body">
 
-                                    <li><p>Training/Test-Verhältnis</p></li>
-                                    <div class="range-slider">
-                                        <input type="range" min="1" max="30"
-                                               class="range-slider__range"
-                                               id="max_depth_slider"
-                                               name="max_depth">
-                                        <span id="max_depth_value"
-                                              class="range-slider__value"></span>
-                                    </div>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <h4>
+                        Verhältnis Training-/Testdaten
+                    </h4>
+                    <div class="range-slider">
+                        <input class="range-slider__range" type="range"
+                               value="{{ ratio_train_test }}" min="0" max="500">
+                        <span class="range-slider__value">%</span>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <h4>
+                        Maximale Baumtiefe
+                    </h4>
+                    <div class="range-slider">
+                        <input class="range-slider__range" type="range"
+                               value="100" min="0" max="500">
+                        <span class="range-slider__value">0</span>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <h4>
+                        Maximale Blattgröße
+                    </h4>
+                    <div class="range-slider">
+                        <input class="range-slider__range" type="range"
+                               value="100" min="0" max="500">
+                        <span class="range-slider__value">0</span>
+                    </div>
+                </li>
+            </ul>
 
-                                    <li><p>Min. Samples in Blättern</p></li>
-                                    <div class="range-slider">
-                                        <input type="range" min="3" max="30"
-                                               class="range-slider__range"
-                                               id="min_samples_leaf_slider"
-                                               name="min_samples_leaf">
-                                        <span id="min_samples_leaf_value"
-                                              class="range-slider__value"></span>
-                                    </div>
-
-                                    <li><p>Max. Tiefe</p></li>
-                                    <div class="range-slider">
-                                        <input type="range" min="0.2" max="1"
-                                               step="0.2"
-                                               class="range-slider__range"
-                                               id="max_features_slider"
-                                               name="max_features">
-                                        <span id="max_features_value"
-                                              class="range-slider__value"></span>
-                                    </div>
-
-                                </fieldset>
-                            </ul>
-                            <button type="submit"
-                                    class="btn btn-primary"
-                                    value="Submit"> Trainieren
-                            </button>
-                        </form>
+            <button type="button" class="btn btn-primary w-100">Trainieren
+            </button>
         </div>
     </div>
-<script type="text/javascript">
+    <script type="text/javascript">
         var m = [10, 120, 10, 120],
             w = 1000 - m[1] - m[3],
             h = 800 - m[0] - m[2],
@@ -335,5 +333,27 @@
 
             return interpolator;
         }
+    </script>
+
+    <script>
+        var rangeSlider = function(){
+            var slider = $('.range-slider'),
+                range = $('.range-slider__range'),
+                value = $('.range-slider__value');
+
+            slider.each(function () {
+
+                value.each(function () {
+                    var value = $(this).prev().attr('value');
+                    $(this).html(value);
+                });
+
+                range.on('input', function () {
+                    $(this).next(value).html(this.value);
+                });
+            });
+        };
+
+rangeSlider();
     </script>
 {% endblock content_right %}

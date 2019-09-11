@@ -1,0 +1,81 @@
+{% extends 'layout_footer.html' %}
+
+{% block content_left %}
+    <div class="w-100 h-100 flex-grow-1" style="overflow: scroll">
+        <table>
+            <thead>
+            <tr>
+                {% for header in headers %}
+                    <th> {{ header }} </th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in table %}
+                <tr>
+                    {% for value in row %}
+                        {% if value is number %}
+                            <td> {{ "%.2f"|format(value) }}</td>
+                        {% else %}
+                            <td> {{ value }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content_left %}
+
+
+{% block content_right %}
+
+    <div class="card flex-grow-1">
+        <div class="card-header">
+            <h3>Erläuterung</h3>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">Um die KI erfolgreich zu trainieren
+                    müssen Daten zunächst aufbereitet werden.
+                </li>
+                <li class="list-group-item">Allgemein erwarten KI Algorithmen
+                    Daten in einem numerischen Format.
+                </li>
+                <li class="list-group-item">Die nötigen Vorverarbeitungsschritte
+                    sind abhängig von dem verwendeten KI Algorithmus.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card flex-grow-1">
+        <div class="card-header">
+            <h3>Preprocessing Schritte</h3>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <h4>
+                        Datenbereinigung
+                    </h4>
+                    Auffüllen von leeren Einträgen, Aussortieren von
+                    (unrealistischen) Ausreißern
+                    <button type="button"
+                            onclick="location.href='{{ url_for('preprocessing') }}?step=1'"
+                            class="btn btn-success w-100" disabled>Durchgeführt
+                    </button>
+                </li>
+                <li class="list-group-item">
+                    <h4>
+                        Umwandlung kategorischer Werte
+                    </h4>
+                    Textinformationen in numerische Werte übersetzen
+                    <button type="button" class="btn btn-success w-100"
+                            disabled>Durchgeführt
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock content_right %}
