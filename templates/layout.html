@@ -1,93 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html class="h-100 w-100">
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
+    <meta charset=" utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="description" content="KI demonstrator, price prediction"/>
     <meta name="keywords" content="decision tree, price predication"/>
-    <meta name="author" content="WBA"/>
+    <meta name="author" content="IMA RWTH Aachen"/>
+
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel='stylesheet'
-          href='http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css'>
-    <!-- Bootstrap CSS -->
+
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='css/alert.css') }}">
+{#    <link rel="stylesheet" type="text/css"#}
+{#          href="{{ url_for('static', filename='css/alert.css') }}">#}
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/table.css') }}">
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/bar.css') }}">
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='css/card.css') }}">
+    <!--<link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/card.css') }}">-->
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/slider.css') }}">
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='css/pop_window.css') }}">
-    <!--===============================================================================================-->
-    <link rel="icon" type="image/png"
-          href="{{ url_for('static', filename='images/icons/favicon.ico') }}"/>
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='vendor/animate/animate.css') }}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='vendor/select2/select2.min.css') }}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.css') }}">
 
     <!--===============================================================================================-->
+{#    <link rel="icon" type="image/png"#}
+{#          href="{{ url_for('static', filename='images/icons/favicon.ico') }}"/>#}
+    <!--===============================================================================================-->
+{#    <link rel="stylesheet" type="text/css"#}
+{#          href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">#}
 
-    <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>-->
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-    <script src="{{ url_for('static', filename='vendor/select2/select2.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.stickyheader.js') }}"></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js'></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+{#    <script src="{{ url_for('static', filename='js/jquery.stickyheader.js') }}"></script>#}
+    <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
 
 
     <title>KI-Demonstrator</title>
 
+
 </head>
-<body>
-<!--<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script src="{{ url_for('static', filename='vendor/select2/select2.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/jquery.stickyheader.js') }}"></script>
-<script src='http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js'></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
-<script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+
+<body class="h-100 w-100 d-flex flex-column">
 
 <header class="site-header">
-    <div class="container">
-        <h1 class="navbar-brand mr-4">KI-Demonstrator "Automatische
-            Preisfindung"</h1>
-        <div class="nav-item mr-4" style="text-align: right">
-            <img src="{{ url_for('static', filename='images/wba-logo.png') }}"
-                 alt="wba" style="height:50px; margin-right: 10px"/>
-            <img src="{{ url_for('static', filename='images/logo_cluster.png') }}"
-                 alt="ima" style="height:50px"/>
+    <div class="container" style="height: 100px;">
+        <div class="row h-100">
+            <div class="col-6 h-100"><h3>KI-Demonstrator</h3>
+                <h1>Intelligente Preisfindung</h1>
+            </div>
+            <div class="col-3 h-100">
+                <img class="h-100 w-100" src="{{ url_for('static', filename='images/logo_wba.png') }}"
+                     alt="WBA" style="object-fit: contain"/>
+            </div>
+            <div class="col-3 h-100">
+                <img class="h-100 w-100" src="{{ url_for('static', filename='images/logo_ima.png') }}"
+                     alt="IMA" style="object-fit: contain"/>
+
+            </div>
+        </div>
+
+        <div class="nav-item" style="text-align: right">
+
         </div>
     </div>
-</header>
-
-
-<nav class="navbar navbar-menu" role="navigation">
-    <div class="navbar-main-container">
+    <nav class="navbar navbar-menu" role="navigation">
+        <!--<div class="navbar-main-container">-->
         <ul class="nav navbar-nav navbar-main" id="main-nav">
             <li class="navbar-item">
-                <a class="{{ 'current' if current_page == 'introduction' }}" href="{{ url_for('introduction') }}">
+                <a class="{{ 'current' if current_page == 'introduction' }}"
+                   href="{{ url_for('introduction') }}">
                         <span class="icon-arrow-right">
                            Use-Case
                         </span>
@@ -95,65 +91,44 @@
             </li>
             <li class="navbar-item">
                 <a class="{{ 'current' if current_page == 'aquisition' }}"
-                   href="{{ url_for('acquire_data') }}">
+                   href="{{ url_for('acquisition') }}">
                     <span class="icon-arrow-right">
                             Datenselektion
                         </span>
                 </a>
             </li>
             <li class="navbar-item">
-                <a class="{{ 'current' if current_page == 'preprocessing' }}" href="{{ url_for('preprocessing') }}">
+                <a class="{{ 'current' if current_page == 'preprocessing' }}"
+                   href="{{ url_for('preprocessing') }}">
                         <span class="icon-arrow-right">
                             Preprocessing
                         </span>
                 </a>
             </li>
             <li class="navbar-item">
-                <a class="{{ 'current' if current_page == 'training' }}" href="{{ url_for('training') }}">
+                <a class="{{ 'current' if current_page == 'training' }}"
+                   href="{{ url_for('training') }}">
                         <span class="icon-arrow-right">
                             Training
                         </span>
                 </a>
             </li>
             <li class="navbar-item">
-                <a class="{{ 'current' if current_page == 'deployment' }}" href="{{ url_for('deployment') }}">
+                <a class="{{ 'current' if current_page == 'deployment' }}"
+                   href="{{ url_for('deployment') }}">
                         <span class="icon-arrow-right">
                             Deployment
                         </span>
                 </a>
             </li>
         </ul>
-    </div>
-</nav>
+        <!-- </div>-->
+    </nav>
+</header>
 
-
-<main>
+<div class="d-flex flex-column flex-grow-1" style="height: 0;">
     {% block page_content %}{% endblock %}
-</main>
-
-<script>
-    const settings = {
-        fill: '#1abc9c',
-        background: '#d7dcdf'
-    }
-
-    const sliders = document.querySelectorAll('.range-slider');
-    Array.prototype.forEach.call(sliders, (slider) => {
-        slider.querySelector('input').addEventListener('input', (event) => {
-            slider.querySelector('span').innerHTML = event.target.value % 1 === 0 ? event.target.value : Number.parseFloat(event.target.value).toPrecision(4);
-            applyFill(event.target);
-        });
-
-        applyFill(slider.querySelector('input'));
-    })
-    ;
-
-    function applyFill(slider) {
-        const percentage = 100 * (slider.value - slider.min) / (slider.max - slider.min);
-        const bg = `linear-gradient(90deg, ${settings.fill} ${percentage}%, ${settings.background} ${percentage + 0.1}%)`;
-        slider.style.background = bg;
-    }
-</script>
+</div>
 
 </body>
 </html>

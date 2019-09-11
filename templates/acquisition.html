@@ -1,0 +1,92 @@
+{% extends 'layout_footer.html' %}
+
+{% block content_left %}
+
+    <div class="container d-flex flex-column w-100 h-100">
+
+        <div class="row">
+            <div class="col">
+                <img class="w-100" src="/static/images/logo_ik.png">
+            </div>
+            <div class="col">
+                <img class="w-100" src="/static/images/logo_mssql.png">
+            </div>
+            <div class="col">
+                <img class="w-100" src="/static/images/logo_sap.png">
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <img class="w-50" src="/static/images/arrow.png">
+            </div>
+            <div class="col text-center">
+                <img class="w-50" src="/static/images/arrow.png">
+            </div>
+            <div class="col text-center">
+                <img class="w-50" src="/static/images/arrow.png">
+            </div>
+
+        </div>
+
+        <div class="row flex-grow-1" style="overflow: scroll">
+
+            <table>
+                <thead>
+                <tr>
+                    {% for header in headers %}
+                        <th> {{ header }} </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for row in table %}
+                    <tr>
+                        {% for value in row %}
+                            {% if value is number %}
+                                <td> {{ "%.2f"|format(value) }}</td>
+                            {% else %}
+                                <td> {{ value }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+{% endblock content_left %}
+
+
+{% block content_right %}
+
+    <div class="card flex-grow-1">
+        <div class="card-header">
+            <h3>Erläuterung</h3>
+        </div>
+        <div class="card-body">
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    Aus verschiedenen Datenquellen
+                    werden die notwendigen Informationen
+                    zusammengeführt.
+                </li>
+                <li class="list-group-item">
+                    Die Zusammenführung der Daten
+                    erfolgt über sogenannte Features.
+                </li>
+                <li class="list-group-item">
+                    Zunächst müssen Feature
+                    definiert werden, sodass Daten aus verschiedenen
+                    Quellen einander zugeordnet werden können
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+
+{% endblock content_right %}

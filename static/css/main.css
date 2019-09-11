@@ -2,23 +2,6 @@
     box-sizing: border-box;
 }
 
-body, html {
-    height: 100%;
-    font-family: sans-serif;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-
-main {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
 a {
     transition: all 0.4s;
     -webkit-transition: all 0.4s;
@@ -81,7 +64,6 @@ iframe {
 .wrap-tree{
     flex:70%;
     flex-wrap: wrap;
-    max-height: 500px;
     overflow-y: scroll;
 }
 .information {
