@@ -102,7 +102,7 @@
             root;
 
         var tree = d3.layout.tree().size([h, w]);
-        {#d3.json("{{ url_for('static', filename='output.json') }}", load_dataset);#}
+        d3.json("{{ url_for('static', filename='output.json') }}", load_dataset);
 
 
         var diagonal = d3.svg.diagonal().projection(function (d) {
@@ -119,9 +119,6 @@
         var color_map = d3.scale.category10();
         // stroke style of link - either color or function
         var stroke_callback = "#ccc";
-
-        var tree_json = JSON.parse('{{ tree_data | tojson | safe}}')
-        load_dataset(tree_json)
 
         function load_dataset(json) {
             root = json;

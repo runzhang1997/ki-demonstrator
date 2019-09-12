@@ -6,33 +6,6 @@ import json
 import numpy as np
 import time
 
-
-def rules(clf, features, labels, node_index=0):
-    node = {}
-    if clf.tree_.children_left[node_index] == -1:  # indicates leaf
-        # count_labels = zip(clf.tree_.value[node_index, 0], labels)
-        # node['name'] = ', '.join(('{} of {}'.format(int(count), label)
-        #                          for count, label in count_labels))
-        node['type'] = 'leaf'
-        node['value'] = clf.tree_.value[node_index, 0].tolist()
-        node['error'] = np.float64(clf.tree_.impurity[node_index]).item()
-        node['samples'] = clf.tree_.n_node_samples[node_index]
-    else:
-        feature = features[clf.tree_.feature[node_index]]
-        threshold = clf.tree_.threshold[node_index]
-        node['type'] = 'split'
-        node['label'] = '{} > {}'.format(feature, threshold)
-        node['error'] = np.float64(clf.tree_.impurity[node_index]).item()
-        node['samples'] = clf.tree_.n_node_samples[node_index]
-        node['value'] = clf.tree_.value[node_index, 0].tolist()
-        left_index = clf.tree_.children_left[node_index]
-        right_index = clf.tree_.children_right[node_index]
-        node['children'] = [rules(clf, features, labels, right_index),
-                            rules(clf, features, labels, left_index)]
-
-    return node
-
-
 class MyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.integer):
@@ -43,7 +16,6 @@ class MyEncoder(json.JSONEncoder):
             return obj.tolist()
         else:
             return super(MyEncoder, self).default(obj)
-
 
 PICTURE_FOLDER = os.path.join('static', 'pictures')
 
@@ -123,7 +95,11 @@ def training():
 
     json_data, mean_absolute_error = backend.generate_model(train_size, max_depth)
 
-    print(json_data)
+    try:
+        with open('static/output.json', 'w') as outfile:
+            json.dump(json_data, outfile, cls=MyEncoder)
+    except IOError:
+        print("success")
 
     df_X, _ = backend.get_data(2)
     n_samples, n_features = df_X.shape
@@ -142,6 +118,12 @@ def deployment():
     feature_dict = {"x": 0, "y": 0}
 
     prediction, model_json = backend.evaluate_model(feature_dict)
+
+    try:
+        with open('static/predict.json', 'w') as outfile:
+            json.dump(model_json, outfile, cls=MyEncoder)
+    except IOError:
+        print("success")
 
     return render_template('deployment.html', current_page='deployment',
                            tree_data=model_json, prediction=prediction,

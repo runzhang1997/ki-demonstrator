@@ -7,6 +7,30 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 
+def rules(clf, features, labels, node_index=0):
+    node = {}
+    if clf.tree_.children_left[node_index] == -1:  # indicates leaf
+        # count_labels = zip(clf.tree_.value[node_index, 0], labels)
+        # node['name'] = ', '.join(('{} of {}'.format(int(count), label)
+        #                          for count, label in count_labels))
+        node['type'] = 'leaf'
+        node['value'] = clf.tree_.value[node_index, 0].tolist()
+        node['error'] = np.float64(clf.tree_.impurity[node_index]).item()
+        node['samples'] = clf.tree_.n_node_samples[node_index]
+    else:
+        feature = features[clf.tree_.feature[node_index]]
+        threshold = clf.tree_.threshold[node_index]
+        node['type'] = 'split'
+        node['label'] = '{} > {}'.format(feature, threshold)
+        node['error'] = np.float64(clf.tree_.impurity[node_index]).item()
+        node['samples'] = clf.tree_.n_node_samples[node_index]
+        node['value'] = clf.tree_.value[node_index, 0].tolist()
+        left_index = clf.tree_.children_left[node_index]
+        right_index = clf.tree_.children_right[node_index]
+        node['children'] = [rules(clf, features, labels, right_index),
+                            rules(clf, features, labels, left_index)]
+
+    return node
 
 class Backend(object):
     raw_data = None
@@ -199,7 +223,7 @@ class Backend(object):
 
         score = mean_absolute_error(y_test, self.model.predict(X_test))
 
-        return tree_to_json(self.model, feature_names=self.feature_names), score
+        return rules(self.model, self.feature_names, None), score
 
     def highlight_path(self, model_json, path_ids):
 
@@ -230,13 +254,13 @@ class Backend(object):
 
         prediction = self.model.predict(X)[0]
 
-        model_json = tree_to_json(self.model, feature_names=self.feature_names)
+        model_json = rules(self.model, self.feature_names, None)
 
         decision_path = self.model.decision_path(X)
 
         path_ids = decision_path.indices
 
-        model_json = self.highlight_path(model_json, path_ids)
+        #model_json = self.highlight_path(model_json, path_ids)
 
         return prediction, model_json
 
