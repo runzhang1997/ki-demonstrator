@@ -29,74 +29,63 @@
         <div class="card-body">
 
 
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <h5>
-                        Anzahl Kavitäten
-                    </h5>
-                    <div class="range-slider">
-                        <input id="range_train_size" class="range-slider__range"
-                               type="range"
-                               value="{{ "%.0f"|format(10) }}"
-                               min="10" max="90" step="10">
-                        <span class="range-slider__value"></span>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <h5>
-                        Form der Kavitäten
-                    </h5>
-                    <div class="range-slider">
-                        <input id="range_max_depth" class="range-slider__range"
-                               type="range"
-                               value="{{ "%.0f"|format(0) }}" min="0"
-                               max="100" step="10">
-                        <span class="range-slider__value">0</span>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <h5>
-                        Größe der Kavitäten
-                    </h5>
-                    <div class="range-slider">
-                        <input id="range_max_depth" class="range-slider__range"
-                               type="range"
-                               value="{{ "%.0f"|format(0) }}" min="0"
-                               max="100" step="10">
-                        <span class="range-slider__value">0</span>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <h5>
-                        Material Bauteil
-                    </h5>
-                    <div class="range-slider">
-                        <input id="range_max_depth" class="range-slider__range"
-                               type="range"
-                               value="{{ "%.0f"|format(0) }}" min="0"
-                               max="100" step="10">
-                        <span class="range-slider__value">0</span>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <h5>
-                        Heißkanal o. Kaltkanal
-                    </h5>
-                    <div class="range-slider">
-                        <input id="range_max_depth"
-                               class="range-slider__range"
-                               type="range"
-                               value="{{ "%.0f"|format(0) }}" min="0"
-                               max="100" step="10">
-                        <span class="range-slider__value">0</span>
-                    </div>
-                </li>
-            </ul>
+            <div class="chart-wrap bg list">
+            <div class="chart">
+                <form method="POST" action="{{url_for('deployment')}}">
+                    <fieldset class="form-group">
+                        <ul class="slidecontainer">
+                            <li><p>Anzahl der Kavitäten</p></li>
+                            <div class="range-slider">
+                                <input type="range" min="1" max="30"
+                                       class="range-slider__range"
+                                       id="max_Anzahl_slider" name="max_Anzahl">
+                                <span id="max_Anzahl_value"
+                                      class="range-slider__value"></span>
+                            </div>
 
+                            <li><p>Schieberanzahl</p></li>
+                            <div class="range-slider">
+                                <input type="range" min="3" max="30"
+                                       class="range-slider__range"
+                                       id="min_samples_leaf_slider"
+                                       name="min_samples_leaf">
+                                <span id="min_samples_leaf_value"
+                                      class="range-slider__value"></span>
+                            </div>
+                            <li><p>Größe der Kavitäten</p></li>
+                            <div class="range-slider">
+                                <input type="range" min="1" max="30"
+                                       class="range-slider__range"
+                                       id="max_depth_slider" name="max_depth">
+                                <span id="max_depth_value"
+                                      class="range-slider__value"></span>
+                            </div>
 
-            <button type="button" onclick="predict()"
+                            <li><p>Material Bauteil</p></li>
+                            <div class="range-slider">
+                                <input type="range" min="3" max="30"
+                                       class="range-slider__range"
+                                       id="min_Material_leaf_slider"
+                                       name="min_Material_leaf">
+                                <span id="min_Material_leaf_value"
+                                      class="range-slider__value"></span>
+                            </div>
+                            <li><p>Abmaße des Werkzeugs</p></li>
+                            <div class="range-slider">
+                                <input type="range" min="1" max="30"
+                                       class="range-slider__range"
+                                       id="max_Werkzeugs_slider" name="max_Werkzeugs">
+                                <span id="max_Werkzeugs_value"
+                                      class="range-slider__value"></span>
+                            </div>
+                    </fieldset>
+                    </ul>
+                    <button type="button" onclick="predict()"
                     class="btn btn-primary w-100">Kostenabschätzung
-            </button>
+                    </button>
+                </form>
+            </div>
+        </div>
         </div>
     </div>
     <script type="text/javascript">
@@ -358,4 +347,27 @@
         }
     </script>
 
+<script>
+    const settings = {
+        fill: '#1abc9c',
+        background: '#d7dcdf'
+    }
+
+    const sliders = document.querySelectorAll('.range-slider');
+    Array.prototype.forEach.call(sliders,(slider)=>{
+      slider.querySelector('input').addEventListener('input', (event)=>{
+        slider.querySelector('span').innerHTML = event.target.value % 1 === 0 ? event.target.value: Number.parseFloat(event.target.value).toPrecision(4);
+        applyFill(event.target);
+      });
+
+    applyFill(slider.querySelector('input'));
+    })
+    ;
+
+    function applyFill(slider) {
+        const percentage = 100 * (slider.value - slider.min) / (slider.max - slider.min);
+        const bg = `linear-gradient(90deg, ${settings.fill} ${percentage}%, ${settings.background} ${percentage + 0.1}%)`;
+        slider.style.background = bg;
+    }
+</script>
 {% endblock content_right %}

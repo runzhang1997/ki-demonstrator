@@ -22,8 +22,8 @@
   padding: 0px;
 }
 .navbar-main > li > a {
-  font-size: 15px;
-  font-weight: 180;
+  font-size: 20px;
+  font-weight: 300;
   color: #ffffff;
   //text-transform: uppercase;
   -webkit-transition: 0.2s color ease-in-out;

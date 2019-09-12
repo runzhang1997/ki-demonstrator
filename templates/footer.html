@@ -3,23 +3,23 @@
         <div class="col">
             <div class="wrap-item text-center">
 
-                <h3 class="pad-bt15">Anzahl Samples</h3>
+                <h4 class="pad-bt15">Anzahl Samples</h4>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
 
-                <h3 class="pad-bt15">Anzahl Features</h3>
+                <h4 class="pad-bt15">Anzahl Features</h4>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Fortschritt</h3>
+                <h4 class="pad-bt15">Fortschritt</h4>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
-                <h3 class="pad-bt15">Verantwortlichkeit</h3>
+                <h4 class="pad-bt15">Verantwortlichkeit</h4>
             </div>
         </div>
     </div>
@@ -28,25 +28,25 @@
         <div class="col">
             <div class="wrap-item text-center">
 
-                <h2>{{ n_samples }}</h2>
+                <h4>{{ n_samples }}</h4>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
 
-                <h2> {{ n_features }} </h2>
+                <h4> {{ n_features }} </h4>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
-                <h2> {{ progress }}%</h2>
+                <h4> {{ progress }}%</h4>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
 
                 {% for item in responsibility %}
-                    <h2> {{ item }} </h2>
+                    <h4> {{ item }} </h4>
                 {% endfor %}
 
             </div>
