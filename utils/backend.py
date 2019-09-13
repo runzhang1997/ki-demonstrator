@@ -52,29 +52,19 @@ class Backend(object):
             "samples": 1000,
 
             "features_relevant": {
-                'Anzahl der Kavitäten': ("c", (1, 2, 3)),
+                'Anzahl der Kavitäten': ("c", (8, 16, 32)),
                 'Form der Kavitäten': (
-                    "c", ('A31C', 'A32B', 'A34', 'B42', 'B3', 'C')),
+                    "c", ('A', 'B', 'C')),
 
-                'Material': ("c", ('PU', 'PE', 'PVC', 'PUT')),
-                'Entformungskonzept': ("c", ('A', 'B')),
                 'Schieberanzahl': ("c", (1, 2, 3, 4, 5, 6, 7)),
                 'Kanaltyp': ("c", ('Kaltkanal', 'Heißkanal')),
-
-                'Größe der Kavitäten': ("n", (1, 7)),
-                'Abmaße Werkzeug': ("n", (4, 31)),
-                'x': ("n", (10, 40)),
-                'y': ("n", (10, 40)),
-                'z': ("n", (10, 40)),
-                'Temp': ("n", (170, 250)),
-                'Time': ("n", (50, 17000)),
             },
 
             "features_noise": {
-                'noise': ("n", (10, 40)),
+
             },
 
-            "target": ('Kosten', (100, 2000))
+            "target": ('Kosten', (30_000, 75_000))
         }
 
         return config
