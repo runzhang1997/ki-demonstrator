@@ -51,20 +51,14 @@ class Backend(object):
 
             "samples": 1000,
 
-            "features_relevant": {
-                'Anzahl der Kavitäten': ("c", (8, 16, 32)),
-                'Form der Kavitäten': (
-                    "c", ('A', 'B', 'C')),
-
-                'Schieberanzahl': ("c", (1, 2, 3, 4, 5, 6, 7)),
-                'Kanaltyp': ("c", ('Kaltkanal', 'Heißkanal')),
+            "features": {
+                'Anzahl der Kavitäten': {"values": (8, 16, 32), "factor": 1, "function":  lambda x: (x - 0.1 * x ** 2) / 0.9},
+                'Form der Kavitäten': {"values": ('A', 'B', 'C', 'D'), "factor": 1, "function": lambda x: (np.exp(x) - 1) / (np.exp(1) - 1)},
+                'Schieberanzahl': {"values": (1, 2, 3, 4, 5, 6, 7), "factor": 1, "function": lambda x: x},
+                'Kanaltyp': {"values": ('Kaltkanal', 'Heißkanal'), "factor": 1, "function": lambda x: x},
             },
 
-            "features_noise": {
-
-            },
-
-            "target": ('Kosten', (30_000, 75_000))
+            "target": {"name": 'Kosten', "values": (30_000, 75_000)}
         }
 
         return config
@@ -86,81 +80,48 @@ class Backend(object):
         Some values in some columns will be set to NaN.
         """
 
-        # first reset the database and picture subfolder
-        # reset()
+        samples_amnt = config["samples"]
 
-        samples = config["samples"]
-
-        features_relevant = config["features_relevant"]
-
-        features_noise = config["features_noise"]
+        features = config["features"]
 
         target = config["target"]
 
-        X, y = make_regression(n_samples=samples,
-                               n_features=len(features_relevant),
-                               n_informative=len(features_relevant),
-                               noise=0.2)
+        df_X = pd.DataFrame(np.random.random((samples_amnt, len(features))), columns=[f for f in features])
+        df_y = pd.DataFrame(np.zeros((samples_amnt)), columns=[target["name"]])
 
-        y = y.reshape(-1, 1)
+        # calculate possible min and max values for scaling target to realistic values
+        y_min = 0
+        y_max = 0
 
-        if len(features_noise):
-            X_noise = np.random.rand(X.shape[0], len(features_noise))
+        print(df_y.head())
 
-            X = np.concatenate((X, X_noise), axis=1)
+        for feature_name in df_X.columns:
 
-        X = MinMaxScaler().fit_transform(X)
-        y = MinMaxScaler().fit_transform(y)
+            feature = features[feature_name]
 
-        # configure features
+            y_min += feature["factor"] * feature["function"](0)
+            y_max += feature["factor"] * feature["function"](1)
 
-        feature_names = list(features_relevant.keys()) + list(
-            features_noise.keys())
+            # add contribution of feature to price
+            df_y["Kosten"] += feature["factor"] * feature["function"](df_X[feature_name])
 
-        df_X = pd.DataFrame(X, columns=feature_names)
+            # replace feature values with categories
+            amount_categories = len(feature["values"])
 
-        for feature in feature_names:
-            if feature in features_relevant:
-                feature_data = features_relevant[feature]
-            elif feature in features_noise:
-                feature_data = features_noise[feature]
-            else:
-                raise ValueError(f"Feature {feature} not found")
+            bins = np.linspace(0, 1, amount_categories + 1)
 
-            feature_type, feature_config = feature_data
+            df_X[feature_name] = pd.cut(df_X[feature_name], bins)
 
-            if feature_type == "n":
-                if len(feature_config) != 2:
-                    raise ValueError(
-                        f"Numerical features must have config of length 2 [{feature}]")
+            df_X[feature_name].cat.categories = feature["values"]
 
-                df_X[feature] *= feature_config[1] - feature_config[0]
-                df_X[feature] += feature_config[0]
+        df_y -= y_min
+        df_y /= y_max - y_min
 
-            elif feature_type == "c":
-
-                amount_categories = len(feature_config)
-
-                df_X[feature] = pd.cut(df_X[feature], amount_categories)
-
-                df_X[feature].cat.categories = feature_config
-
-            else:
-                raise ValueError(
-                    f"Type {feature_type} for Feature {feature} unknown")
-
-        # configure target
-
-        target_name, target_config = target
-
-        df_y = pd.DataFrame(y, columns=[target_name])
-
-        df_y *= target_config[1] - target_config[0]
-        df_y += target_config[0]
+        df_y *= target["values"][1] - target["values"][0]
+        df_y += target["values"][0]
 
         # Introduce NaN
-
-        nan_mask = np.random.random(df_X.shape) < .1
+        nan_mask = np.random.random(df_X.shape) < .01
 
         # replace NaN with "" for easier visualization
         df_X = df_X.mask(nan_mask, other="")
