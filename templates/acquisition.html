@@ -45,7 +45,7 @@
                     <tr>
                         {% for value in row %}
                             {% if value is number %}
-                                <td> {{ "%.2f"|format(value) }}</td>
+                                <td> {{ ("%.2f"|format(value)).rstrip(".00") }}</td>
                             {% else %}
                                 <td> {{ value }}</td>
                             {% endif %}
@@ -70,18 +70,17 @@
 
             <ul class="list-group">
                 <li class="list-group-item">
-                    Aus verschiedenen Datenquellen
-                    werden die notwendigen Informationen
-                    zusammengeführt.
+                    Aus verschiedenen Datenquellen werden die notwendigen
+                    Informationen zusammengeführt.
                 </li>
                 <li class="list-group-item">
-                    Die Zusammenführung der Daten
-                    erfolgt über sogenannte Features.
+                    Die Zusammenführung der Daten erfolgt über sogenannte
+                    Features (Spalten der Tabelle).
                 </li>
                 <li class="list-group-item">
-                    Zunächst müssen Feature
-                    definiert werden, sodass Daten aus verschiedenen
-                    Quellen einander zugeordnet werden können
+                    Zunächst müssen Features definiert werden, sodass Daten aus
+                    verschiedenen Quellen einander zugeordnet werden können
+                    (z.B. Auftragsnummer)
                 </li>
 
             </ul>

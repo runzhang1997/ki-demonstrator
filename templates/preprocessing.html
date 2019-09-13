@@ -13,7 +13,7 @@
                 <tr>
                     {% for value in row %}
                         {% if value is number %}
-                            <td> {{ "%.2f"|format(value) }}</td>
+                            <td> {{ ("%.2f"|format(value)).rstrip(".00") }}</td>
                         {% else %}
                             {% if value == "" %}
                                 <td class="err"> {{ value }}</td>
