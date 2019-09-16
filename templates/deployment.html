@@ -24,15 +24,15 @@
 
     <div class="card flex-grow-1">
         <div class="card-header">
-            <h3>Bauteilspezifikationen</h3>
+            <h4>Bauteilspezifikationen</h4>
         </div>
-        <div class="card-body">
-            <div class="chart-wrap bg list">
+        <div class="card-body bg list">
+            <!--<div class="chart-wrap ">-->
             <div class="chart">
                 <form method="POST" action="{{url_for('deployment')}}">
                     <fieldset class="form-group">
-                        <ul class="slidecontainer">
-                            <li><p>Anzahl der Kavitäten</p></li>
+                        <ul>
+                            <li class="list-item">Anzahl der Kavitäten</li>
                             <div class="range-slider">
                                 <input type="range" min="1" max="30"
                                        class="range-slider__range"
@@ -41,14 +41,14 @@
                                       class="range-slider__value"></span>
                             </div>
 
-                            <li><p>Form der Kavitäten</p></li>
-                            <div class="range-slider">
+                            <li class="list-item">Form der Kavitäten</li>
+                            <div style='margin: 10px 30px;'>
                                 <input type="checkbox" name="Form der Kavitäten" value="A"> A
                                 <input type="checkbox" name="Form der Kavitäten" value="B"> B
                                 <input type="checkbox" name="Form der Kavitäten" value="C"> C
                                 <input type="checkbox" name="Form der Kavitäten" value="D"> D
                             </div>
-                            <li><p>Schieberanzahl</p></li>
+                            <li class="list-item">Schieberanzahl</li>
                             <div class="range-slider">
                                 <input type="range" min="1" max="30"
                                        class="range-slider__range"
@@ -57,8 +57,8 @@
                                       class="range-slider__value"></span>
                             </div>
 
-                            <li><p>Kanaltyp</p></li>
-                            <div class="range-slider">
+                            <li class="list-item">Kanaltyp</li>
+                            <div style='margin: 10px 30px;'>
                                 <input type="checkbox" name="Kanaltyp" value="Heißkanal">Heißkanal
                                 <input type="checkbox" name="Kanaltyp" value="Kaltkanal">Kaltkanal
                             </div>
@@ -68,7 +68,7 @@
                 </form>
             </div>
         </div>
-        </div>
+        <!--</div>-->
     </div>
     <script type="text/javascript">
         var m = [10, 120, 10, 120],

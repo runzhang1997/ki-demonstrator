@@ -1,4 +1,4 @@
-.card {
+/*.card {
 		position: relative;
 		float: left;
 		max-width: 400px;
@@ -31,15 +31,15 @@
 		overflow: hidden;
 }
 
-/* COLOURS */
+ */
 
-.card.bg,
-.card .bg {
+.card-body.bg,
+.card-body.bg {
 		background: #fff;
 		color: #111;
 }
 
-.card.list li:before{
+.card-body.list li:before{
 		background-color: #5CA8A6;
 		color: #fff;
 		z-index: 4;
@@ -47,18 +47,18 @@
 
 /* LIST*/
 
-.card.list {
+.card-body.list {
 		padding-bottom: 30px;
 }
-.card.list .chart {
+.card-body.list .chart {
 		height: 100%;
 }
 
-.card.list h3 {
+.card-body.list h3 {
 		margin-bottom: 20px;
 }
 
-.card.list ul {
+.card-body.list ul {
 		position: relative;
 		width: 100%;
 		list-style: none;
@@ -66,7 +66,7 @@
 		margin: 0;
 }
 
-.card.list li {
+.card-body.list li {
 		position: relative;
 		width: 100%;
 		counter-increment: list-item;
@@ -78,7 +78,7 @@
 		font-weight: 300;
 }
 
-.card.list li:before {
+.card-body.list li:before {
 		content: counter(list-item);
 		position: absolute;
 		text-align: center;

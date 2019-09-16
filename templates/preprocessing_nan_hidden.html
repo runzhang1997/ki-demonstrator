@@ -32,11 +32,11 @@
 
     <div class="card flex-grow-1">
         <div class="card-header">
-            <h3>Erläuterung</h3>
+            <h4>Erläuterung</h4>
         </div>
-        <div class="card-body">
-            <ul class="list-group">
-                <li class="list-group-item">Um die KI erfolgreich zu trainieren
+        <div class="card-body bg list">
+            <ul >
+                <li class="list-item">Um die KI erfolgreich zu trainieren
                     müssen Daten zunächst aufbereitet werden.
                 </li>
             </ul>
@@ -44,25 +44,26 @@
     </div>
 
     <div class="card flex-grow-1">
-        <div class="card-header">
-            <h3>Preprocessing Schritte</h3>
-        </div>
-        <div class="card-body">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <h4>
+        <!--<div class="card-header">-->
+
+        <!--</div>-->
+        <div class="card-body bg list">
+            <h4>Preprocessing Schritte</h4>
+            <ul >
+                <li class="list-item">
+                    <h5>
                         Datenbereinigung
-                    </h4>
+                    </h5>
                     Auffüllen von leeren Einträgen, Aussortieren von
                     (unrealistischen) Ausreißern
                     <button type="button"
                             class="btn btn-success w-100" disabled>Durchgeführt
                     </button>
                 </li>
-                <li class="list-group-item">
-                    <h4>
+                <li class="list-item">
+                    <h5>
                         Umwandlung kategorischer Werte
-                    </h4>
+                    </h5>
                     Textinformationen in numerische Werte übersetzen
                     <button type="button" onclick="location.href='{{ url_for('preprocessing') }}?step=2'" class="btn btn-primary w-100">Durchführen
                     </button>
