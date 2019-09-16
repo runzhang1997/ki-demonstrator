@@ -113,9 +113,29 @@ def training():
 
 @app.route('/deployment/', methods=['GET', 'POST'])
 def deployment():
-    # feature_dict = request.form["feature_dict"]
+    if all(k in request.form for k in ['Anzahl der Kavitäten', 'Form der Kavitäten', 'Schieberanzahl', 'Kanaltyp']):
+        feature_dict = {"Anzahl der Kavitäten": float(request.form['Anzahl der Kavitäten']),
+                        "Form der Kavitäten_A": (request.form['Form der Kavitäten']=='A'),
+                        "Form der Kavitäten_B": (request.form['Form der Kavitäten']=='B'),
+                        "Form der Kavitäten_C": (request.form['Form der Kavitäten']=='C'),
+                        "Form der Kavitäten_D": (request.form['Form der Kavitäten']=='D'),
+                        'Schieberanzahl': float(request.form['Schieberanzahl']),
+                        'Kanaltyp_Heißkanal': (request.form['Kanaltyp']=='Heißkanal'),
+                        'Kanaltyp_Kaltkanal': (request.form['Kanaltyp']=='Kaltkanal')
+                        }
+        print(request.form['Anzahl der Kavitäten'])
+    else:
+        feature_dict = {"Anzahl der Kavitäten": 0,
+                        "Form der Kavitäten_A": 0,
+                        "Form der Kavitäten_B": 0,
+                        "Form der Kavitäten_C": 0,
+                        "Form der Kavitäten_D": 0,
+                        'Schieberanzahl': 0,
+                        'Kanaltyp_Heißkanal': 0,
+                        'Kanaltyp_Kaltkanal': 0
+                        }
 
-    feature_dict = {"x": 0, "y": 0}
+    print (feature_dict)
 
     prediction, model_json = backend.evaluate_model(feature_dict)
 
