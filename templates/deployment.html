@@ -14,6 +14,8 @@
             <div class="col">
                 <h2>Kostenabschätung: {{ "%.2f€"|format(prediction) }}</h2>
             </div>
+            <button type="button" class="btn btn-primary" id="expand_button_deployment">Expand all</button>
+            <button type="button" class="btn btn-primary" id="collapse_button_deployment">Collapse all</button>
         </div>
     </div>
 
@@ -327,6 +329,34 @@
 
             return interpolator;
         }
+
+        function collapse(d) {
+            if (d.children) {
+                d._children = d.children;
+                d._children.forEach(collapse);
+                d.children = null;
+            }
+        }
+
+        function expand(d) {
+            if (d._children) {
+                d.children = d._children;
+                d.children.forEach(expand);
+                d._children = null;
+            }
+         }
+
+
+        $("#expand_button_deployment").click(function(){
+            root.children.forEach(expand);
+            update(root);
+         });
+
+
+         $("#collapse_button_deployment").click(function(){
+            root.children.forEach(collapse);
+            update(root);
+         });
     </script>
 
 <script>

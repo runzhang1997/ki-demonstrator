@@ -15,6 +15,11 @@
                 <h2>Durchschnittliche
                     Abweichung: {{ "%.2f€"|format(mean_absolute_error) }}</h2>
             </div>
+
+            <button type="button" class="btn btn-primary" id="expand_button">Expand all</button>
+
+            <button type="button" class="btn btn-primary" id="collapse_button">Collapse all</button>
+
         </div>
     </div>
 {% endblock content_left %}
@@ -104,6 +109,7 @@
             root;
 
         var tree = d3.layout.tree().size([h, w]);
+
         d3.json("{{ url_for('static', filename='output.json') }}", load_dataset);
 
 
@@ -348,6 +354,35 @@
 
             return interpolator;
         }
+
+        function collapse(d) {
+            if (d.children) {
+                d._children = d.children;
+                d._children.forEach(collapse);
+                d.children = null;
+            }
+        }
+
+        function expand(d) {
+            if (d._children) {
+                d.children = d._children;
+                d.children.forEach(expand);
+                d._children = null;
+            }
+         }
+
+
+        $("#expand_button").click(function(){
+            root.children.forEach(expand);
+            update(root);
+         });
+
+
+         $("#collapse_button").click(function(){
+            root.children.forEach(collapse);
+            update(root);
+         });
+
     </script>
 
     <script>
