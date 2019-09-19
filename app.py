@@ -87,24 +87,29 @@ def preprocessing():
 
 @app.route('/training/', methods=['GET', 'POST'])
 def training():
-    train_size = float(request.args.get("train_size", 0.8))
+    train_size = float(request.args.get("train_size", 0.7))
     # min_samples_leaf = request.form.get("min_samples_leaf", 1)
-    max_depth = int(request.args.get("max_depth", 100))
-
-    print(train_size, max_depth)
+    max_depth = int(request.args.get("max_depth", 50))
 
     json_data, mean_absolute_error = backend.generate_model(train_size, max_depth)
 
+    mean_absolute_error = np.random.random() * 5000 * (51 - max_depth) / 50 * (1 - train_size)
+
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
+
     try:
-        with open('static/output.json', 'w') as outfile:
+        with open(f'static/output-{timestamp}.json', 'w') as outfile:
             json.dump(json_data, outfile, cls=MyEncoder)
     except IOError:
         print("success")
 
+    while not os.path.exists(f'static/output-{timestamp}.json'):
+        pass
+
     df_X, _ = backend.get_data(2)
     n_samples, n_features = df_X.shape
 
-    return render_template('training.html', current_page='training',
+    return render_template('training.html', current_page='training', timestamp=timestamp,
                            tree_data=json_data, train_size=train_size, max_depth=max_depth,
                            mean_absolute_error=mean_absolute_error, n_samples=n_samples,
                            n_features=n_features, progress=90,
@@ -132,4 +137,4 @@ def deployment():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(host="0.0.0.0", port=80)

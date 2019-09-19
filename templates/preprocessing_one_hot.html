@@ -45,31 +45,41 @@
 
     <div class="card flex-grow-1">
         <div class="card-header">
-            <h3>Preprocessing Schritte</h3>
+            <h3>Durchgeführte  Schritte</h3>
         </div>
         <div class="card-body">
+
             <ul class="list-group">
                 <li class="list-group-item">
-                    <h4>
-                        Datenbereinigung
-                    </h4>
-                    Auffüllen von leeren Einträgen, Aussortieren von
-                    (unrealistischen) Ausreißern
-                    <button type="button"
-                            onclick="location.href='{{ url_for('preprocessing') }}?step=1'"
-                            class="btn btn-success w-100" disabled>Durchgeführt
-                    </button>
+                    Datenbereinigung
                 </li>
                 <li class="list-group-item">
-                    <h4>
-                        Umwandlung kategorischer Werte
-                    </h4>
-                    Textinformationen in numerische Werte übersetzen
-                    <button type="button" class="btn btn-success w-100"
-                            disabled>Durchgeführt
-                    </button>
+                    Umwandlung kategorischer Werte
                 </li>
             </ul>
+
+{#            <ul class="list-group">#}
+{#                <li class="list-group-item">#}
+{#                    <h4>#}
+{#                        Datenbereinigung#}
+{#                    </h4>#}
+{#                    Auffüllen von leeren Einträgen, Aussortieren von#}
+{#                    (unrealistischen) Ausreißern#}
+{#                    <button type="button"#}
+{#                            onclick="location.href='{{ url_for('preprocessing') }}?step=1'"#}
+{#                            class="btn btn-success w-100" disabled>Durchgeführt#}
+{#                    </button>#}
+{#                </li>#}
+{#                <li class="list-group-item">#}
+{#                    <h4>#}
+{#                        Umwandlung kategorischer Werte#}
+{#                    </h4>#}
+{#                    Textinformationen in numerische Werte übersetzen#}
+{#                    <button type="button" class="btn btn-success w-100"#}
+{#                            disabled>Durchgeführt#}
+{#                    </button>#}
+{#                </li>#}
+{#            </ul>#}
         </div>
     </div>
 {% endblock content_right %}
