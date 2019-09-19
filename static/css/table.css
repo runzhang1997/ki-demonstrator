@@ -36,9 +36,9 @@ td, th {
 		line-height: 1;
 	}
 th {
-    background-color: #0069b4;
+    background-color: grey;
     font-weight: bold;
-    color: #fff;
+    color: #0069b4;
     white-space: nowrap;
 
 }
