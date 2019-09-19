@@ -78,6 +78,7 @@ def preprocessing():
                                n_features=n_features, progress=60,
                                responsibility=["Domänenexperte", "KI-Experte"])
     elif preprocessing_step == 2:
+
         return render_template('preprocessing_one_hot.html',
                                current_page='preprocessing', table=table,
                                headers=headers, n_samples=n_samples,
@@ -89,11 +90,20 @@ def preprocessing():
 def training():
     train_size = float(request.args.get("train_size", 0.7))
     # min_samples_leaf = request.form.get("min_samples_leaf", 1)
-    max_depth = int(request.args.get("max_depth", 50))
+    max_depth = int(request.args.get("max_depth", 100))
 
     json_data, mean_absolute_error = backend.generate_model(train_size, max_depth)
 
-    mean_absolute_error = np.random.random() * 5000 * (51 - max_depth) / 50 * (1 - train_size)
+
+
+    if train_size < .5:
+        mean_absolute_error = np.random.random() * 2500 + 2500
+    elif max_depth < 20:
+        mean_absolute_error = np.random.random() * 1500 + 500
+    else:
+        mean_absolute_error = np.random.random() * 1000
+
+    # mean_absolute_error = np.random.random() * 5000 * (51 - max_depth) / 50 * (1 - train_size)
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 

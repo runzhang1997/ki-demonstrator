@@ -10,10 +10,10 @@
             </div>
 
         </div>
-        <div class="row flex-grow-1">
+        <div class="row" style="position: absolute; bottom: 0">
             <div class="col">
-                <h2>Durchschnittliche
-                    Abweichung: {{ "%.2f€"|format(mean_absolute_error) }}</h2>
+                <h4>Durchschnittliche
+                    Abweichung: {{ "%.2f€"|format(mean_absolute_error) }}</h4>
             </div>
         </div>
     </div>
@@ -23,9 +23,9 @@
 {% block content_right %}
 
     <div class="card flex-grow-1">
-        <div class="card-header">
-            <h3>Erläuterung</h3>
-        </div>
+{#        <div class="card-header">#}
+{#            <h3>Erläuterung</h3>#}
+{#        </div>#}
 
 
         <div class="card-body">
@@ -34,6 +34,11 @@
                 <li class="list-group-item">Aufteilung der Daten in Training-
                     und Testdaten.
                 </li>
+
+                <li class="list-group-item">Training von Modellen mit
+                    unterschiedlichen Parametern.
+                </li>
+
 {#                <li class="list-group-item">Auswahl und Training eines Models#}
 {#                    auf Trainingsdaten#}
 {#                </li>#}
