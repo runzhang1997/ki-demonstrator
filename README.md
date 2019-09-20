@@ -14,6 +14,9 @@
 1. Run app.py
 2. Click on url in console
 
+# Serve demonstrator with publicly available URL
+1. Sign up and use https://ngrok.com
+
 # Troubleshooting
 
 Problem:
