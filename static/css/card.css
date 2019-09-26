@@ -40,9 +40,10 @@
 }
 
 .card-body.list li:before{
-		background-color: #5CA8A6;
+		background-color: #007bff;
 		color: #fff;
 		z-index: 4;
+		font-weight: 300;
 }
 
 /* LIST*/

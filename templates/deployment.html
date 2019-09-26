@@ -14,8 +14,8 @@
             <div class="col">
                 <h2>Kostenabschätung: {{ "%.2f€"|format(prediction) }}</h2>
             </div>
-            <button type="button" class="btn btn-primary" id="expand_button_deployment">Expand all</button>
-            <button type="button" class="btn btn-primary" id="collapse_button_deployment">Collapse all</button>
+            <button type="button" class="btn btn-primary" id="expand_button_deployment" style="float: right; height: 40px">Expand all</button>
+            <button type="button" class="btn btn-primary" id="collapse_button_deployment" style="float: right; height: 40px">Collapse all</button>
         </div>
     </div>
 
@@ -45,10 +45,10 @@
 
                             <li class="list-item">Form der Kavitäten</li>
                             <div style='margin: 10px 30px;'>
-                                <input type="checkbox" name="Form der Kavitäten" value="A"> A
-                                <input type="checkbox" name="Form der Kavitäten" value="B"> B
-                                <input type="checkbox" name="Form der Kavitäten" value="C"> C
-                                <input type="checkbox" name="Form der Kavitäten" value="D"> D
+                                <input type="radio" name="Form der Kavitäten" value="A"> A
+                                <input type="radio" name="Form der Kavitäten" value="B"> B
+                                <input type="radio" name="Form der Kavitäten" value="C"> C
+                                <input type="radio" name="Form der Kavitäten" value="D"> D
                             </div>
                             <li class="list-item">Schieberanzahl</li>
                             <div class="range-slider">
@@ -61,8 +61,8 @@
 
                             <li class="list-item">Kanaltyp</li>
                             <div style='margin: 10px 30px;'>
-                                <input type="checkbox" name="Kanaltyp" value="Heißkanal">Heißkanal
-                                <input type="checkbox" name="Kanaltyp" value="Kaltkanal">Kaltkanal
+                                <input type="radio" name="Kanaltyp" value="Heißkanal">Heißkanal
+                                <input type="radio" name="Kanaltyp" value="Kaltkanal">Kaltkanal
                             </div>
                         </ul>
                     </fieldset>

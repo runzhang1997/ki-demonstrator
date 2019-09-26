@@ -36,7 +36,7 @@ td, th {
 		line-height: 1;
 	}
 th {
-    background-color: grey;
+    background-color: #d3d3d8;
     font-weight: bold;
     color: #0069b4;
     white-space: nowrap;
@@ -97,6 +97,6 @@ td.user-name {
 }
 .sticky-wrap.overflow-y {
 	overflow-y: auto;
-	max-height: 60vh;
+	max-height: 65vh;
 }
 
