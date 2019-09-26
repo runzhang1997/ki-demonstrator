@@ -2,8 +2,8 @@
 
 {% block content_left %}
 
-    <div class="w-100 h-100 flex-grow-1" style="overflow: scroll">
-        <table>
+    <div class="w-100 h-100 flex-grow-1">
+        <table class="overflow-y">
             <thead>
             <tr>{% for header in headers %}
                 <th> {{ header }} </th>{% endfor %}</tr>
