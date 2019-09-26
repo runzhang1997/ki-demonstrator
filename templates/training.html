@@ -119,9 +119,6 @@
         var tree_filename = 'output-' + '{{ timestamp }}' + '.json'
         var tree_filepath = "/static/" + tree_filename
 
-
-        console.log(tree_filepath)
-
         d3.json(tree_filepath, load_dataset);
 
 
