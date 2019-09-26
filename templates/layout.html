@@ -21,6 +21,8 @@
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/panel.css') }}">
     <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/pop_window.css') }}">
+    <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/bar.css') }}">
     <link rel="stylesheet" type="text/css"
           href="{{ url_for('static', filename='css/card.css') }}">
@@ -132,6 +134,21 @@
     {% block page_content %}{% endblock %}
 </div>
 
+<div class="hover_bkgr_fricc" id = "train_popwindow">
+    <span class="helper"></span>
+    <div>
+        <div class="popupCloseButton" id="closebutton_train">X</div>
+        <p>training parameter<br />information inside the popup box!</p>
+    </div>
+</div>
+
+<div class="hover_bkgr_fricc" id = "predict_popwindow">
+    <span class="helper"></span>
+    <div>
+        <div class="popupCloseButton" id="closebutton_predict">X</div>
+        <p>prediction<br />inside the popup box!</p>
+    </div>
+</div>
 </body>
 </html>
 
