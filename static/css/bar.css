@@ -23,7 +23,7 @@
 }
 .navbar-main > li > a {
   font-size: 20px;
-  font-weight: 300;
+  font-weight: 200;
   color: #ffffff;
   //text-transform: uppercase;
   -webkit-transition: 0.2s color ease-in-out;
@@ -54,7 +54,7 @@
     display: inline-block;
     height: 50px;
     position: relative;
-    width: 19%;
+    width: 19.5%;
     background-color: #0069b4;
     background-repeat: repeat-x;
     background-image: -webkit-gradient(linear, 0% top, 100% top, from(#0069b4), to(#5c9ee8));
@@ -79,21 +79,18 @@
   .navbar-main li a {
     display: table;
     height: 100%;
-    padding: 0 0 0 66.66666667px;
+    padding: 0 0 0 50.66667px;
     position: relative;
     width: 100%;
   }
   .navbar-main li a:after {
-    border-bottom: 25px solid transparent;
-     border-left: 40px solid transparent;
-
-       border-top: 25px solid transparent;
+    border: 25px solid transparent;
     border-left-color: #5c9ee8;
     border-right: 0;
     content: " ";
     display: block;
     position: absolute;
-    right: -40px;
+    right: -24px;
     top: 0px;
     width: 0px;
     z-index: 10;
@@ -109,12 +106,12 @@
     vertical-align: middle;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 900px) {
   .navbar-main {
-    max-width: 1500px;
+    max-width: 1600px;
   }
   .navbar-main li a {
-    padding: 0 0 0 80px;
+    padding: 0 0 0 50px;
   }
 }
 .navbar-brand {
