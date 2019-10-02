@@ -55,8 +55,10 @@
 
     <div class="card flex-grow-1">
         <div class="card-header">
-            <span><h4>Trainingsparameter</h4></span>
-            <button type="button" class="btn btn-primary" id="pop_train_info" style="float: right; height: 30px">info</button>
+            <span><h5 style="display: inline">Trainingsparameter</h5></span>
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" id="pop_train_info" style="float: right; display: inline">
+            <i class="material-icons">info</i>
+            </button>
         </div>
         <div class="card-body bg list">
     <div class="chart">
@@ -291,10 +293,10 @@
             });
 
             d3.select("svg")
-        .call(d3.behavior.zoom()
+            .call(d3.behavior.zoom()
               .scaleExtent([0.5, 5])
               .on("zoom", zoom));
-        }
+            }
 
         function zoom() {
             var scale = d3.event.scale,
@@ -311,7 +313,7 @@
             d3.select(".drawarea")
                 .attr("transform", "translate(" + translation + ")" +
                 " scale(" + scale + ")");
-}
+        }
 
 
         // Toggle children.

@@ -1,3 +1,4 @@
+
 .navbar-menu {
   border: 0;
   border-radius: 0;
@@ -46,15 +47,12 @@
  .navbar-item .current:after{
     border-left-color: #ffffff;
  }
-  .navbar-main {
-    margin: 0 auto;
-    padding-right: 20px;
-  }
+
   .navbar-main li {
     display: inline-block;
     height: 50px;
     position: relative;
-    width: 19.5%;
+    width: 19.6%;
     background-color: #0069b4;
     background-repeat: repeat-x;
     background-image: -webkit-gradient(linear, 0% top, 100% top, from(#0069b4), to(#5c9ee8));
@@ -62,7 +60,6 @@
     background-image: -moz-linear-gradient(left, #0069b4 0%, #5c9ee8 100%);
     background-image: linear-gradient(to right, #0069b4 0%, #5c9ee8 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0069b4', endColorstr='#5c9ee8', GradientType=1);
-    /* IE6-9 */
   }
   .navbar-main li:first-child:before {
     border: 25px solid transparent;
@@ -118,6 +115,12 @@
 font-size: 25px;
 }
 
+
+  .navbar-main {
+    margin: 0 auto;
+    padding-right: 30px;
+  }
+
 .nav {
 display:block;
 padding-left: 0;
@@ -136,4 +139,5 @@ list-style: none;
 }
 .ul{margin-block-start: 0em !important;
 }
+
 

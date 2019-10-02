@@ -26,8 +26,11 @@
 
     <div class="card flex-grow-1">
         <div class="card-header">
-            <h4>Bauteilspezifikationen</h4>
-            <button type="button" class="btn btn-primary" id="pop_pre_info" style="float: right; height: 30px">info</button>
+            <h5 style="display: inline">Bauteilspezifikationen</h5>
+
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" id="pop_pre_info" style="float: right; display: inline">
+            <i class="material-icons">info</i>
+            </button>
         </div>
         <div class="card-body bg list">
             <!--<div class="chart-wrap ">-->
@@ -95,7 +98,10 @@
 
         var vis = d3.select("#tree-div").append("svg:svg")
             .attr("width", w + m[1] + m[3])
-            .attr("height", h + m[0] + m[2] + 1000).append("svg:g")
+            .attr("height", h + m[0] + m[2] + 1000)
+            .append("svg:g")
+            .attr("class", "drawarea")
+            .append("svg:g")
             .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
         // global scale for link width
@@ -137,14 +143,9 @@
             // Compute the new tree layout.
             var nodes = tree.nodes(root).reverse();
             // Normalize for fixed-depth.
-            nodes.forEach(function (d) {
-                d.y = d.depth * 180;
-            });
+            nodes.forEach(function (d) {d.y = d.depth * 180;});
             // Update the nodes…
-            var node = vis.selectAll("g.node")
-                .data(nodes, function (d) {
-                    return d.id || (d.id = ++i);
-                });
+            var node = vis.selectAll("g.node").data(nodes, function (d) {return d.id || (d.id = ++i);});
             // Enter any new nodes at the parent's previous position.
             var nodeEnter = node.enter().append("svg:g")
                 .attr("class", "node")
@@ -252,7 +253,28 @@
                 d.x0 = d.x;
                 d.y0 = d.y;
             });
+
+            d3.select("svg").call(d3.behavior.zoom().scaleExtent([0.5, 5]).on("zoom", zoom));
         }
+
+        function zoom() {
+            var scale = d3.event.scale,
+            translation = d3.event.translate,
+            tbound = -h * scale,
+            bbound = h * scale,
+            lbound = (-w + m[1]) * scale,
+            rbound = (w - m[3]) * scale;
+            // limit translation to thresholds
+            translation = [
+            Math.max(Math.min(translation[0], rbound), lbound),
+            Math.max(Math.min(translation[1], bbound), tbound)
+            ];
+            d3.select(".drawarea")
+                .attr("transform", "translate(" + translation + ")" +
+                " scale(" + scale + ")");
+        }
+
+
 
         // Toggle children.
         function toggle(d) {
