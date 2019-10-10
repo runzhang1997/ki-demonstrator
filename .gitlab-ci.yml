@@ -2,20 +2,20 @@ image: docker:git
 services:
 - docker:dind
 stages:
-  - build
+ # - build
   - deploy
 
-build:
-  stage: build
-  image: python:3-stretch
-  script:
+#build:
+ # stage: build
+ # image: python:3-stretch
+ # script:
     #- pip install
-    - echo "Installl and Build script here"
+  #  - echo "Installl and Build script here"
   #artifacts:
   #  paths:
   #    - dist
-  only:
-    - master
+#  only:
+#    - master
 
 deploy:
   stage: deploy
