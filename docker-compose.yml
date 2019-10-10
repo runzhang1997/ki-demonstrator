@@ -1,0 +1,23 @@
+version: '3'
+
+networks:
+  default:
+    external:
+      name: backend_backend
+
+services:
+
+  web:
+    container_name: ${URL}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - URL=${URL}
+    expose:
+      - "5000"
+    restart: always
+
+    labels:
+     - "traefik.http.routers.${URL}.rule=Host(`${URL}.page.ima.rwth-aachen.de`)"
+     - "traefik.http.services.${URL}.loadbalancer.server.port=5000" 
