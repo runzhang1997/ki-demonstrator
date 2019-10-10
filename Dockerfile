@@ -1,7 +1,7 @@
-FROM ubuntu:latest
-FROM python:3.6-stretch
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
+#FROM ubuntu:latest
+FROM python:3.7
+#RUN apt-get update -y
+#RUN apt-get install -y python-pip python-dev build-essential
 
 COPY . /app
 WORKDIR /app
