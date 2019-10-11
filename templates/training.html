@@ -55,7 +55,10 @@
 
     <div class="card flex-grow-1">
         <div class="card-header">
-            <h4>Trainingsparameter</h4>
+            <span><h5 style="display: inline">Trainingsparameter</h5></span>
+            <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" id="pop_train_info" style="float: right; display: inline">
+            <i class="material-icons">info</i>
+            </button>
         </div>
         <div class="card-body bg list">
     <div class="chart">
@@ -128,7 +131,10 @@
 
         var vis = d3.select("#tree-div").append("svg:svg")
             .attr("width", w + m[1] + m[3])
-            .attr("height", h + m[0] + m[2] + 1000).append("svg:g")
+            .attr("height", h + m[0] + m[2] + 1000)
+            .append("svg:g")
+            .attr("class", "drawarea")
+            .append("svg:g")
             .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
         // global scale for link width
@@ -285,7 +291,30 @@
                 d.x0 = d.x;
                 d.y0 = d.y;
             });
+
+            d3.select("svg")
+            .call(d3.behavior.zoom()
+              .scaleExtent([0.5, 5])
+              .on("zoom", zoom));
+            }
+
+        function zoom() {
+            var scale = d3.event.scale,
+            translation = d3.event.translate,
+            tbound = -h * scale,
+            bbound = h * scale,
+            lbound = (-w + m[1]) * scale,
+            rbound = (w - m[3]) * scale;
+            // limit translation to thresholds
+            translation = [
+            Math.max(Math.min(translation[0], rbound), lbound),
+            Math.max(Math.min(translation[1], bbound), tbound)
+            ];
+            d3.select(".drawarea")
+                .attr("transform", "translate(" + translation + ")" +
+                " scale(" + scale + ")");
         }
+
 
         // Toggle children.
         function toggle(d) {
@@ -427,5 +456,14 @@
         };
 
         rangeSlider();
+
+        $(window).load(function () {
+    $("#pop_train_info").click(function(){
+       $('#train_popwindow').show();
+    });
+    $('#closebutton_train').click(function(){
+        $('#train_popwindow').hide();
+    });
+});
     </script>
 {% endblock content_right %}
