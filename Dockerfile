@@ -5,7 +5,9 @@ FROM python:3.7
 
 COPY . /app
 WORKDIR /app
-RUN pip3 install -r requirements.txt
+# RUN pip3 install -r requirements.txt
+RUN conda env create -f environment.yml
+RUN activate ki-demonstrator_wba_ima
 
 ENV PYTHONPATH /app/recommender/RecommenderLogic:$PYTHONPATH
 
