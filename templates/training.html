@@ -2,12 +2,9 @@
 
 {% block content_left %}
 
-    <div class="container d-flex flex-column w-100 h-100">
-        <div class="row flex-grow-1" style="overflow: scroll">
-            <div class="col">
-                <div class="wrap-tree w-100 h-100" id="tree-div">
-                </div>
-            </div>
+    <div class="container">
+        <div class="row">
+            <div class="wrap-tree" id="tree-div"></div>
 
         </div>
         <div class="row" >
@@ -26,15 +23,14 @@
 
 {% block content_right %}
 
-    <div class="card flex-grow-1">
-{#        <div class="card-header">#}
-{#            <h4>Erläuterung</h4>#}
-{#        </div>#}
-
+    <!--<div class="card">
+        <div class="card-header">
+            <h4>Erläuterung</h4>
+        </div>
 
         <div class="card-body bg list">
             <div class="chart">
-            <ul>
+                <ul>
                 <li class="list-item">Aufteilung der Daten in Training-
                     und Testdaten.
                 </li>
@@ -51,7 +47,7 @@
             </ul>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <div class="card flex-grow-1">
         <div class="card-header">
@@ -61,15 +57,22 @@
             </button>
         </div>
         <div class="card-body bg list">
-    <div class="chart">
+            <div class="chart">
             <ul >
+                <li class="list-item">Aufteilung der Daten in Training-
+                    und Testdaten.
+                </li>
+
+                <li class="list-item">Training von Modellen mit
+                    unterschiedlichen Parametern.
+                </li>
+
                 <li class="list-item">
                     <h5>
                         Anzahl Trainingsdaten [%]
                     </h5>
                     <div class="range-slider">
                         <input id="range_train_size" class="range-slider__range" type="range"
-                               value="{{ "%.0f"|format(train_size * 100) }}"
                                min="10" max="90" step="10">
                         <span class="range-slider__value"></span>
                     </div>
@@ -80,7 +83,7 @@
                     </h5>
                     <div class="range-slider">
                         <input id="range_max_depth" class="range-slider__range" type="range"
-                               value="{{ "%.0f"|format(max_depth) }}" min="1"
+                                min="1"
                                max="50" step="1">
                         <span class="range-slider__value">0</span>
                     </div>
@@ -434,28 +437,27 @@
             console.log(max_depth, train_size)
         }
 
-        var rangeSlider = function () {
-            var slider = $('.range-slider'),
-                range = $('.range-slider__range'),
-                value = $('.range-slider__value');
+            const settings = {
+        fill: '#1abc9c',
+        background: '#d7dcdf'
+    }
 
-            console.log(slider)
+    const sliders = document.querySelectorAll('.range-slider');
+    Array.prototype.forEach.call(sliders,(slider)=>{
+      slider.querySelector('input').addEventListener('input', (event)=>{
+        slider.querySelector('span').innerHTML = event.target.value % 1 === 0 ? event.target.value: Number.parseFloat(event.target.value).toPrecision(4);
+        applyFill(event.target);
+      });
 
-            slider.each(function () {
+    applyFill(slider.querySelector('input'));
+    })
+    ;
 
-
-                value.each(function () {
-                    var value = $(this).prev().attr('value');
-                    $(this).html(value);
-                });
-
-                range.on('input', function () {
-                    $(this).next(value).html(this.value);
-                });
-            });
-        };
-
-        rangeSlider();
+    function applyFill(slider) {
+        const percentage = 100 * (slider.value - slider.min) / (slider.max - slider.min);
+        const bg = `linear-gradient(90deg, ${settings.fill} ${percentage}%, ${settings.background} ${percentage + 0.1}%)`;
+        slider.style.background = bg;
+    }
 
         $(window).load(function () {
     $("#pop_train_info").click(function(){

@@ -44,31 +44,9 @@ iframe {
     border: none !important;
 }
 
-.limiter {
-    flex-grow: 1;
-    width: 80%;
-    margin: 0 auto;
-}
-
-.container-table100 {
-    background: #fff;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.wrap-table100 {
-    flex: 70%;
-    flex-wrap: wrap;
-}
-
 .wrap-tree{
-    flex:70%;
-    flex-wrap: wrap;
-}
-.information {
-    flex: 30%;
-    flex-wrap: wrap;
-    padding: 0px 30px;
+    overflow: scroll;
+    max-height: 55vh;
 }
 
 .introimg {

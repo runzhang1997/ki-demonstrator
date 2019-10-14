@@ -14,12 +14,12 @@
 
     <div id="content-container" class="container-fluid">
         <div class="row h-100">
-            <div id="leftband" class="col-7 h-100">
-                <div id="content-left" class="card h-100">
+            <div class="col-7 h-100" id="leftband">
+                <div class="card h-100">
                     {% block content_left %}{% endblock %}
                 </div>
             </div>
-            <div id="rightband" class="col-5 h-100">
+            <div class="col-5 h-100" id="rightband">
 
                 <div class="card h-100">
                     {% block content_right %}{% endblock %}
@@ -39,23 +39,6 @@
         </div>
         </div>
 <script>
-            $(".gutter").click(function(){
-                var x = document.getElementById("rightband");
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                   // var y = document.getElementById("leftband");
-                    //y.style.maxWidth="100%";
-                   $("#leftband").toggleClass("col");
-                   $("#leftband").toggleClass("col-7");
-                } else {
-                //$("#rightband").toggleClass("col-0 h-100");
-                    x.style.display = "none";
-                    $("#leftband").toggleClass("col-7");
-                    $("#leftband").toggleClass("col");
-                   // var y = document.getElementById("leftband");
-                    //y.style.maxWidth="100%";
-                }
-            });
             $("#collapse_card").click(function(){
                 var x = document.getElementById("rightband");
                 if (x.style.display === "none") {

@@ -2,7 +2,7 @@
 
 {% block content_left %}
 
-    <div class="container d-flex flex-column w-100 h-100">
+    <div class="container">
 
         <div class="row w-100" style="position:absolute; height: 50px">
             <div class="col h-100">
@@ -29,9 +29,8 @@
 
         </div>
 
-        <div class="row flex-grow-1" style="margin-top: 100px; overflow: scroll">
-
-            <table>
+        <div class="row" style="margin-top: 100px;">
+            <table class="overflow-y">
                 <thead>
                 <tr>
                     {% for header in headers %}
