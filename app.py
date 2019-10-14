@@ -1,3 +1,6 @@
+#!/usr/bin/python
+#-*- coding:utf-8 -*-
+
 from flask import Flask, render_template, flash, url_for, redirect, request, \
     jsonify
 from utils.backend import Backend
@@ -167,5 +170,5 @@ def deployment():
 
 
 if __name__ == '__main__':
-    app.run(host="127.0.0.1", port=80, debug=True)
-    #app.run(debug=True)
+    #app.run(host="127.0.0.1", port=80)
+    app.run(host="0.0.0.0", debug=True)

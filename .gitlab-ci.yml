@@ -1,0 +1,27 @@
+image: docker:git
+services:
+- docker:dind
+stages:
+ # - build
+  - deploy
+
+#build:
+ # stage: build
+ # image: python:3-stretch
+ # script:
+    #- pip install
+  #  - echo "Installl and Build script here"
+  #artifacts:
+  #  paths:
+  #    - dist
+#  only:
+#    - master
+
+deploy:
+  stage: deploy
+  script:
+  - docker-compose up --build --force-recreate -d
+  tags:
+  - static-deploy-shell
+  only:
+  - master
