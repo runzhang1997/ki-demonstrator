@@ -53,3 +53,15 @@ iframe {
     display: block;
     margin: auto;
 }
+
+.dark-yellow{
+    background-color: #f1a13dfa !important;
+    border-color: #f1a13dfa !important;
+}
+
+.light-yellow{
+    background-color: #fbe3bffa !important;
+    border-color: #fbe3bffa !important;
+}
+.blue-font{
+ color: #007bff; }

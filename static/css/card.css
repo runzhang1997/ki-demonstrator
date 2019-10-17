@@ -48,9 +48,6 @@
 
 /* LIST*/
 
-.card-body.list {
-		padding-bottom: 30px;
-}
 .card-body.list .chart {
 		height: 100%;
 }
@@ -72,7 +69,7 @@
 		width: 100%;
 		counter-increment: list-item;
 		padding-left: 37px;
-		margin-bottom: 20px;
+		margin-bottom: 10px;
 		line-height: 22px;
 		letter-spacing: 1px;
 		font-family: 'Raleway', sans-serif;

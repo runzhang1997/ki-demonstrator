@@ -1,11 +1,10 @@
 {% extends 'layout.html' %}
 {% block page_content %}
-
     <style>
-        #content-container {
-            flex: 1 1 auto;
-            height: 0
-        }
+    #content-container {
+         flex: 1 1 auto;
+         height: 0
+    }
 
     #content-left {
         overflow: hidden;
@@ -14,12 +13,12 @@
 
     <div id="content-container" class="container-fluid">
         <div class="row h-100">
-            <div class="col-7 h-100" id="leftband">
+            <div class="col-6 h-100" id="leftband">
                 <div class="card h-100">
                     {% block content_left %}{% endblock %}
                 </div>
             </div>
-            <div class="col-5 h-100" id="rightband">
+            <div class="col-6 h-100" id="rightband">
 
                 <div class="card h-100">
                     {% block content_right %}{% endblock %}
@@ -46,11 +45,11 @@
                    // var y = document.getElementById("leftband");
                     //y.style.maxWidth="100%";
                    $("#leftband").toggleClass("col");
-                   $("#leftband").toggleClass("col-7");
+                   $("#leftband").toggleClass("col-6");
                 } else {
                 //$("#rightband").toggleClass("col-0 h-100");
                     x.style.display = "none";
-                    $("#leftband").toggleClass("col-7");
+                    $("#leftband").toggleClass("col-6");
                     $("#leftband").toggleClass("col");
                    // var y = document.getElementById("leftband");
                     //y.style.maxWidth="100%";

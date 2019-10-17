@@ -58,31 +58,31 @@
 
     <div class="card flex-grow-1">
         <div class="card-header">
-        <h4>Preprocessing Schritte</h4>
+        <h5 style="text-align: center">Im Preprocessing wird die Datenbasis um inkonsistente, leere und redundante Einträge bereinigt</h5>
         </div>
         <div class="card-body bg list">
-
             <ul>
-                <li class="list-item">Um die KI erfolgreich zu trainieren
-                    müssen Daten zunächst aufbereitet werden.
-                </li>
-                <li class="list-item">
-
-                    Auffüllen von leeren Einträgen, Aussortieren von
-                    (unrealistischen) Ausreißern
-                    <button type="button"
-                            onclick="location.href='{{ url_for('preprocessing') }}?step=1'"
-                            class="btn btn-primary w-100">Durchführen
-                    </button>
-                </li>
-                <li class="list-item">
-
-                    Textinformationen in numerische Werte übersetzen
-                    <button type="button" class="btn btn-secondary w-100"
-                            disabled>Durchführen
-                    </button>
-                </li>
+                <li class="list-item">Um die KI erfolgreich zu trainieren müssen Daten zunächst aufbereitet werden</li>
+                <li class="list-item">Hierzu müssen redundante Daten und Ausreißer entfernt und leere Einträge ergänzt werden</li>
+                <li class="list-item">Zudem müssen mit Textinformationen ausgefüllte Daten in numerische Werte übersetzt werden</li>
             </ul>
+        </div>
+
+        <div class="card-header" >
+            <h5 style="text-align: center">Preprocessing</h5>
+        </div>
+        <div class="card-body">
+             <div class="row w-100" >
+            <div class="col h-100">
+            <button type="button"
+                            onclick="location.href='{{ url_for('preprocessing') }}?step=1'"
+                            class="btn btn-primary w-100 dark-yellow">Leere Einträge auffüllen & Ausreißer (unrealistisch) entfernen
+                    </button>
+            </div>
+            <div class="col h-100">
+            <button type="button" class="btn btn-primary w-100 dark-yellow" disabled>Textinformationen in numerische Werte übersetzen</button>
+            </div>
+                 </div>
         </div>
     </div>
 

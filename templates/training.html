@@ -3,20 +3,18 @@
 {% block content_left %}
 
     <div class="container">
-        <div class="row">
-            <div class="wrap-tree" id="tree-div"></div>
-
-        </div>
         <div class="row" >
             <div class="col">
-                <h5>Durchschnittliche Abweichung: {{ "%.2f€"|format(mean_absolute_error) }}</h5>
+                <button type="button" class="btn btn-primary dark-yellow" id="expand_button">Alles Expandieren</button>
             </div>
-
-            <button type="button" class="btn btn-primary" id="expand_button" style="float: right; height: 40px">Expand all</button>
-
-            <button type="button" class="btn btn-primary" id="collapse_button" style="float: right; height: 40px">Collapse all</button>
-
+            <div class="col">
+                <button type="button" class="btn btn-primary" id="collapse_button" >Alles Eusammenklappen</button>
+            </div>
         </div>
+        <div class="row">
+            <div class="wrap-tree" id="tree-div"></div>
+        </div>
+
     </div>
 {% endblock content_left %}
 
@@ -50,23 +48,24 @@
     </div>-->
 
     <div class="card flex-grow-1">
+         <div class="card-header">
+        <h5 style="text-align: center">Im Deployment werden die Kosten eines Werkzeugs durch die KI anhand der Datenbasis abgeschätzt</h5>
+        </div>
+        <div class="card-body bg list">
+            <ul>
+                <li class="list-item">Es müssen alle Bauteilspeyifikationen angegeben werden</li>
+                <li class="list-item">Die KI schätzt die Werkyeugkosten in Abhängigkeit zu den angegebenen Parametern</li>
+            </ul>
+        </div>
         <div class="card-header">
-            <span><h5 style="display: inline">Trainingsparameter</h5></span>
+            <span><h5 style="display: inline; margin-left: 150px">Trainingsparameter</h5></span>
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" id="pop_train_info" style="float: right; display: inline">
             <i class="material-icons">info</i>
             </button>
         </div>
         <div class="card-body bg list">
             <div class="chart">
-            <ul >
-                <li class="list-item">Aufteilung der Daten in Training-
-                    und Testdaten.
-                </li>
-
-                <li class="list-item">Training von Modellen mit
-                    unterschiedlichen Parametern.
-                </li>
-
+            <ul>
                 <li class="list-item">
                     <h5>
                         Anzahl Trainingsdaten [%]
@@ -88,21 +87,15 @@
                         <span class="range-slider__value">0</span>
                     </div>
                 </li>
-                {#                <li class="list-item">#}
-                {#                    <h5>#}
-                {#                        Maximale Blattgröße#}
-                {#                    </h5>#}
-                {#                    <div class="range-slider">#}
-                {#                        <input class="range-slider__range" type="range"#}
-                {#                               value="{{ "%.0f"|format(min_samples_leaf) }}" min="1" max="50" step="1">#}
-                {#                        <span class="range-slider__value">0</span>#}
-                {#                    </div>#}
-                {#                </li>#}
             </ul>
+                <button type="button" onclick="train()"
+                    class="btn btn-primary dark-yellow" style="position:absolute; z-index: 1; height: 60px">Abweichung berechnen
+                </button>
 
-            <button type="button" onclick="train()"
-                    class="btn btn-primary w-100">Trainieren
-            </button>
+                <div class="col" style="background-color: #fbe3bffa;height: 40px">
+                <h5 style="margin-left: 230px; margin-top:20px">{{ "%.2f€"|format(mean_absolute_error) }}</h5>
+                </div>
+
         </div>
         </div>
     </div>
@@ -427,7 +420,6 @@
     </script>
 
     <script>
-
         function train() {
             var max_depth = document.getElementById("range_max_depth").value
             var train_size = document.getElementById("range_train_size").value / 100
