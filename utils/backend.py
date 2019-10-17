@@ -41,7 +41,7 @@ class Backend(object):
     def __init__(self, config=None):
         df = pd.read_csv(r'static/raw_data.csv', dtype='category')
         df_y = df[['Kosten']].astype('float')
-        df_X = df.drop(columns=['Kosten'])
+        df_X = df.drop(columns=['Kosten', 'Auftragsnummer'])
         self.raw_data = df_X, df_y
 
         # now do preprocessing
@@ -66,7 +66,8 @@ class Backend(object):
 
         # replace NaN with "" for easier visualization
         df_X.replace(np.nan, "", inplace=True)
-
+        df_X_nan['Anzahl Kavitäten'] = pd.to_numeric(df_X_nan['Anzahl Kavitäten'])
+        df_X_nan['Schieberanzahl'] = pd.to_numeric(df_X_nan['Schieberanzahl'])
         self.preprocessed_data_nan = df_X_nan, df_y_nan
         #df = df_X_nan.join(df_y_nan)
         #df.to_csv(r'static/preprocessed_data_nan.csv',encoding='utf-8')
