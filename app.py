@@ -110,11 +110,11 @@ def training():
 
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
-    try:
-        with open(f'static/output-{timestamp}.json', 'w') as outfile:
-            json.dump(json_data, outfile, cls=MyEncoder)
-    except IOError:
-        print("success")
+    # try:
+    with open(f'static/output-{timestamp}.json', 'w') as outfile:
+        json.dump(json_data, outfile, cls=MyEncoder)
+    # except IOError:
+    #     print("ERROR")
 
     while not os.path.exists(f'static/output-{timestamp}.json'):
         pass
@@ -131,23 +131,23 @@ def training():
 
 @app.route('/deployment/', methods=['GET', 'POST'])
 def deployment():
-    if all(k in request.form for k in ['Anzahl der Kavitäten', 'Form der Kavitäten', 'Schieberanzahl', 'Kanaltyp']):
-        feature_dict = {"Anzahl der Kavitäten": float(request.form['Anzahl der Kavitäten']),
-                        "Form der Kavitäten_A": (request.form['Form der Kavitäten']=='A'),
-                        "Form der Kavitäten_B": (request.form['Form der Kavitäten']=='B'),
-                        "Form der Kavitäten_C": (request.form['Form der Kavitäten']=='C'),
-                        "Form der Kavitäten_D": (request.form['Form der Kavitäten']=='D'),
+    if all(k in request.form for k in ['Anzahl Kavitäten', 'Kavitätenform', 'Schieberanzahl', 'Kanaltyp']):
+        feature_dict = {"Anzahl Kavitäten": float(request.form['Anzahl Kavitäten']),
+                        "Kavitätenform_A": (request.form['Kavitätenform']=='A'),
+                        "Kavitätenform_B": (request.form['Kavitätenform']=='B'),
+                        "Kavitätenform_C": (request.form['Kavitätenform']=='C'),
+                        "Kavitätenform_D": (request.form['Kavitätenform']=='D'),
                         'Schieberanzahl': float(request.form['Schieberanzahl']),
                         'Kanaltyp_Heißkanal': (request.form['Kanaltyp']=='Heißkanal'),
                         'Kanaltyp_Kaltkanal': (request.form['Kanaltyp']=='Kaltkanal')
                         }
-        print(request.form['Anzahl der Kavitäten'])
+        print(request.form['Anzahl Kavitäten'])
     else:
-        feature_dict = {"Anzahl der Kavitäten": 0,
-                        "Form der Kavitäten_A": 0,
-                        "Form der Kavitäten_B": 0,
-                        "Form der Kavitäten_C": 0,
-                        "Form der Kavitäten_D": 0,
+        feature_dict = {"Anzahl Kavitäten": 0,
+                        "Kavitätenform_A": 0,
+                        "Kavitätenform_B": 0,
+                        "Kavitätenform_C": 0,
+                        "Kavitätenform_D": 0,
                         'Schieberanzahl': 0,
                         'Kanaltyp_Heißkanal': 0,
                         'Kanaltyp_Kaltkanal': 0
@@ -161,7 +161,7 @@ def deployment():
         with open('static/predict.json', 'w') as outfile:
             json.dump(model_json, outfile, cls=MyEncoder)
     except IOError:
-        print("success")
+        print("ERROR")
 
     return render_template('deployment.html', current_page='deployment',
                            tree_data=model_json, prediction=prediction,
