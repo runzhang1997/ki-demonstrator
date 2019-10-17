@@ -214,7 +214,7 @@ def generate_data(config):
     df_y += target["values"][0]
 
     # Introduce NaN
-    nan_mask = np.random.random(df_X.shape) < .01
+    nan_mask = np.random.random(df_X.shape) < .05
 
     # introduce empty fields
     df_X = df_X.mask(nan_mask, other="")
@@ -241,7 +241,7 @@ if __name__ == "__main__":
 
     generate_data(config)
 
-    backend = Backend()
+    #backend = Backend()
 
     #backend.generate_model(10, 1, 5)
 
