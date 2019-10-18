@@ -41,7 +41,7 @@ class Backend(object):
     def __init__(self, config=None):
         df = pd.read_csv(r'static/raw_data.csv', dtype='category')
         df_y = df[['Kosten']].astype('float')
-        df_X = df.drop(columns=['Kosten', 'Auftragsnummer'])
+        df_X = df.drop(columns=['Kosten'])
         self.raw_data = df_X, df_y
 
         # now do preprocessing
@@ -58,6 +58,28 @@ class Backend(object):
         else:
             raise ValueError(f"Unknown mode: {mode}")
 
+    def get_data_acquisition(self, mode=3):
+        df_X, df_y = self.raw_data
+        df_X_copy = df_X.copy()
+        df_y_copy = df_y.copy()
+        if mode == 0:
+            df_y_copy = ""
+            for feature_name in df_X_copy.columns:
+                df_X_copy[feature_name] = ""
+            return df_X_copy, df_y_copy
+        if mode == 1:
+            df_y_copy = ""
+            df_X_copy["Kavitätenform"] = ""
+            df_X_copy["Kanaltyp"] = ""
+            return df_X_copy, df_y_copy
+        if mode == 2:
+            df_y_copy = ""
+            return df_X_copy, df_y_copy
+        if mode ==3:
+            return df_X_copy, df_y_copy
+        else:
+            raise ValueError(f"Unknown mode: {mode}")
+
     def preprocess(self):
         # drop NaN as first preprocessing step
         df_X, df_y = self.raw_data
@@ -68,6 +90,7 @@ class Backend(object):
         df_X.replace(np.nan, "", inplace=True)
         df_X_nan['Anzahl Kavitäten'] = pd.to_numeric(df_X_nan['Anzahl Kavitäten'])
         df_X_nan['Schieberanzahl'] = pd.to_numeric(df_X_nan['Schieberanzahl'])
+        df_X_nan['Auftragsnummer'] = pd.to_numeric(df_X_nan["Auftragsnummer"])
         self.preprocessed_data_nan = df_X_nan, df_y_nan
         #df = df_X_nan.join(df_y_nan)
         #df.to_csv(r'static/preprocessed_data_nan.csv',encoding='utf-8')
@@ -239,13 +262,16 @@ if __name__ == "__main__":
         "target": {"name": 'Kosten', "values": (30_000, 75_000)}
     }
 
-    generate_data(config)
+    #generate_data(config)
 
-    #backend = Backend()
+    backend = Backend()
 
     #backend.generate_model(10, 1, 5)
 
-    #backend.get_data()
+    backend.get_data_acquisition(0)
+    backend.get_data_acquisition(1)
+    backend.get_data_acquisition(2)
+    backend.get_data_acquisition(3)
 
     # X = {
     #     'Anzahl der Kavitäten': 4,
