@@ -1,9 +1,9 @@
 {% extends 'layout_footer.html' %}
 
 {% block content_left %}
-<div class="w-100 h-100 flex-grow-1" style="overflow: scroll">
-     <table>
-   <!-- <table class="overflow-y">-->
+<div class="container" >
+        <div class="row">
+   <table class="overflow-y">
         <thead>
         <tr>
             {% for header in headers %}
@@ -29,13 +29,14 @@
         {% endfor %}
         </tbody>
     </table>
+        </div>
 </div>
 {% endblock content_left %}
 
 
 {% block content_right %}
 
-    <div class="card flex-grow-1">
+   <!-- <div class="card flex-grow-1">
         <div class="card-header">
             <h4>Erläuterung</h4>
         </div>
@@ -49,13 +50,16 @@
                 </div>
         </div>
     </div>
-
+-->
     <div class="card flex-grow-1">
         <div class="card-header">
-h4>Preprocessing Schritte</h4>
+<h4>Preprocessing Schritte</h4>
         </div>
         <div class="card-body bg list">
             <ul >
+                <li class="list-item">Um die KI erfolgreich zu trainieren
+                    müssen Daten zunächst aufbereitet werden.
+                </li>
                 <li class="list-item">
                     <!--<h5>
                         Datenbereinigung
