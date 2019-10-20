@@ -129,7 +129,12 @@ class Backend(object):
     def generate_model(self, train_size, max_depth):
         self.model = DecisionTreeRegressor(max_depth=max_depth)
 
-        df_X, df_y = self.get_data(2)
+        df_X_pointer, df_y_pointer = self.get_data(2)
+
+        df_X = df_X_pointer.copy()
+        df_y = df_y_pointer.copy()
+
+        df_X = df_X.drop(columns=['Auftragsnummer'])
 
         X_train, X_test, y_train, y_test = train_test_split(df_X, df_y,
                                                             train_size=train_size)
