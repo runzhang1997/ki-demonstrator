@@ -124,20 +124,19 @@ class Backend(object):
         #df = df_X_nan_onehot.join(df_y_nan_onehot)
         #df.to_csv(r'static/preprocessed_data_nan_onehot.csv', encoding='utf-8')
 
-        self.feature_names = df_X_nan_onehot.columns
-
     def generate_model(self, train_size, max_depth):
         self.model = DecisionTreeRegressor(max_depth=max_depth)
 
-        df_X_pointer, df_y_pointer = self.get_data(2)
+        df_X, df_y = self.get_data(2)
 
-        df_X = df_X_pointer.copy()
-        df_y = df_y_pointer.copy()
+        #df_X = df_X_pointer.copy()
+        #df_y = df_y_pointer.copy()
 
-        df_X = df_X.drop(columns=['Auftragsnummer'])
-
-        X_train, X_test, y_train, y_test = train_test_split(df_X, df_y,
+        df_X_train = df_X.drop(columns=['Auftragsnummer'])
+        X_train, X_test, y_train, y_test = train_test_split(df_X_train, df_y,
                                                             train_size=train_size)
+
+        self.feature_names = df_X_train.columns
 
         self.model.fit(X_train, y_train)
 
