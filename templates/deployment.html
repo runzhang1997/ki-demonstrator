@@ -4,12 +4,16 @@
 
     <div class="container ">
         <div class="row">
-            <div class="col">
-            <button type="button" class="btn btn-primary" id="expand_button_deployment" style="float: right;">Alles Expandieren</button>
+            <div class="col" >
+                <div class="wrap-item text-center">
+                <button type="button" class="btn btn-primary dark-yellow" id="expand_button_deployment" >Alles Expandieren</button>
                 </div>
+            </div>
             <div class="col">
-            <button type="button" class="btn btn-primary" id="collapse_button_deployment" style="float: right; ">Alles Eusammenklappen</button>
+                <div class="wrap-item text-center">
+                <button type="button" class="btn btn-primary dark-yellow" id="collapse_button_deployment">Alles Eusammenklappen</button>
                 </div>
+            </div>
         </div>
         <div class="row" >
            <div class="wrap-tree w-100 h-100" id="tree-div"></div>
@@ -23,7 +27,7 @@
 
     <div class="card flex-grow-1">
         <div class="card-header">
-        <h5 style="text-align: center">Im Deployment werden die Kosten eines Werkzeugs durch die KI anhand der Datenbasis abgeschätzt</h5>
+        <h5 style="text-align: center; color:#0069b4">Im Deployment werden die Kosten eines Werkzeugs durch die KI anhand der Datenbasis abgeschätzt</h5>
         </div>
         <div class="card-body bg list">
             <ul>
@@ -34,7 +38,7 @@
 
 
         <div class="card-header">
-            <h5 style="display: inline-flex; margin-left: 170px">Deployment</h5>
+            <h5 style="display: inline-flex; margin-left: 170px; color:#0069b4">Deployment</h5>
 
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" id="pop_pre_info" style="float: right; display: inline">
             <i class="material-icons">info</i>
@@ -43,7 +47,7 @@
         <div class="card-body">
                 <form method="POST" action="{{url_for('deployment')}}">
                     <fieldset class="form-group">
-                        <ul>
+                        <ul style="margin-bottom: 0px;">
                             <li class="list-item">Anzahl der Kavitäten</li>
                             <div class="range-slider w-100">
                                 <input type="range" min="1" max="30"
@@ -81,11 +85,10 @@
 
                         </ul>
                     </fieldset>
-                     <div class="col">
-                    <h5> {{ "%.2f€"|format(prediction) }}</h5>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100" value="Submit">Kostenabschätzung</button>
-
+                <button type="submit" class="btn btn-primary dark-yellow" style="position:absolute; z-index: 1; height: 60px; color:#0069b4; font-weight:700; font-style: italic" value="Submit">Kostenabschätzung</button>
+                <div class="col" style="background-color: #fbe3bffa;height: 40px">
+                <h2 style="margin-left: 230px; margin-top:10px;color:#0069b4;">{{ "%.2f€"|format(prediction) }}</h2>
+                </div>
                 </form>
         </div>
     </div>
@@ -397,7 +400,7 @@
     </script>
     <script>
     const settings = {
-        fill: '#1abc9c',
+        fill: '#0069b4',
         background: '#d7dcdf'
     }
 

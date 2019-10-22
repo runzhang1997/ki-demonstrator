@@ -2,51 +2,46 @@
     <div class="row">
         <div class="col">
             <div class="wrap-item text-center">
-
-                <h5 class="pad-bt15">Anzahl Samples</h5>
+                <p class="pad-bt15" style="color:grey">Anzahl Samples</p>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
-
-                <h5 class="pad-bt15">Anzahl Features</h5>
+                <p class="pad-bt15" style="color:grey">Anzahl Features</p>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
-                <h5 class="pad-bt15">Fortschritt</h5>
+                <p class="pad-bt15" style="color:grey">Fortschritt</p>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
-                <h5 class="pad-bt15">Verantwortlichkeit</h5>
+                <p class="pad-bt15" style="color:grey">Verantwortlichkeit</p>
             </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col">
-            <div class="wrap-item text-center">
-
-                <h4>{{ n_samples }}</h4>
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; max-width: 100px;  margin: auto;">
+                <h4 style="color: #0069b4">{{ n_samples }}</h4>
             </div>
         </div>
         <div class="col">
-            <div class="wrap-item text-center">
-
-                <h4> {{ n_features }} </h4>
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; max-width: 100px;  margin: auto;">
+                <h4 style="color: #0069b4"> {{ n_features }} </h4>
             </div>
         </div>
         <div class="col">
-            <div class="wrap-item text-center">
-                <h4> {{ progress }}%</h4>
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; max-width: 100px;  margin: auto;">
+                <h4 style="color: #0069b4"> {{ progress }}%</h4>
             </div>
         </div>
         <div class="col">
-            <div class="wrap-item text-center">
-
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; max-width: 180px;  margin: auto;">
                 {% for item in responsibility %}
-                    <h5> {{ item }} </h5>
+                    <h4 style="color: #0069b4"> {{ item }} </h4>
                 {% endfor %}
 
             </div>

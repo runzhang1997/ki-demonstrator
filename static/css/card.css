@@ -40,7 +40,7 @@
 }
 
 .card-body.list li:before{
-		background-color: #007bff;
+		background-color: #0069b4;
 		color: #fff;
 		z-index: 4;
 		font-weight: 300;

@@ -1,12 +1,4 @@
 
-.range-slider {
-  margin: 10px 0 0 0%;
-}
-
-.range-slider {
-  width: 90%;
-}
-
 .range-slider__range {
   -webkit-appearance: none;
   width: calc(100% - (73px));
@@ -16,9 +8,8 @@
   outline: none;
   padding: 0;
   margin: 0;
-
   float: left;
-  width: 70% !important;
+  width: 85% !important;
 }
 .range-slider__range::-webkit-slider-thumb {
   -webkit-appearance: none;

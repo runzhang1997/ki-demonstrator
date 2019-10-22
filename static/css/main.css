@@ -65,3 +65,7 @@ iframe {
 }
 .blue-font{
  color: #007bff; }
+
+.form-group {
+     margin-bottom: 0rem !important;
+}

@@ -5,10 +5,14 @@
     <div class="container">
         <div class="row" >
             <div class="col">
+                <div class="wrap-item text-center">
                 <button type="button" class="btn btn-primary dark-yellow" id="expand_button">Alles Expandieren</button>
+                </div>
             </div>
             <div class="col">
-                <button type="button" class="btn btn-primary" id="collapse_button" >Alles Eusammenklappen</button>
+                <div class="wrap-item text-center">
+                <button type="button" class="btn btn-primary dark-yellow" id="collapse_button" >Alles Eusammenklappen</button>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -21,44 +25,19 @@
 
 {% block content_right %}
 
-    <!--<div class="card">
-        <div class="card-header">
-            <h4>Erläuterung</h4>
-        </div>
-
-        <div class="card-body bg list">
-            <div class="chart">
-                <ul>
-                <li class="list-item">Aufteilung der Daten in Training-
-                    und Testdaten.
-                </li>
-
-                <li class="list-item">Training von Modellen mit
-                    unterschiedlichen Parametern.
-                </li>
-
-{#                <li class="list-group-item">Auswahl und Training eines Models#}
-{#                    auf Trainingsdaten#}
-{#                </li>#}
-{#                <li class="list-item">Evaluation durch Testdatensatz#}
-{#                </li>#}
-            </ul>
-            </div>
-        </div>
-    </div>-->
-
     <div class="card flex-grow-1">
          <div class="card-header">
-        <h5 style="text-align: center">Im Deployment werden die Kosten eines Werkzeugs durch die KI anhand der Datenbasis abgeschätzt</h5>
+        <h5 style="text-align: center; color:#0069b4">Durch die Trainingsdaten wird die KI optimiert und anschließend anhand der Testdaten validiert</h5>
         </div>
         <div class="card-body bg list">
             <ul>
-                <li class="list-item">Es müssen alle Bauteilspeyifikationen angegeben werden</li>
-                <li class="list-item">Die KI schätzt die Werkyeugkosten in Abhängigkeit zu den angegebenen Parametern</li>
+                <li class="list-item">Aufteilung der Daten in Trainings und Testdaten</li>
+                <li class="list-item">Training von Modellen mit unterschiedlichen Parametern</li>
+                <li>Berechnung der Abweichung</li>
             </ul>
         </div>
         <div class="card-header">
-            <span><h5 style="display: inline; margin-left: 150px">Trainingsparameter</h5></span>
+            <span><h5 style="display: inline; margin-left: 180px; color:#0069b4">Training</h5></span>
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" id="pop_train_info" style="float: right; display: inline">
             <i class="material-icons">info</i>
             </button>
@@ -67,9 +46,7 @@
             <div class="chart">
             <ul>
                 <li class="list-item">
-                    <h5>
-                        Anzahl Trainingsdaten [%]
-                    </h5>
+                    <h5>Anzahl Trainingsdaten [%]</h5>
                     <div class="range-slider">
                         <input id="range_train_size" class="range-slider__range" type="range"
                                min="10" max="90" step="10">
@@ -89,11 +66,11 @@
                 </li>
             </ul>
                 <button type="button" onclick="train()"
-                    class="btn btn-primary dark-yellow" style="position:absolute; z-index: 1; height: 60px">Abweichung berechnen
+                    class="btn btn-primary dark-yellow" style="position:absolute; z-index: 1; height: 60px; color:#0069b4; font-weight:700; font-style: italic">Abweichung berechnen
                 </button>
 
-                <div class="col" style="background-color: #fbe3bffa;height: 40px">
-                <h5 style="margin-left: 230px; margin-top:20px">{{ "%.2f€"|format(mean_absolute_error) }}</h5>
+                <div class="col" style="background-color: #fbe3bffa;height: 45px">
+                <h2 style="margin-left: 230px; margin-top:20px;color:#0069b4;">{{ "%.2f€"|format(mean_absolute_error) }}</h2>
                 </div>
 
         </div>
@@ -430,7 +407,7 @@
         }
 
             const settings = {
-        fill: '#1abc9c',
+        fill: '#0069b4',
         background: '#d7dcdf'
     }
 
