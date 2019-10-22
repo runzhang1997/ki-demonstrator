@@ -104,12 +104,12 @@ def training():
 
 
 
-    if train_size < .5:
-        mean_absolute_error = np.random.random() * 2500 + 2500
-    elif max_depth < 20:
-        mean_absolute_error = np.random.random() * 1500 + 500
-    else:
-        mean_absolute_error = np.random.random() * 1000
+    # if train_size < .5:
+    #     mean_absolute_error = np.random.random() * 2500 + 2500
+    # elif max_depth < 20:
+    #     mean_absolute_error = np.random.random() * 1500 + 500
+    # else:
+    #     mean_absolute_error = np.random.random() * 1000
 
     # mean_absolute_error = np.random.random() * 5000 * (51 - max_depth) / 50 * (1 - train_size)
 
