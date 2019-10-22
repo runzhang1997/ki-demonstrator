@@ -136,17 +136,16 @@ def training():
 
 @app.route('/deployment/', methods=['GET', 'POST'])
 def deployment():
-    if all(k in request.form for k in ['Anzahl Kavitäten', 'Kavitätenform', 'Schieberanzahl', 'Kanaltyp']):
-        feature_dict = {"Anzahl Kavitäten": float(request.form['Anzahl Kavitäten']),
-                        "Kavitätenform_A": (request.form['Kavitätenform']=='A'),
-                        "Kavitätenform_B": (request.form['Kavitätenform']=='B'),
-                        "Kavitätenform_C": (request.form['Kavitätenform']=='C'),
-                        "Kavitätenform_D": (request.form['Kavitätenform']=='D'),
+    if all(k in request.form for k in ['Anzahl der Kavitäten', 'Form der Kavitäten', 'Schieberanzahl', 'Kanaltyp']):
+        feature_dict = {"Anzahl Kavitäten": float(request.form['Anzahl der Kavitäten']),
+                        "Kavitätenform_A": (request.form['Form der Kavitäten']=='A'),
+                        "Kavitätenform_B": (request.form['Form der Kavitäten']=='B'),
+                        "Kavitätenform_C": (request.form['Form der Kavitäten']=='C'),
+                        "Kavitätenform_D": (request.form['Form der Kavitäten']=='D'),
                         'Schieberanzahl': float(request.form['Schieberanzahl']),
                         'Kanaltyp_Heißkanal': (request.form['Kanaltyp']=='Heißkanal'),
                         'Kanaltyp_Kaltkanal': (request.form['Kanaltyp']=='Kaltkanal')
                         }
-        print(request.form['Anzahl Kavitäten'])
     else:
         feature_dict = {"Anzahl Kavitäten": 0,
                         "Kavitätenform_A": 0,
@@ -157,7 +156,7 @@ def deployment():
                         'Kanaltyp_Heißkanal': 0,
                         'Kanaltyp_Kaltkanal': 0
                         }
-
+    print (request.form)
     print (feature_dict)
 
     prediction, model_json = backend.evaluate_model(feature_dict)

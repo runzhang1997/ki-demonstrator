@@ -22,10 +22,10 @@
   transition: background .15s ease-in-out;
 }
 .range-slider__range::-webkit-slider-thumb:hover {
-  background: #1abc9c;
+  background: #0069b4;
 }
 .range-slider__range:active::-webkit-slider-thumb {
-  background: #1abc9c;
+  background: #0069b4;
 }
 .range-slider__range::-moz-range-thumb {
   width: 20px;
@@ -37,13 +37,13 @@
   transition: background .15s ease-in-out;
 }
 .range-slider__range::-moz-range-thumb:hover {
-  background: #1abc9c;
+  background: #0069b4;
 }
 .range-slider__range:active::-moz-range-thumb {
-  background: #1abc9c;
+  background: #0069b4;
 }
 .range-slider__range:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 3px #fff, 0 0 0 6px #1abc9c;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 6px #0069b4;
 }
 
 input {
