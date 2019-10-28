@@ -134,7 +134,17 @@
     <span class="helper"></span>
     <div>
         <div class="popupCloseButton" id="closebutton_train">X</div>
-        <p>training parameter<br />information inside the popup box!</p>
+            <ul>
+                <li>Zur Vorhersage des Werkzeugpreises wird ein Entscheidungsbaum trainiert.</li>
+                <li>Ein Entscheidungsbaum zeigt die wesentlichen Trennkriterien, anhand denen der Werkzeugpreis gebildet wird. Dabei steht der linke Ast stets für den Entscheidungsweg, der beschritten wird, wenn das Entscheiodungskriterium erfüllt ist. </li>
+                <li>Die vorhandenen Daten werden in einen Trainings- und Testdatensatz aufgeteilt.</li>
+                <li>Wichtig ist, dem Algorithmus nicht alle vorhandenen Datensätze zugänglich zu machen. In diesem Falle würde der Algorithmus diese lediglich auswendig lernen, man spricht auch von Overfitting.
+                <li>Stattdessen wird bewusst ein Teil der Daten als Testdaten zurückgehalten. Mit Hilfe dieser Testdaten kann dann die Genauigkeit des Modells bespielsweise basierend auf der mittleren quadratischen Abweichung bestimmt werden. </li>
+
+                <li> Die Baumtiefe des Entscheidungsbaumes wiederum gibt an, wie detailliert das Modell eine Kategorisierung der Preisvorhersage vornimmt.
+                    Vereinfacht gesagt, ein sehr tiefer Baum, wird für jedes spezifische Werkzeug den spezifischen Preis vorhersagen.
+                    Dies bietet natürlich nicht den gewünschten Effekt. Je kleiner der Baum gestaltet wird, desto eher wird anhand der tatsächlich ausschlaggebeneden Parametern entschieden. </li>
+            </ul>
     </div>
 </div>
 
@@ -142,7 +152,11 @@
     <span class="helper"></span>
     <div>
         <div class="popupCloseButton" id="closebutton_predict">X</div>
-        <p>prediction<br />inside the popup box!</p>
+        <ul>
+            <li>Das im vorigen Schritt trainierte Modell kann nun zur Preisvorhersage genutzt werden.</li>
+            <li>Dem Modell werden die Werkzeugparameter vorgegeben.</li>
+            <li>Basierend auf den vorgegebenen Parametern berechnet das Modell nun den Entscheidungsweg bis zum erlenten Endpreis des Werkzeugs.</li>
+        </ul>
     </div>
 </div>
 </body>
