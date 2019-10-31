@@ -116,9 +116,9 @@ font-size: 25px;
 }
 
 
-  .navbar-main {
+.navbar-main {
     margin: 0 auto;
-    padding-right: 30px;
+    padding-right: 10px;
   }
 
 .nav {
@@ -135,7 +135,8 @@ list-style: none;
     padding: 0rem 1rem !important;
 }
 .navbar-nav{
-    display: block !important;
+    //display: block !important;
+    flex-direction: row !important;
 }
 .ul{margin-block-start: 0em !important;
 }
