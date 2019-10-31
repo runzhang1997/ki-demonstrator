@@ -242,6 +242,8 @@ def generate_data(config):
     # introduce empty fields
     df_X = df_X.mask(nan_mask, other="")
     df_X.index.name = "Auftragsnummer"
+    rnd = 5.0 * np.random.random( len(df_X.index) )
+    df_X.index = (df_X.index + 13) * 11 + rnd.astype('int')
     #self.raw_data = df_X, df_y
     df = df_X.join(df_y)
     df.to_csv(r'static/raw_data.csv')
@@ -262,7 +264,7 @@ if __name__ == "__main__":
         "target": {"name": 'Kosten', "values": (30_000, 75_000)}
     }
 
-    #generate_data(config)
+    generate_data(config)
 
     backend = Backend()
 
