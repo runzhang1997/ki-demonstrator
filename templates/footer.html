@@ -1,48 +1,50 @@
 <div class="container">
-    <div class="row">
+    <div class="row" >
         <div class="col">
             <div class="wrap-item text-center">
-                <p class="pad-bt15" style="color:grey">Anzahl Samples</p>
+                <p class="pad-bt1" style="color:grey; margin-bottom: 1px;">Anzahl Samples</p>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
-                <p class="pad-bt15" style="color:grey">Anzahl Features</p>
+                <p class="pad-bt1" style="color:grey; margin-bottom: 1px;">Anzahl Features</p>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
-                <p class="pad-bt15" style="color:grey">Fortschritt</p>
+                <p class="pad-bt1" style="color:grey; margin-bottom: 1px;">Fortschritt</p>
             </div>
         </div>
         <div class="col">
             <div class="wrap-item text-center">
-                <p class="pad-bt15" style="color:grey">Verantwortlichkeit</p>
+                <p class="pad-bt1" style="color:grey; margin-bottom: 1px;">Verantwortlichkeit</p>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" style="margin-bottom: 10px;">
         <div class="col">
-            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; max-width: 100px;  margin: auto;">
-                <h4 style="color: #0069b4">{{ n_samples }}</h4>
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important;text-align: center;  max-width: 100px; min-height:35px; margin: auto;line-height: 40px;">
+                <h3 style="color: #0069b4; display: inline-block; vertical-align: middle;">{{ n_samples }}</h3>
             </div>
         </div>
         <div class="col">
-            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; max-width: 100px;  margin: auto;">
-                <h4 style="color: #0069b4"> {{ n_features }} </h4>
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; text-align: center; max-width: 100px; min-height:35px; margin: auto;line-height: 40px;">
+                <h3 style="color: #0069b4; display: inline-block; vertical-align: middle;"> {{ n_features }} </h3>
             </div>
         </div>
         <div class="col">
-            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; max-width: 100px;  margin: auto;">
-                <h4 style="color: #0069b4"> {{ progress }}%</h4>
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; text-align: center; max-width: 100px; min-height:35px;  margin: auto;line-height: 40px;">
+                <h3 style="color: #0069b4; display: inline-block; vertical-align: middle;"> {{ progress }}%</h3>
             </div>
         </div>
         <div class="col">
-            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; max-width: 180px;  margin: auto;">
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; max-width: 180px; min-height:35px; text-align:center;  margin: auto; line-height: 40px;">
+                <h4 style="color: #0069b4; display: inline-block; vertical-align: middle; ">
                 {% for item in responsibility %}
-                    <h4 style="color: #0069b4"> {{ item }} </h4>
+                     {{ item }}
                 {% endfor %}
+                    </h4>
 
             </div>
         </div>

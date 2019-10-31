@@ -53,7 +53,8 @@
 -->
     <div class="card flex-grow-1">
         <div class="card-header">
-        <h5 style="text-align: center; color:#0069b4">Im Preprocessing wird die Datenbasis um inkonsistente, leere und redundante Einträge bereinigt</h5>
+            <h6 style="text-align: center; font-size: 20px; font-weight: 300;"> Erklärung Preprocessing: </h6>
+            <h6 style="text-align: center; font-weight: 300;">Im Preprocessing wird die Datenbasis um inkonsistente, leere und redundante Einträge bereinigt</h6>
         </div>
         <div class="card-body bg list">
             <ul>
@@ -64,18 +65,18 @@
         </div>
 
         <div class="card-header" >
-            <h5 style="text-align: center; color:#0069b4">Preprocessing</h5>
+            <h5 style="text-align: center; font-size: 20px; font-weight: 300; margin-bottom: 0rem;">Preprocessing</h5>
         </div>
         <div class="card-body">
              <div class="row w-100" >
             <div class="col h-100">
             <button type="button"
                             onclick="location.href='{{ url_for('preprocessing') }}?step=1'"
-                            class="btn btn-primary w-100 dark-yellow" disabled>Leere Einträge auffüllen & Ausreißer (unrealistisch) entfernen
+                            class="btn btn-primary w-100 dark-yellow" disabled> Einträge auffüllen & Ausreißer entfernen
                     </button>
             </div>
             <div class="col h-100">
-            <button type="button" onclick="location.href='{{ url_for('preprocessing') }}?step=2'" class="btn btn-primary w-100 dark-yellow">Textinformationen in numerische Werte übersetzen</button>
+            <button type="button" onclick="location.href='{{ url_for('preprocessing') }}?step=2'" class="btn btn-primary w-100 dark-yellow">Textinformationen in numerische Werte </button>
             </div>
                  </div>
         </div>

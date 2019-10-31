@@ -112,14 +112,13 @@
   }
 }
 .navbar-brand {
-font-size: 25px;
+    font-size: 25px;
 }
-
 
 .navbar-main {
     margin: 0 auto;
     padding-right: 10px;
-  }
+}
 
 .nav {
 display:block;

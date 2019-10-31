@@ -27,64 +27,79 @@
 
     <div class="card flex-grow-1">
         <div class="card-header">
-        <h5 style="text-align: center; color:#0069b4">Im Deployment werden die Kosten eines Werkzeugs durch die KI anhand der Datenbasis abgeschätzt</h5>
+            <h6 style="text-align: center; font-size: 20px; font-weight: 300;"> Erklärung Deployment: </h6>
+            <h6 style="text-align: center; font-weight: 300;">Im Deployment werden die Kosten eines Werkzeugs durch die KI anhand der Datenbasis abgeschätzt</h6>
         </div>
         <div class="card-body bg list">
             <ul>
-                <li class="list-item">Es müssen alle Bauteilspeyifikationen angegeben werden</li>
-                <li class="list-item">Die KI schätzt die Werkyeugkosten in Abhängigkeit zu den angegebenen Parametern</li>
+                <li class="list-item">Es müssen alle Bauteilspezifikationen angegeben werden</li>
+                <li class="list-item">Die KI schätzt die Werkzeugkosten in Abhängigkeit zu den angegebenen Parametern</li>
             </ul>
         </div>
 
 
         <div class="card-header">
-            <h5 style="display: inline-flex; margin-left: 170px; color:#0069b4">Deployment</h5>
+            <div class="row">
+            <div class="col" style="vertical-align:center; font-size: 20px; margin-left: 180px; font-weight: 300;">
+                Deployment
+            </div>
 
+            <div class="col">
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" id="pop_pre_info" style="float: right; display: inline">
             <i class="material-icons">info</i>
             </button>
+            </div>
+            </div>
         </div>
         <div class="card-body">
+
                 <form method="POST" action="{{url_for('deployment')}}">
+                    <div class="chart">
                     <fieldset class="form-group">
-                        <ul style="margin-bottom: 0px;">
+                        <ul>
+                            <div class="row">
+                                <div class="col">
                             <li class="list-item">Anzahl der Kavitäten</li>
                             <div class="range-slider w-100">
                                 <input type="range" min="1" max="30"
                                        class="range-slider__range"
                                        id="Kavitäten_slider" name="Anzahl der Kavitäten">
                                 <span id="Kavitäten_value"
-                                      class="range-slider__value"></span>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                            <li class="list-item">Form der Kavitäten</li>
-                            <div style='margin: 0px 30px;'>
-                                <input type="radio" name="Form der Kavitäten" value="A"> A
-                                <input type="radio" name="Form der Kavitäten" value="B"> B
-                                <input type="radio" name="Form der Kavitäten" value="C"> C
-                                <input type="radio" name="Form der Kavitäten" value="D"> D
+                                      class="range-slider__value">15</span>
                             </div>
                             </div>
-                                <div class="col">
-                            <li class="list-item">Kanaltyp</li>
-                            <div style='margin: 0px 10px;'>
-                                <input type="radio" name="Kanaltyp" value="Heißkanal">Heißkanal
-                                <input type="radio" name="Kanaltyp" value="Kaltkanal">Kaltkanal
-                            </div>
-                                    </div>
-                                </div>
+                                 <div class="col">
                             <li class="list-item">Schieberanzahl</li>
                             <div class="range-slider">
                                 <input type="range" min="1" max="30"
                                        class="range-slider__range"
                                        id="Schieberanzahl_slider" name="Schieberanzahl">
                                 <span id="Schieberanzahl_value"
-                                      class="range-slider__value"></span>
+                                      class="range-slider__value">15</span>
                             </div>
-
+                                     </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <li class="list-item">Form der Kavitäten</li>
+                                    <div style='margin: 0px 30px;'>
+                                        <input type="radio" name="Form der Kavitäten" value="A"> A
+                                        <input type="radio" name="Form der Kavitäten" value="B"> B
+                                        <input type="radio" name="Form der Kavitäten" value="C"> C
+                                        <input type="radio" name="Form der Kavitäten" value="D"> D
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <li class="list-item">Kanaltyp</li>
+                                    <div style='margin: 0px 10px;'>
+                                        <input type="radio" name="Kanaltyp" value="Heißkanal">Heißkanal
+                                        <input type="radio" name="Kanaltyp" value="Kaltkanal">Kaltkanal
+                                    </div>
+                                </div>
+                            </div>
                         </ul>
                     </fieldset>
+                    </div>
                     <button type="submit" class="btn btn-primary dark-yellow" value="Submit" style="position:absolute; z-index: 1; height: 60px; color:#0069b4; font-weight:700; font-style: italic">Kostenabschätzung</button>
                     <div class="col" style="background-color: #fbe3bffa;height: 40px">
                     <h2 style="margin-left: 230px; margin-top:10px;color:#0069b4;">{{ "%.2f€"|format(prediction) }}</h2>

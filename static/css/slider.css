@@ -1,7 +1,7 @@
 
 .range-slider__range {
   -webkit-appearance: none;
-  width: calc(100% - (73px));
+  width: calc(100% - (73px)) !important;
   height: 10px;
   border-radius: 5px;
   background: #d7dcdf;
@@ -9,7 +9,7 @@
   padding: 0;
   margin: 0;
   float: left;
-  width: 85% !important;
+  //width: 80% !important;
 }
 .range-slider__range::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -55,18 +55,19 @@ input {
 }
 .range-slider__value {
   position: relative;
-  width: 60px;
+  width: 50px;
   color: #fff;
   line-height: 20px;
   text-align: center;
   border-radius: 3px;
   background: #2c3e50;
-  padding: 5px 10px;
+  padding: 5px 5px;
   margin-left: 8px;
+  font-size: 10px;
 }
 .range-slider__value:after {
   position: absolute;
-  top: 8px;
+  top: 5px;
   left: -7px;
   width: 0;
   height: 0;

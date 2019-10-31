@@ -5,13 +5,13 @@
     <div class="container">
 
         <div class="row w-100" style="position:absolute; height: 50px">
-            <div class="col h-100">
+            <div class="col h-100" style="text-align: center;">
                 <img class="h-100" src="/static/images/logo_excel.png">
             </div>
-            <div class="col h-100">
+            <div class="col h-100" style="text-align: center;">
                 <img class="h-100" src="/static/images/logo_mssql.png">
             </div>
-            <div class="col h-100">
+            <div class="col h-100" style="text-align: center;">
                 <img class="h-100" src="/static/images/logo_sap.png">
             </div>
 
@@ -63,18 +63,19 @@
 
     <div class="card flex-grow-1">
         <div class="card-header">
-            <h5 style="text-align: center; color:#0069b4">Die Datenbasis wird durch die Zusammenführung verschiedener Datenquellen gebildet</h5>
+            <h6 style="text-align: center; font-size: 20px; font-weight: 300;"> Erklärung Datenselektion: </h6>
+            <h6 style="text-align: center; font-weight: 300;"> Die Datenbasis wird durch die Zusammenführung verschiedener Datenquellen gebildet</h6>
         </div>
         <div class="card-body bg list">
             <div class="chart">
             <ul>
                 <li class="list-item">
                     Aus verschiedenen Datenquellen werden die notwendigen
-                    Informationen zusammengeführt.
+                    Informationen zusammengeführt
                 </li>
                 <li class="list-item">
                     Die Zusammenführung der Daten erfolgt über sogenannte
-                    Features (Spalten der Tabelle).
+                    Features (Spalten der Tabelle)
                 </li>
                 <li class="list-item">
                     Zunächst müssen Features definiert werden, sodass Daten aus
@@ -85,29 +86,31 @@
             </div>
         </div>
 
+
         <div class="card-header" >
-            <h5 style="text-align: center; color:#0069b4">Datenselektion</h5>
+            <h5 style="text-align: center; font-size: 20px; font-weight: 300; margin-bottom: 0rem;">Datenselektion</h5>
+            <!--remove the margin bottom.-->
         </div>
         <div class="card-body">
-        <div class="row w-100" style="height: 50px">
-            <div class="col h-100">
-                <img class="h-100" src="/static/images/logo_excel.png">
+        <div class="row w-100" style="height: 50px; margin-bottom: 10px;">
+            <div class="col h-100" style="text-align: center;">
+                <img class="h-100"  src="/static/images/logo_excel.png">
             </div>
-            <div class="col h-100">
+            <div class="col h-100" style="text-align: center;">
                 <img class="h-100" src="/static/images/logo_mssql.png">
             </div>
-            <div class="col h-100">
+            <div class="col h-100" style="text-align: center;">
                 <img class="h-100" src="/static/images/logo_sap.png">
             </div>
         </div>
         <div class="row w-100" style="height: 50px">
-            <div class="col h-100">
+            <div class="col h-100" style="text-align: center;">
                 <button type="button" class="btn btn-primary dark-yellow" onclick="location.href='{{ url_for('acquisition') }}?step=1'" style=" height: 50px; color:#0069b4; font-weight:700; font-style: italic">Daten importieren</button>
             </div>
-            <div class="col h-100">
+            <div class="col h-100" style="text-align: center;">
                 <button type="button" class="btn btn-primary dark-yellow" onclick="location.href='{{ url_for('acquisition') }}?step=2'" style=" height: 50px; color:#0069b4; font-weight:700; font-style: italic">Daten importieren</button>
             </div>
-            <div class="col h-100">
+            <div class="col h-100" style="text-align: center;">
                 <button type="button" class="btn btn-primary dark-yellow" onclick="location.href='{{ url_for('acquisition') }}?step=3'" style="height: 50px; color:#0069b4; font-weight:700; font-style: italic">Daten importieren</button>
             </div>
         </div>
