@@ -4,14 +4,10 @@
 
     <div class="container ">
         <div class="row">
-            <div class="col" >
-                <div class="wrap-item text-center">
-                <button type="button" class="btn btn-primary dark-yellow" id="expand_button_deployment" >Alles Expandieren</button>
-                </div>
-            </div>
-            <div class="col">
-                <div class="wrap-item text-center">
-                <button type="button" class="btn btn-primary dark-yellow" id="collapse_button_deployment">Alles Eusammenklappen</button>
+            <div class="col text-right" style="padding-right:0px;">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button"  id="expand_button_deployment"style="padding-right:0px;"> <img style="height:30px; width:30px;" src="{{ url_for('static', filename='images/icon_expand_all.png') }}" /></button>
+                <button type="button"  id="collapse_button_deployment" ><img style="height:30px; width:30px;" src="{{ url_for('static', filename='images/icon_collapse_all.png') }}" /></button>
                 </div>
             </div>
         </div>
@@ -45,6 +41,26 @@
             </div>
 
             <div class="col">
+                <div class="modal" id="predict_popwindow" role="dialog" >
+                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" >Erklärung</h4>
+                            <button type="button" class="close" id="closebutton_predict2">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <ol>
+            <li>Das im vorigen Schritt trainierte Modell kann nun zur Preisvorhersage genutzt werden.</li>
+            <li>Dem Modell werden die Werkzeugparameter vorgegeben.</li>
+            <li>Basierend auf den vorgegebenen Parametern berechnet das Modell nun den Entscheidungsweg bis zum erlenten Endpreis des Werkzeugs.</li>
+        </ol>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary"  id="closebutton_predict">Close</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" id="pop_pre_info" style="float: right; display: inline">
             <i class="material-icons">info</i>
             </button>
@@ -100,9 +116,9 @@
                         </ul>
                     </fieldset>
                     </div>
-                    <button type="submit" class="btn btn-primary dark-yellow" value="Submit" style="position:absolute; z-index: 1; height: 60px; color:#0069b4; font-weight:700; font-style: italic">Kostenabschätzung</button>
-                    <div class="col" style="background-color: #fbe3bffa;height: 40px">
-                    <h2 style="margin-left: 230px; margin-top:10px;color:#0069b4;">{{ "%.2f€"|format(prediction) }}</h2>
+                    <button type="submit" class="btn btn-primary dark-yellow" value="Submit" style="position:absolute; z-index: 1; height: 60px; color:#0069b4; font-size: 17px;font-weight:700; font-style: italic">Kostenabschätzung</button>
+                    <div class="col" style="background-color: #fbefdcfa; height: 45px; margin-top:6px;display:flex; align-items: center;justify-content: center;">
+                    <h2 style="margin-left: 190px;color:#0069b4;margin-bottom: 0px;">{{ "%.2f€"|format(prediction) }}</h2>
                     </div>
                     <!--<button type="submit" class="btn btn-primary w-100" value="Submit">Kostenabschätzung</button>-->
                 </form>
@@ -442,6 +458,9 @@
        $('#predict_popwindow').show();
     });
     $('#closebutton_predict').click(function(){
+        $('#predict_popwindow').hide();
+    });
+    $('#closebutton_predict2').click(function(){
         $('#predict_popwindow').hide();
     });
 });

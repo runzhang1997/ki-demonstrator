@@ -52,10 +52,7 @@
     <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
     <script src="{{ url_for('static', filename='js/jquery.stickyheader.js')}}"></script>
-
     <title>KI-Demonstrator</title>
-
-
 </head>
 
 <body class="h-100 w-100 d-flex flex-column">
@@ -127,9 +124,11 @@
 </header>
 
 <div class="d-flex flex-column flex-grow-1 ">
+
     {% block page_content %}{% endblock %}
 </div>
 
+<!--
 <div class="hover_bkgr_fricc" id = "train_popwindow">
     <span class="helper"></span>
     <div>
@@ -145,9 +144,9 @@
                     Dies bietet natürlich nicht den gewünschten Effekt. Je kleiner der Baum gestaltet wird, desto eher wird anhand der tatsächlich ausschlaggebeneden Parametern entschieden. </li>
             </ol>
     </div>
-</div>
+</div>-->
 
-<div class="hover_bkgr_fricc" id = "predict_popwindow">
+<!--<div class="hover_bkgr_fricc" id = "predict_popwindow">
     <span class="helper"></span>
     <div>
         <div class="popupCloseButton" id="closebutton_predict">X</div>
@@ -157,7 +156,7 @@
             <li>Basierend auf den vorgegebenen Parametern berechnet das Modell nun den Entscheidungsweg bis zum erlenten Endpreis des Werkzeugs.</li>
         </ol>
     </div>
-</div>
+</div>-->
 </body>
 </html>
 

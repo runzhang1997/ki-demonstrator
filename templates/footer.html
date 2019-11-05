@@ -24,28 +24,35 @@
 
     <div class="row" style="margin-bottom: 10px;">
         <div class="col">
-            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important;text-align: center;  max-width: 100px; min-height:35px; margin: auto;line-height: 40px;">
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important;text-align: center;  width: 75%; min-height:35px; margin: auto;line-height: 40px;">
                 <h3 style="color: #0069b4; display: inline-block; vertical-align: middle;">{{ n_samples }}</h3>
             </div>
         </div>
         <div class="col">
-            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; text-align: center; max-width: 100px; min-height:35px; margin: auto;line-height: 40px;">
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; text-align: center; width: 75%; min-height:35px; margin: auto;line-height: 40px;">
                 <h3 style="color: #0069b4; display: inline-block; vertical-align: middle;"> {{ n_features }} </h3>
             </div>
         </div>
         <div class="col">
-            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; text-align: center; max-width: 100px; min-height:35px;  margin: auto;line-height: 40px;">
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; text-align: center; width: 75%; min-height:35px;  margin: auto;line-height: 40px;">
                 <h3 style="color: #0069b4; display: inline-block; vertical-align: middle;"> {{ progress }}%</h3>
             </div>
         </div>
         <div class="col">
-            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; max-width: 180px; min-height:35px; text-align:center;  margin: auto; line-height: 40px;">
-                <h4 style="color: #0069b4; display: inline-block; vertical-align: middle; ">
-                {% for item in responsibility %}
+            <div class="wrap-item text-center" style="background-color: #b5b3b3 !important; width: 77%; min-height:35px; text-align:center;  margin: auto; line-height: 40px;">
+                {% if current_page == 'preprocessing' %}
+                   <h6 style="color: #0069b4; display: inline-block; vertical-align: middle; ">
+                       {% for item in responsibility %}
                      {{ item }}
-                {% endfor %}
-                    </h4>
-
+                    {% endfor %}
+                    </h6>
+                {%else%}
+                   <h5 style="color: #0069b4; display: inline-block; vertical-align: middle; ">
+                    {% for item in responsibility %}
+                     {{ item }}
+                    {% endfor %}
+                    </h5>
+                {%endif%}
             </div>
         </div>
     </div>

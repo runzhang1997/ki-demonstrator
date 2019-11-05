@@ -4,15 +4,13 @@
 
     <div class="container">
         <div class="row" >
-            <div class="col">
-                <div class="wrap-item text-center">
-                <button type="button" class="btn btn-primary dark-yellow" id="expand_button">Alles Expandieren</button>
+            <div class="col text-right" style="padding-right:0px;">
+               <!-- <div class="wrap-item text-center">-->
+                <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button"  id="expand_button" style="padding-right:0px;"> <img style="height:30px; width:30px;" src="{{ url_for('static', filename='images/icon_expand_all.png') }}" /></button>
+                <button type="button"  id="collapse_button" ><img style="height:30px; width:30px;" src="{{ url_for('static', filename='images/icon_collapse_all.png') }}" /></button>
                 </div>
-            </div>
-            <div class="col">
-                <div class="wrap-item text-center">
-                <button type="button" class="btn btn-primary dark-yellow" id="collapse_button" >Alles Eusammenklappen</button>
-                </div>
+               <!-- </div>-->
             </div>
         </div>
         <div class="row">
@@ -44,6 +42,31 @@
             </div>
 
             <div class="col">
+                <div class="modal" id="train_popwindow" role="dialog" >
+                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" >Erklärung</h4>
+                            <button type="button" class="close" id="closebutton_train2">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <ol>
+                                <li>Zur Vorhersage des Werkzeugpreises wird ein Entscheidungsbaum trainiert.</li>
+                                <li>Ein Entscheidungsbaum zeigt die wesentlichen Trennkriterien, anhand denen der Werkzeugpreis gebildet wird. Dabei steht der linke Ast stets für den Entscheidungsweg, der beschritten wird, wenn das Entscheiodungskriterium erfüllt ist. </li>
+                                <li>Die vorhandenen Daten werden in einen Trainings- und Testdatensatz aufgeteilt.</li>
+                                <li>Wichtig ist, dem Algorithmus nicht alle vorhandenen Datensätze zugänglich zu machen. In diesem Falle würde der Algorithmus diese lediglich auswendig lernen, man spricht auch von Overfitting.
+                                <li>Stattdessen wird bewusst ein Teil der Daten als Testdaten zurückgehalten. Mit Hilfe dieser Testdaten kann dann die Genauigkeit des Modells bespielsweise basierend auf der mittleren quadratischen Abweichung bestimmt werden. </li>
+                                <li> Die Baumtiefe des Entscheidungsbaumes wiederum gibt an, wie detailliert das Modell eine Kategorisierung der Preisvorhersage vornimmt.
+                                    Vereinfacht gesagt, ein sehr tiefer Baum, wird für jedes spezifische Werkzeug den spezifischen Preis vorhersagen.
+                                    Dies bietet natürlich nicht den gewünschten Effekt. Je kleiner der Baum gestaltet wird, desto eher wird anhand der tatsächlich ausschlaggebeneden Parametern entschieden. </li>
+                            </ol>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary"  id="closebutton_train">Close</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
                 <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" id="pop_train_info" style="float: right; display: inline">
                 <i class="material-icons">info</i>
                 </button>
@@ -82,11 +105,10 @@
                 <!--</li>-->
             </ul>
                 <button type="button" onclick="train()"
-                    class="btn btn-primary dark-yellow" style="position:absolute; z-index: 1; height: 60px; color:#0069b4; font-weight:700; font-style: italic">Abweichung berechnen
+                    class="btn btn-primary dark-yellow" style="position:absolute; z-index: 1; height: 60px; color:#0069b4; font-size: 17px; font-weight:700; font-style: italic">Abweichung berechnen
                 </button>
-
-                <div class="col" style="background-color: #fbe3bffa;height: 45px">
-                <h2 style="margin-left: 230px; margin-top:20px;color:#0069b4;">{{ "%.2f€"|format(mean_absolute_error) }}</h2>
+                <div class="col" style="background-color: #fbefdcfa; height: 45px; margin-top:20px;display:flex; align-items: center;justify-content: center;">
+                <h2 style="margin-left: 200px; color:#0069b4;margin-bottom: 0px;">{{ "%.2f€"|format(mean_absolute_error) }}</h2>
                 </div>
 
         </div>
@@ -449,6 +471,9 @@
        $('#train_popwindow').show();
     });
     $('#closebutton_train').click(function(){
+        $('#train_popwindow').hide();
+    });
+    $('#closebutton_train2').click(function(){
         $('#train_popwindow').hide();
     });
 });
