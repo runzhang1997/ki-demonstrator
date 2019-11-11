@@ -5,12 +5,10 @@
          flex: 1 1 auto;
          height: 0
     }
-
     #content-left {
         overflow: hidden;
     }
     </style>
-
     <div id="content-container" class="container-fluid">
         <div class="row h-100">
             <div class="col-6 h-100" id="leftband">
@@ -53,12 +51,9 @@
                    // var y = document.getElementById("leftband");
                     //y.style.maxWidth="100%";
                 }
-
                 $("#direction").fadeOut(function () {
                     $("#direction").text(($("#direction").text() == '<<') ? '>>' : '<<').fadeIn();
                 })
             });
-
-
         </script>
 {% endblock %}
