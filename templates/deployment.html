@@ -26,13 +26,12 @@
             <h6 style="text-align: center; font-size: 20px; font-weight: 300;"> Erklärung Deployment: </h6>
             <h6 style="text-align: center; font-weight: 300;">Im Deployment werden die Kosten eines Werkzeugs durch die KI anhand der Datenbasis abgeschätzt</h6>
         </div>
-        <div class="card-body bg list">
+        <div class="card-body bg list" style="padding-bottom:5px;">
             <ul>
                 <li class="list-item">Auswahl der Bauteilspezifikation zur Berechnung des Werkzeugpreises</li>
                 <li class="list-item">Ausgabe der Werkzeugkosten auf Basis der Bauteilspezifikationen</li>
             </ul>
         </div>
-
 
         <div class="card-header">
             <div class="row">
@@ -67,10 +66,9 @@
             </div>
             </div>
         </div>
-        <div class="card-body">
-
+        <div class="card-body" style="padding-top:5px;">
                 <form method="POST" action="{{url_for('deployment')}}">
-                    <div class="chart" style="padding-left:20px; padding-bottom:20px">
+                    <div class="chart" style="padding-left:20px; padding-bottom:10px">
                     <fieldset class="form-group">
                         <!--<ul>-->
                             <div class="row">
