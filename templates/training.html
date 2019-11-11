@@ -50,16 +50,14 @@
                             <button type="button" class="close" id="closebutton_train2">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <ol>
-                                <li>Zur Vorhersage des Werkzeugpreises wird ein Entscheidungsbaum trainiert.</li>
-                                <li>Ein Entscheidungsbaum zeigt die wesentlichen Trennkriterien, anhand denen der Werkzeugpreis gebildet wird. Dabei steht der linke Ast stets für den Entscheidungsweg, der beschritten wird, wenn das Entscheiodungskriterium erfüllt ist. </li>
-                                <li>Die vorhandenen Daten werden in einen Trainings- und Testdatensatz aufgeteilt.</li>
-                                <li>Wichtig ist, dem Algorithmus nicht alle vorhandenen Datensätze zugänglich zu machen. In diesem Falle würde der Algorithmus diese lediglich auswendig lernen, man spricht auch von Overfitting.
-                                <li>Stattdessen wird bewusst ein Teil der Daten als Testdaten zurückgehalten. Mit Hilfe dieser Testdaten kann dann die Genauigkeit des Modells bespielsweise basierend auf der mittleren quadratischen Abweichung bestimmt werden. </li>
-                                <li> Die Baumtiefe des Entscheidungsbaumes wiederum gibt an, wie detailliert das Modell eine Kategorisierung der Preisvorhersage vornimmt.
-                                    Vereinfacht gesagt, ein sehr tiefer Baum, wird für jedes spezifische Werkzeug den spezifischen Preis vorhersagen.
-                                    Dies bietet natürlich nicht den gewünschten Effekt. Je kleiner der Baum gestaltet wird, desto eher wird anhand der tatsächlich ausschlaggebeneden Parametern entschieden. </li>
-                            </ol>
+                            <ul>
+                                <li> Zur Vorhersage des Werkzeugpreises wird ein Entscheidungsbaum trainiert. </li>
+                                <li> Ein Entscheidungsbaum zeigt die wesentlichen Trennkriterien, anhand derer der Werkzeugpreis errechnet wird. </li>
+                                <li> Die vorhandenen Daten werden in einen Trainings- und Testdatensatz aufgeteilt.</li>
+                                <li> Wichtig ist, dem Algorithmus nicht alle vorhandenen Datensätze zugänglich zu machen. In diesem Falle würde der Algorithmus diese lediglich auswendig lernen, man spricht auch von Overfitting. Stattdessen wird bewusst ein Teil der Daten als Testdaten zurückgehalten. </li>
+                                <li> Mit Hilfe der Testdaten kann die Genauigkeit des Modells basierend auf der mittleren quadratischen Abweichung bestimmt werden.</li>
+                                <li> Die Baumtiefe des Entscheidungsbaumes wiederum gibt an, wie detailliert das Modell eine Kategorisierung der Preisvorhersage vornimmt.</li>
+                            </ul>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary"  id="closebutton_train">Schließen</button>

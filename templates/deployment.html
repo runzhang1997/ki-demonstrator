@@ -28,8 +28,8 @@
         </div>
         <div class="card-body bg list">
             <ul>
-                <li class="list-item">Es müssen alle Bauteilspezifikationen angegeben werden</li>
-                <li class="list-item">Die KI schätzt die Werkzeugkosten in Abhängigkeit zu den angegebenen Parametern</li>
+                <li class="list-item">Auswahl der Bauteilspezifikation zur Berechnung des Werkzeugpreises</li>
+                <li class="list-item">Ausgabe der Werkzeugkosten auf Basis der Bauteilspezifikationen</li>
             </ul>
         </div>
 
@@ -49,11 +49,11 @@
                             <button type="button" class="close" id="closebutton_predict2">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <ol>
+                            <ul>
             <li>Das im vorigen Schritt trainierte Modell kann nun zur Preisvorhersage genutzt werden.</li>
             <li>Dem Modell werden die Werkzeugparameter vorgegeben.</li>
-            <li>Basierend auf den vorgegebenen Parametern berechnet das Modell nun den Entscheidungsweg bis zum erlenten Endpreis des Werkzeugs.</li>
-        </ol>
+            <li>Basierend auf den vorgegebenen Parametern berechnet das Modell nun den Entscheidungsweg bis zum erlernten Endpreis des Werkzeugs.</li>
+        </ul>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" id="closebutton_predict">Schließen</button>
@@ -70,13 +70,14 @@
         <div class="card-body">
 
                 <form method="POST" action="{{url_for('deployment')}}">
-                    <div class="chart">
+                    <div class="chart" style="padding-left:20px; padding-bottom:10px">
                     <fieldset class="form-group">
-                        <ul>
+                        <!--<ul>-->
                             <div class="row">
                                 <div class="col">
-                            <li class="list-item">Anzahl der Kavitäten</li>
-                            <div class="range-slider w-100">
+                            <!--<li class="list-item">Anzahl der Kavitäten</li>-->
+                                    <h>Anzahl der Kavitäten:</h>
+                            <div class="range-slider w-100" style='margin: 0px 10px;'>
                                 <input type="range" min="1" max="30"
                                        class="range-slider__range" value="{{kav}}"
                                        id="Kavitäten_slider" name="Anzahl der Kavitäten">
@@ -85,8 +86,9 @@
                             </div>
                             </div>
                                  <div class="col">
-                            <li class="list-item">Schieberanzahl</li>
-                            <div class="range-slider">
+                            <!--<li class="list-item">Schieberanzahl</li>-->
+                                     <h>Schieberanzahl:</h>
+                            <div class="range-slider" style='margin: 0px 10px;'>
                                 <input type="range" min="1" max="30"
                                        class="range-slider__range" value="{{schieber}}"
                                        id="Schieberanzahl_slider" name="Schieberanzahl">
@@ -97,8 +99,9 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <li class="list-item">Form der Kavitäten</li>
-                                    <div style='margin: 0px 30px;'>
+                                   <!-- <li class="list-item">Form der Kavitäten</li>-->
+                                    <h>Form der Kavitäten:</h>
+                                    <div style='margin: 0px 10px;'>
                                         <input type="radio" name="Form der Kavitäten" id="ka" value="A"> A
                                         <input type="radio" name="Form der Kavitäten" id="kb" value="B"> B
                                         <input type="radio" name="Form der Kavitäten" id="kc" value="C"> C
@@ -106,14 +109,15 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <li class="list-item">Kanaltyp</li>
+                                    <!--<li class="list-item">Kanaltyp</li>-->
+                                    <h>Anzahl der Kavitäten:</h>
                                     <div style='margin: 0px 10px;'>
                                         <input type="radio" name="Kanaltyp" id="th" value="Heißkanal">Heißkanal
                                         <input type="radio" name="Kanaltyp" id="tk" value="Kaltkanal">Kaltkanal
                                     </div>
                                 </div>
                             </div>
-                        </ul>
+                        <!--</ul>-->
                     </fieldset>
                     </div>
                     <button type="submit" class="btn btn-primary dark-yellow" value="Submit" style="position:absolute; z-index: 1; height: 60px; color:#0069b4; font-size: 17px;font-weight:700; font-style: italic">Kostenabschätzung</button>
