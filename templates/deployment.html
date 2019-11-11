@@ -78,20 +78,20 @@
                             <li class="list-item">Anzahl der Kavitäten</li>
                             <div class="range-slider w-100">
                                 <input type="range" min="1" max="30"
-                                       class="range-slider__range"
+                                       class="range-slider__range" value="{{kav}}"
                                        id="Kavitäten_slider" name="Anzahl der Kavitäten">
                                 <span id="Kavitäten_value"
-                                      class="range-slider__value">15</span>
+                                      class="range-slider__value">{{kav}}</span>
                             </div>
                             </div>
                                  <div class="col">
                             <li class="list-item">Schieberanzahl</li>
                             <div class="range-slider">
                                 <input type="range" min="1" max="30"
-                                       class="range-slider__range"
+                                       class="range-slider__range" value="{{schieber}}"
                                        id="Schieberanzahl_slider" name="Schieberanzahl">
                                 <span id="Schieberanzahl_value"
-                                      class="range-slider__value">15</span>
+                                      class="range-slider__value">{{schieber}}</span>
                             </div>
                                      </div>
                             </div>
@@ -99,17 +99,17 @@
                                 <div class="col">
                                     <li class="list-item">Form der Kavitäten</li>
                                     <div style='margin: 0px 30px;'>
-                                        <input type="radio" name="Form der Kavitäten" value="A"> A
-                                        <input type="radio" name="Form der Kavitäten" value="B"> B
-                                        <input type="radio" name="Form der Kavitäten" value="C"> C
-                                        <input type="radio" name="Form der Kavitäten" value="D"> D
+                                        <input type="radio" name="Form der Kavitäten" id="ka" value="A"> A
+                                        <input type="radio" name="Form der Kavitäten" id="kb" value="B"> B
+                                        <input type="radio" name="Form der Kavitäten" id="kc" value="C"> C
+                                        <input type="radio" name="Form der Kavitäten" id="kd" value="D"> D
                                     </div>
                                 </div>
                                 <div class="col">
                                     <li class="list-item">Kanaltyp</li>
                                     <div style='margin: 0px 10px;'>
-                                        <input type="radio" name="Kanaltyp" value="Heißkanal">Heißkanal
-                                        <input type="radio" name="Kanaltyp" value="Kaltkanal">Kaltkanal
+                                        <input type="radio" name="Kanaltyp" id="th" value="Heißkanal">Heißkanal
+                                        <input type="radio" name="Kanaltyp" id="tk" value="Kaltkanal">Kaltkanal
                                     </div>
                                 </div>
                             </div>
@@ -435,7 +435,30 @@
         fill: '#0069b4',
         background: '#d7dcdf'
     }
-
+    radiobtnka = document.getElementById("ka");
+    if ({{ka}} == 1){
+        radiobtnka.checked = true;
+    }
+    radiobtnkb = document.getElementById("kb");
+    if ({{kb}} == 1){
+        radiobtnkb.checked = true;
+    }
+    radiobtnkc = document.getElementById("kc");
+    if ({{kc}} == 1){
+        radiobtnkc.checked = true;
+    }
+    radiobtnkd = document.getElementById("kd");
+    if ({{kd}} == 1){
+        radiobtnkd.checked = true;
+    }
+    radiobtnth = document.getElementById("th");
+    if ({{th}} == 1){
+        radiobtnth.checked = true;
+    }
+    radiobtntk = document.getElementById("tk");
+    if ({{tk}} == 1){
+        radiobtntk.checked = true;
+    }
     const sliders = document.querySelectorAll('.range-slider');
     Array.prototype.forEach.call(sliders,(slider)=>{
       slider.querySelector('input').addEventListener('input', (event)=>{
@@ -463,6 +486,7 @@
     $('#closebutton_predict2').click(function(){
         $('#predict_popwindow').hide();
     });
+
 });
 
 </script>

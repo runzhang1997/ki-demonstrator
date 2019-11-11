@@ -84,8 +84,8 @@
 
                     <div class="range-slider">
                         <input id="range_train_size" class="range-slider__range" type="range"
-                               min="10"  max="90" step="10">
-                        <span class="range-slider__value">50</span>
+                               min="10"  value="{{train_size}}" max="90" step="10">
+                        <span class="range-slider__value">{{train_size}}</span>
                     </div>
                     </div>
                 </div>
@@ -96,9 +96,9 @@
                         <li class="list-item">Maximale Baumtiefe</li>
                     <div class="range-slider">
                         <input id="range_max_depth" class="range-slider__range" type="range"
-                                min="1"
+                                min="1" value="{{max_depth}}"
                                max="50" step="1">
-                        <span class="range-slider__value">25</span>
+                        <span class="range-slider__value">{{max_depth}}</span>
                     </div>
                     </div>
                     </div>

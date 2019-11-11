@@ -98,7 +98,7 @@ def preprocessing():
 def training():
     train_size = float(request.args.get("train_size", 0.7))
     # min_samples_leaf = request.form.get("min_samples_leaf", 1)
-    max_depth = int(request.args.get("max_depth", 100))
+    max_depth = int(request.args.get("max_depth", 40))
 
     json_data, mean_absolute_error = backend.generate_model(train_size, max_depth)
 
@@ -128,7 +128,7 @@ def training():
     n_samples, n_features = df_X.shape
 
     return render_template('training.html', current_page='training', timestamp=timestamp,
-                           tree_data=json_data, train_size=train_size, max_depth=max_depth,
+                           tree_data=json_data, train_size=int(train_size*100), max_depth=max_depth,
                            mean_absolute_error=mean_absolute_error, n_samples=n_samples,
                            n_features=n_features, progress=90,
                            responsibility=["KI-Experte"])
@@ -147,18 +147,26 @@ def deployment():
                         'Kanaltyp_Kaltkanal': (request.form['Kanaltyp']=='Kaltkanal')
                         }
     else:
-        feature_dict = {"Anzahl Kavitäten": 0,
+        feature_dict = {"Anzahl Kavitäten": 15,
                         "Kavitätenform_A": 0,
                         "Kavitätenform_B": 0,
                         "Kavitätenform_C": 0,
                         "Kavitätenform_D": 0,
-                        'Schieberanzahl': 0,
+                        'Schieberanzahl': 19,
                         'Kanaltyp_Heißkanal': 0,
                         'Kanaltyp_Kaltkanal': 0
                         }
     print (request.form)
     print (feature_dict)
 
+    kav= int(feature_dict['Anzahl Kavitäten'])
+    schieber = int(feature_dict['Schieberanzahl'])
+    ka = int(feature_dict['Kavitätenform_A'])
+    kb = int(feature_dict['Kavitätenform_B'])
+    kc = int(feature_dict['Kavitätenform_C'])
+    kd = int(feature_dict['Kavitätenform_D'])
+    th = int(feature_dict['Kanaltyp_Heißkanal'])
+    tk = int(feature_dict['Kanaltyp_Kaltkanal'])
     prediction, model_json = backend.evaluate_model(feature_dict)
 
     try:
@@ -168,7 +176,7 @@ def deployment():
         print("ERROR")
 
     return render_template('deployment.html', current_page='deployment',
-                           tree_data=model_json, prediction=prediction,
+                           tree_data=model_json, kav=kav, schieber=schieber,prediction=prediction, ka=ka, kb=kb,kc=kc,kd=kd, th=th,tk=tk,
                            n_samples=None, n_features=None,
                            progress=100, responsibility=["Domänenexperte"])
 
