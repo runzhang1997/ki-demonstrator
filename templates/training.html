@@ -129,7 +129,7 @@
         var tree = d3.layout.tree().size([h, w]);
 
         var tree_filename = 'output-' + '{{ timestamp }}' + '.json'
-        var tree_filepath = "/static/" + tree_filename
+        var tree_filepath = "/ki-demonstrator/static/" + tree_filename
 
         d3.json(tree_filepath, load_dataset);
 

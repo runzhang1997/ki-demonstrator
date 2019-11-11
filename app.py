@@ -116,12 +116,12 @@ def training():
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
     # try:
-    with open(f'static/output-{timestamp}.json', 'w') as outfile:
+    with open(f'/var/www/ki_demonstrator/static/output-{timestamp}.json', 'w') as outfile:
         json.dump(json_data, outfile, cls=MyEncoder)
     # except IOError:
     #     print("ERROR")
 
-    while not os.path.exists(f'static/output-{timestamp}.json'):
+    while not os.path.exists(f'/var/www/ki_demonstrator/static/output-{timestamp}.json'):
         pass
 
     df_X, _ = backend.get_data(2)
@@ -170,7 +170,7 @@ def deployment():
     prediction, model_json = backend.evaluate_model(feature_dict)
 
     try:
-        with open('static/predict.json', 'w') as outfile:
+        with open('/var/www/ki_demonstrator/static/predict.json', 'w') as outfile:
             json.dump(model_json, outfile, cls=MyEncoder)
     except IOError:
         print("ERROR")

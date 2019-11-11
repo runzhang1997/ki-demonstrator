@@ -39,7 +39,7 @@ class Backend(object):
     model = None
 
     def __init__(self, config=None):
-        df = pd.read_csv(r'static/raw_data.csv', dtype='category')
+        df = pd.read_csv(r'/var/www/ki_demonstrator/static/raw_data.csv', dtype='category')
         df_y = df[['Kosten']].astype('float')
         df_X = df.drop(columns=['Kosten'])
         self.raw_data = df_X, df_y
